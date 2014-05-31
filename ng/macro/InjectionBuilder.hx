@@ -1,4 +1,4 @@
-package ng.angular.macro;
+package ng.macro;
 
 #if macro
 import haxe.macro.Context;

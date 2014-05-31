@@ -1,4 +1,4 @@
-package ng.angular;
+package ng;
 
 
 /**

@@ -1,7 +1,7 @@
 package test;
 
-import ng.angular.Injectable;
-import ng.angular.Angular;
+import ng.Injectable;
+import ng.Angular;
 
 /**
  * ...
