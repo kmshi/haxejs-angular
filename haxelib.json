@@ -1,0 +1,11 @@
+{
+  "name": "haxe-angular",
+  "url": "http://github.com/kmshi/haxe-angular",
+  "license": "MIT",
+  "tags": [ "angular", "js" ],
+  "description": "haxe extern for angular",
+  "version": "0.0.1",
+  "releasenote": "First initiated",
+  "contributors": [ "richard" ],
+  "dependencies": {}
+}
