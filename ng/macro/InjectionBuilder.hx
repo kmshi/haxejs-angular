@@ -15,6 +15,7 @@ class InjectionBuilder
 {
 #if macro
     private static var currentClsName:String;
+    private static var currentPackName:String;
     private static var allFields:Array<Field>;
 
     private static var mainField:Field;
@@ -27,6 +28,7 @@ class InjectionBuilder
             case TInst(ins, _): currentClsName = ins.toString();
             default:
         }
+        currentPackName = Context.getLocalClass().get().pack.join(".");
     }
 
 	private static function getMainFn() {
@@ -50,8 +52,16 @@ class InjectionBuilder
         }
     }
 
-    private static function addExpr2MainFnBlock() {
-    	block.push(macro {Angular.module('$currentClsName',[]);});
+    //type: 1--controller, 2--service
+    private static function addExpr2MainFnBlock(type:Int) {
+        block.push(macro {
+	        try {
+	    		Angular.module('$currentPackName');
+	  		} catch (e:Dynamic) {
+	    		Angular.module('$currentPackName',[]);
+	  		}
+        });//use package as module name
+    	//block.push(macro {Angular.module('$currentClsName',[]);});
         for (f in allFields) {
             if (!f.access.has(AStatic)) continue;
             if (f.access.has(APrivate)) continue;
@@ -63,9 +73,11 @@ class InjectionBuilder
 					{
 						var et = getInjectionExpr(f.name, metaToString(inject.params));
 						block.insert(0,macro { $et;});
-						var ett = registerCtrl(f.name,f.name);
+						var ett = null;
+						if (type==1) ett = registerController(f.name,f.name);
+						if (type==2) ett = registerService(f.name,f.name);
 						//trace(ett);
-						block.push(macro {$ett;});
+						if (ett!=null) block.push(macro {$ett;});
 					}
                 }
                 default:
@@ -74,9 +86,17 @@ class InjectionBuilder
 
     }
 
-    private static function registerCtrl(name:String,ctrl:String):Expr
+    private static function registerController(name:String,ctrl:String):Expr
     {
-    	var str =  "Angular.module(\""+currentClsName+"\").controller(\""+name+"\","+ctrl+")";
+    	var str =  "Angular.module(\""+currentPackName+"\").controller(\""+name+"\","+ctrl+")";
+    	//var str =  "Angular.module(\""+currentClsName+"\").controller(\""+name+"\","+ctrl+")";
+    	return Context.parse(str,Context.currentPos());
+    }
+
+    private static function registerService(name:String,srv:String):Expr
+    {
+    	var str =  "Angular.module(\""+currentPackName+"\").service(\""+name+"\","+srv+")";
+    	//var str =  "Angular.module(\""+currentClsName+"\").service(\""+name+"\","+srv+")";
     	return Context.parse(str,Context.currentPos());
     }
 
@@ -104,13 +124,14 @@ class InjectionBuilder
 		}
 	}
 #end
-
-	macro public static function build():Array<haxe.macro.Field> {
+	
+	//type: 1--controller, 2--service
+	macro public static function build(type:Int):Array<haxe.macro.Field> {
         allFields = Context.getBuildFields();
         getClsName();
         getMainFn();
         getMainFnBlock();
-        addExpr2MainFnBlock();
+        addExpr2MainFnBlock(type);
         return allFields;
     }
 

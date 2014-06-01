@@ -1,6 +1,6 @@
 package test;
 
-import ng.Injectable;
+import ng.IController;
 import ng.Angular;
 
 /**
@@ -13,20 +13,23 @@ typedef HomeScope = {
 	name:String
 }
 
-class Controller implements Injectable
+class Controller implements IController
 {
     public static function main(){
+    	trace("--main--");
     }
 
 	@:inject("$scope")
 	public static var homeController:Dynamic = function(scope:HomeScope){
 		scope.name = "good";
+		trace("homeController");
 	}
 
 	@:inject("$rootScope","$http")
 	public static var loginController:Dynamic = function(scope:RootScope,http:Http){
-        scope.digest();
-        scope.broadcast();
+        //scope.digest();
+        //scope.broadcast();
+        trace("loginController");
     }
 
 
