@@ -14,6 +14,19 @@ extern class Angular
 
 extern class Module
 {
+  /**
+   * @name angular.Module#constant
+   * @param {string} name constant name
+   * @param {*} object Constant value.
+   * Because the constant are fixed, they get applied before other provide methods.
+   */
+	public function constant(name: String, object: Dynamic): Module;
+  /**
+   * @name angular.Module#value
+   * @param {string} name service name
+   * @param {*} object Service instance object.
+   */
+	public function value(name: String, object: Dynamic): Module;		
    /**
    * @name angular.Module#controller
    * @param {string|Object} name Controller name, or an object map of controllers where the
@@ -67,19 +80,7 @@ extern class Module
    *                                service.
    */
 	public function provider(name: String, providerType: Dynamic): Module;
-  /**
-   * @name angular.Module#value
-   * @param {string} name service name
-   * @param {*} object Service instance object.
-   */
-	public function value(name: String, object: Dynamic): Module;
-  /**
-   * @name angular.Module#constant
-   * @param {string} name constant name
-   * @param {*} object Constant value.
-   * Because the constant are fixed, they get applied before other provide methods.
-   */
-	public function constant(name: String, object: Dynamic): Module;
+
 }
 
 @:native("$rootScope")
