@@ -6,10 +6,26 @@ package ng;
  */
 
 
-@:native("angular")
+import js.JQuery;
+
+@:initPackage
+//@:native("angular")
 extern class Angular
 {
-	public static function module(name: String, ?requires: Array<String>, ?configFn: Dynamic): Module;
+    private static function __init__() : Void untyped {
+        #if embed_js
+          haxe.macro.Compiler.includeFile("www/js/bower_components/angular/angular.min.js");
+        #end
+        ng.Angular = angular;
+        //if not include jquery, use jqLite embedded in angular.js
+        if (js.JQuery==null) js.JQuery = jqLite;
+    }
+
+    public static function module(name: String, ?requires: Array<String>, ?configFn: Dynamic): Module;
+    public static function bind(self:Dynamic, fn:Dynamic, ?args:Array<Dynamic>):Dynamic;
+    public static function bootstrap(element:js.html.Element, modules:Array<String>) : Injector;
+    public static function copy(source:Dynamic, destination:Dynamic):Void;
+    public static function element(element:js.html.Element):JQuery;//JQLite to be better
 }
 
 extern class Module
@@ -83,13 +99,18 @@ extern class Module
 
 }
 
-@:native("$rootScope")
+//@:native("$rootScope")
 extern class RootScope{
     public function digest():Void;
     public function broadcast():Void;
 }
 
-@:native("$http")
+//@:native("$http")
 extern class Http{
+
+}
+
+//@:native("$injector")
+extern class Injector{
 
 }
