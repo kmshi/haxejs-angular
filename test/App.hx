@@ -2,6 +2,7 @@ package test;
 
 import ng.Angular;
 import ng.IConfig;
+//import ng.Animate;
 
 class App implements IConfig
 {

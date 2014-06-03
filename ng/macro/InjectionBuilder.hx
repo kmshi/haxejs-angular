@@ -57,7 +57,9 @@ class InjectionBuilder
 	        try {
 	    		Angular.module('$currentPackName');
 	  		} catch (e:Dynamic) {
-	    		Angular.module('$currentPackName',[]);
+	  			var deps:Array<String> = untyped window.hxdeps?window.hxdeps:[];
+	  			//trace("deps:"+deps);
+	    		Angular.module('$currentPackName',deps);
 	  		}
         });//use package as module name
     	//block.push(macro {Angular.module('$currentClsName',[]);});

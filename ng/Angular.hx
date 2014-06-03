@@ -16,6 +16,10 @@ extern class Angular
         #if embed_js
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular/angular.min.js");
         #end
+        //add "ng" to global module dependencies
+        if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
+        window.hxdeps.push("ng");
+
         ng.Angular = window.angular;
         //if not include jquery, use jqLite embedded in angular.js, however, it is not public yet
         //if (js.JQuery==null) js.JQuery = jqLite;

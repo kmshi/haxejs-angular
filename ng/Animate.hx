@@ -13,6 +13,8 @@ class Animate
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-animate/angular-animate.min.js");
         #end
 		//add "ngAnimate" to global module dependencies
+		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
+		window.hxdeps.push("ngAnimate");
     }
 	
 }
