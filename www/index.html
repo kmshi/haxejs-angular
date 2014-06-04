@@ -1,9 +1,26 @@
 <!doctype html>
 <html>
-<head><title>Angular app written by Haxe</title></head>
+<head>
+	<title>Angular app written by Haxe</title>
+	<style type="text/css">
+		#scrollArea {
+         height: 350px;
+         overflow: auto;
+       }
+
+       #bottom {
+         display: block;
+         margin-top: 2000px;
+       }
+	</style>
+</head>
 <body ng-app="test">
 <div ng-controller="homeController">
 	My name is {{home.name}}
+</div>
+<div id="scrollArea" ng-controller="scrollController">
+    <a ng-click="gotoBottom()">Go to bottom</a>
+    <a id="bottom">You're at the bottom!</a>
 </div>
 	
 <script type="text/javascript" src="js/bower_components/angular/angular.js"></script>

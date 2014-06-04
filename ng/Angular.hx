@@ -232,14 +232,14 @@ extern class Module
 	 */	
 	public static var requires:Array<String>;	
   /**
-   * @name angular.Module#constant
+   * registers a value/object that can be accessed by providers and services.
    * @param {string} name constant name
    * @param {*} object Constant value.
    * Because the constant are fixed, they get applied before other provide methods.
    */
 	public function constant(name: String, object: Dynamic): Module;
   /**
-   * @name angular.Module#value
+   * registers a value/object that can only be accessed by services, not providers.
    * @param {string} name service name
    * @param {*} object Service instance object.
    */
@@ -252,7 +252,7 @@ extern class Module
    */
 	public function controller(name: String, constructor: Dynamic): Module;
   /**
-   * @name angular.Module#service
+   * Register a **service constructor**, which will be invoked with `new` to create the service(type/class) instance.
    * @param {string} name service name
    * @param {Function} constructor A constructor function that will be instantiated to return an object only once.
    */
@@ -285,26 +285,52 @@ extern class Module
    */
 	public function animation(name: String, animationFactory: Dynamic): Module;
   /**
-   * @name angular.Module#factory
+	 * Register a **service factory**, which will be called to return the service instance.
+	 * This is short for registering a service where its provider consists of only a `$get` property,
+	 * which is the given service factory function.
+	 * You should use {@link auto.$provide#factory $provide.factory(getFn)} if you do not need to
+	 * configure your service in a provider.
    * @param {string} name service name
    * @param {Function} providerFunction Function for creating new instance of the service.
    */
 	public function factory(name: String, providerFunction: Dynamic): Module;
   /**
-   * @name angular.Module#provider
+   * registers a **service provider**
    * @param {string} name service name
-   * @param {Function} providerType Construction function for creating new instance of the
-   *                                service.
+   * @param {(Object|function())} provider If the provider is:
+	 *
+	 *   - `Object`: then it should have a `$get` method. The `$get` method will be invoked using
+	 *     {@link auto.$injector#invoke $injector.invoke()} when an instance needs to be created.
+	 *   - `Constructor`: a new instance of the provider will be created using
+	 *     {@link auto.$injector#instantiate $injector.instantiate()}, then treated as `object`.
    */
-	public function provider(name: String, providerType: Dynamic): Module;
+	public function provider(name: String, provider: Dynamic): Module;
 
 }
 
+//@:native("$anchorScroll")
+/**
+ * A function service, when called, it checks current value of `$location.hash()` and scroll to related element
+ */
+typedef AnchorScroll = Void->Void;
+
+//@:native("$anchorScrollProvider")
+extern class AnchorScrollProvider {
+	public function disableAutoScrolling():Void;
+}
+
 //@:native("$rootScope")
+//typedef RootScope = Dynamic;//how to add functions to it?
 extern class RootScope{
     public function digest():Void;
     public function broadcast():Void;
 }
+
+//@:native("$scope")
+typedef Scope = RootScope;
+
+//@:native("$location")
+typedef Location = Dynamic;
 
 //@:native("$http")
 extern class Http{

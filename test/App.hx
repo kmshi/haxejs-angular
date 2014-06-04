@@ -11,10 +11,9 @@ class App implements IConfig
 		var a = {weight:3 };
 		var b = {"weight":4 };
 		trace(Angular.fromJson(Angular.toJson(b)));
-		var argNames = Angular.injector(["ng"]).annotate(test.Controller.loginController);
+		var argNames = Angular.injector(["ng"]).annotate(test.Controller.scrollController);
 		trace(argNames);
 		trace(Angular.injector(["ng", "test"]).has("loginController"));	
-		Angular.injector(["ng"]).invoke(test.Controller.loginController);
 		var d = new Date(2014,6,3,3,52,50);
 		var arr = [1, 2, 3];
 		var und = null;
