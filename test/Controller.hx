@@ -10,7 +10,10 @@ import ng.Angular;
 
 typedef HomeScope = {
 	>RootScope,
-	name:String
+	home: {
+		name:String,
+		location:String
+		}
 }
 
 class Controller implements IController
@@ -21,12 +24,12 @@ class Controller implements IController
 
 	@:inject("$scope")
 	public static var homeController:Dynamic = function(scope:HomeScope){
-		scope.name = "good";
+		scope.home = { name:"Blue sky",location:"Guangzhou" };
 		trace("homeController");
 	}
 
-	@:inject("$rootScope","$http")
-	public static var loginController:Dynamic = function(scope:RootScope,http:Http){
+	@:inject("$rootScope")
+	public static var loginController:Dynamic = function(scope:RootScope){
         //scope.digest();
         //scope.broadcast();
         trace("loginController");

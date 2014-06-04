@@ -223,6 +223,14 @@ typedef Version = {
 
 extern class Module
 {
+	/**
+	 * Name of the module
+	 */	
+	public static var name:String;
+	/**
+	 *Holds the list of modules which the injector will load before the current module is loaded.
+	 */	
+	public static var requires:Array<String>;	
   /**
    * @name angular.Module#constant
    * @param {string} name constant name
@@ -304,10 +312,52 @@ extern class Http{
 }
 
 //@:native("$injector")
-extern class Injector{
+extern class Injector {
+	/**
+	 * Return an instance of the service.
+	 *
+	 * @param {string} name The name of the instance to retrieve.
+	 * @return {*} The instance.
+	 */
 	public function get(name:String):Dynamic;
+	/**
+	 * Invoke the method and supply the method arguments from the `$injector`.
+	 *
+	 * @param {!Function} fn The function to invoke. Function parameters are injected according to the
+	 *   {@link guide/di $inject Annotation} rules.
+	 * @param {Object=} self The `this` for the invoked method.
+	 * @param {Object=} locals Optional object. If preset then any argument names are read from this
+	 *                         object first, before the `$injector` is consulted.
+	 * @returns {*} the value returned by the invoked `fn` function.
+	 */	
 	public function invoke(fn:Dynamic, ?self:Dynamic, ?locals:Dynamic):Dynamic;
+	/**
+	 * Allows the user to query if the particular service exist.
+	 *
+	 * @param {string} Name of the service to query.
+	 * @returns {boolean} returns true if injector has given service.
+	 */	
 	public function has(name:String):Bool;
+	/**
+	 * Create a new instance of JS type. The method takes a constructor function invokes the new
+	 * operator and supplies all of the arguments to the constructor function as specified by the
+	 * constructor annotation.
+	 *
+	 * @param {Function} Type Annotated constructor function.
+	 * @param {Object=} locals Optional object. If preset then any argument names are read from this
+	 * object first, before the `$injector` is consulted.
+	 * @returns {Object} new instance of `Type`.
+	 */	
 	public function instantiate(type:Dynamic, ?locals:Dynamic):Dynamic;
+	/**
+	 * Returns an array of service names which the function is requesting for injection. This API is
+	 * used by the injector to determine which services need to be injected into the function when the
+	 * function is invoked. There are three ways in which the function can be annotated with the needed
+	 * dependencies.	
+	 * @param {Function|Array.<string|Function>} fn Function for which dependent service names need to
+	 * be retrieved as described above.
+	 *
+	 * @returns {Array.<string>} The names of the services which the function requires.
+	 */ 
 	public function annotate(fn:Dynamic):Array<String>;
 }

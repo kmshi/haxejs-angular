@@ -7,7 +7,6 @@ import ng.IConfig;
 class App implements IConfig
 {
 	public static function main(){
-		//Angular.module('test',["ngTouch","ngRouter"]);
 		test.Controller.main();
 		var a = {weight:3 };
 		var b = {"weight":4 };
@@ -27,9 +26,4 @@ class App implements IConfig
 		trace(Angular.isUndefined(und));
 		trace(Angular.version.full);
 	}
-
-	@:inject("$http")
-	public static var initConfig:Dynamic = function(http:Http){
-        trace("initConfig");
-    }
 }
