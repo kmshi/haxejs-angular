@@ -74,7 +74,7 @@ class InjectionBuilder
 					{
 						var et = getInjectionExpr(f.name, metaToString(inject.params));
 						if (type!="constant" && type!="value")//it is not value or constant
-							block.insert(0,macro { $et;});
+							block.unshift(macro { $et; }); //block.insert(0, macro { $et; } );
 
 						var ett = register(f.name,f.name,type);
 						//trace(ett);

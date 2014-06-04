@@ -16,16 +16,16 @@ extern class Angular
         #if embed_js
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular/angular.min.js");
         #end
-        //add "ng" to global module dependencies
-        if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
-        window.hxdeps.push("ng");
+        //add "ng" to global module dependencies,default already
+        //if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
+        //window.hxdeps.push("ng");
 
         ng.Angular = window.angular;
         //if not include jquery, use jqLite embedded in angular.js, however, it is not public yet
         //if (js.JQuery==null) js.JQuery = jqLite;
     }
 
-	 /** @description
+	 /** 
      * The `angular.module` is a global place for creating, registering and retrieving Angular
      * modules.
      * All modules (angular core or 3rd party) that should be available to an application must be
@@ -35,7 +35,7 @@ extern class Angular
      * existing module (the name passed as the first argument to `module`) is retrieved.
 	 */
     public static function module(name: String, ?requires: Array<String>, ?configFn: Dynamic): Module;
-	 /** @description
+	 /**
 	 * Returns a function which calls function `fn` bound to `self` (`self` becomes the `this` for
 	 * `fn`). You can supply optional `args` that are prebound to the function. This feature is also
 	 * known as [partial application](http://en.wikipedia.org/wiki/Partial_application), as
@@ -47,7 +47,7 @@ extern class Angular
 	 * @returns {function()} Function that wraps the `fn` with all the specified bindings.
 	 */
     public static function bind(self:Dynamic, fn:Dynamic, ?args:Array<Dynamic>):Dynamic;
-	 /** @description
+	 /**
 	 * Use this function to manually start up angular application.
 	 * @param {DOMElement} element DOM element which is the root of angular application.
 	 * @param {Array<String|Function|Array>=} modules an array of modules to load into the application.
@@ -57,7 +57,7 @@ extern class Angular
 	 * @returns {auto.$injector} Returns the newly created injector for this app.
 	 */
     public static function bootstrap(element:js.html.Element, modules:Array<String>) : Injector;
-	 /** @description
+	 /**
 	 * Creates a deep copy of `source`, which should be an object or an array.
 	 * @param {*} source The source that will be used to make a copy.
 	 *                   Can be any type, including primitives, `null`, and `undefined`.
@@ -66,7 +66,7 @@ extern class Angular
 	 * @returns {*} The copy or updated `destination`, if `destination` was specified.
 	 */
     public static function copy(source:Dynamic, destination:Dynamic):Dynamic;
-	/** @description
+	/**
 	 * Wraps a raw DOM element or HTML string as a [jQuery](http://jquery.com) element.
 	 * @param {string|DOMElement} element HTML string or DOMElement to be wrapped into jQuery.
 	 * @returns {Object} jQuery object.
@@ -74,7 +74,7 @@ extern class Angular
     public static function element(element:js.html.Element):JQuery;//JQLite to be better
 	
 	public static function equals(o1:Dynamic, o2:Dynamic):Bool;
-	/** @description
+	/**
 	 * Extends the destination object `dst` by copying all of the properties from the `src` object(s)
 	 * to `dst`. You can specify multiple `src` objects.
 	 *
@@ -84,7 +84,6 @@ extern class Angular
 	 */
 	public static function extend(dst:Dynamic, src:Array<Dynamic>):Dynamic;
 	 /**
-	 * @description
 	 * Invokes the `iterator` function once for each item in `obj` collection, which can be either an
 	 * object or an array. The `iterator` function is invoked with `iterator(value, key)`, where `value`
 	 * is the value of an object property or an array element and `key` is the object property key or
@@ -96,7 +95,6 @@ extern class Angular
 	 */
 	public static function forEach(obj:Dynamic, iterator:Dynamic, ?context:Dynamic):Dynamic;
 	/**
-	 * @description
 	 * Deserializes a JSON string.
 	 *
 	 * @param {string} json JSON string to deserialize.
@@ -105,7 +103,6 @@ extern class Angular
 	public static function fromJson(json:String):Dynamic;
 	
 	/**
-	 * @description
 	 * Serializes input into a JSON-formatted string. Properties with leading $ characters will be
 	 * stripped since angular uses this notation internally.
 	 * @param {Object|Array|Date|string|number} obj Input to be serialized into JSON.
@@ -114,7 +111,6 @@ extern class Angular
 	 */
 	public static function toJson(obj:Dynamic, pretty:Bool = false):Dynamic;
 	/**
-	 * @description
 	 * Creates an injector function that can be used for retrieving services as well as for
 	 * dependency injection (see {@link guide/di dependency injection}).
 	 *
@@ -125,7 +121,6 @@ extern class Angular
 	 */
 	public static function injector(modules:Array<String>):Injector;
 	/**
-	 * @description
 	 * Determines if a reference is an `Array`.
 	 *
 	 * @param {*} value Reference to check.
@@ -133,7 +128,6 @@ extern class Angular
 	 */
 	public static function isArray(value:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a value is a date.
 	 *
 	 * @param {*} value Reference to check.
@@ -141,7 +135,6 @@ extern class Angular
 	 */
 	public static function isDate(value:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a reference is defined.
 	 *
 	 * @param {*} value Reference to check.
@@ -149,7 +142,6 @@ extern class Angular
 	 */
 	public static function isDefined(value:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a reference is undefined.
 	 *
 	 * @param {*} value Reference to check.
@@ -157,7 +149,6 @@ extern class Angular
 	 */
 	public static function isUndefined(value:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a reference is a DOM element (or wrapped jQuery element).
 	 *
 	 * @param {*} value Reference to check.
@@ -165,7 +156,6 @@ extern class Angular
 	 */
 	public static function isElement(node:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a reference is a `Function`.
 	 *
 	 * @param {*} value Reference to check.
@@ -173,7 +163,6 @@ extern class Angular
 	 */
 	public static function isFunction(value:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a reference is a `Number`.
 	 *
 	 * @param {*} value Reference to check.
@@ -181,7 +170,6 @@ extern class Angular
 	 */
 	public static function isNumber(value:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a reference is an `Object`. Unlike `typeof` in JavaScript, `null`s are not
 	 * considered to be objects. Note that JavaScript arrays are objects.
 	 *
@@ -190,7 +178,6 @@ extern class Angular
 	 */
 	public static function isObject(value:Dynamic):Bool;
 	/**
-	 * @description
 	 * Determines if a reference is a `String`.
 	 *
 	 * @param {*} value Reference to check.
@@ -198,19 +185,18 @@ extern class Angular
 	 */
 	public static function isString(value:Dynamic):Bool;
 	/**
-	 * @description Converts the specified string to lowercase.
+	 * Converts the specified string to lowercase.
 	 * @param {string} string String to be converted to lowercase.
 	 * @returns {string} Lowercased string.
 	 */
 	public static function lowercase(string:String):String;
 	/**
-	 * @description Converts the specified string to uppercase.
+	 * Converts the specified string to uppercase.
 	 * @param {string} string String to be converted to uppercase.
 	 * @returns {string} Uppercased string.
 	 */
 	public static function uppercase(string:String):String;	
 	/**
-	 * @description
 	 * A function that performs no operations. This function can be useful when writing code in the
 	 * functional style.
 	   ```js
@@ -222,7 +208,6 @@ extern class Angular
 	 */
 	public static function noop():Void;
 	/**
-	 * @description
 	 * An object that contains information about the current AngularJS version. 
 	 */	
 	public static var version:Version;
