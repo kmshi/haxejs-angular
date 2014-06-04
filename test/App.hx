@@ -8,6 +8,7 @@ class App implements IConfig
 {
 	public static function main(){
 		test.Controller.main();
+		test.Service.main();
 		var a = {weight:3 };
 		var b = {"weight":4 };
 		trace(Angular.fromJson(Angular.toJson(b)));
@@ -24,5 +25,9 @@ class App implements IConfig
 		trace(Angular.isDefined(und));
 		trace(Angular.isUndefined(und));
 		trace(Angular.version.full);
+		var inj = Angular.injector( ["ng", "test"] );
+		trace(inj.get("locServ").getA());
+		inj.invoke(["locServ",function(locServ:test.Service.LocServ){trace(locServ.getA());}]);
+		inj.invoke(["locServ",function(locServ:test.Service.LocServ){trace(locServ.getA());}]);
 	}
 }

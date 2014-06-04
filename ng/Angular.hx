@@ -16,11 +16,13 @@ extern class Angular
         #if embed_js
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular/angular.min.js");
         #end
+
+        ng.Angular = window.angular;
+
         //add "ng" to global module dependencies,default already
         //if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
         //window.hxdeps.push("ng");
 
-        ng.Angular = window.angular;
         //if not include jquery, use jqLite embedded in angular.js, however, it is not public yet
         //if (js.JQuery==null) js.JQuery = jqLite;
     }
@@ -356,7 +358,7 @@ extern class Injector {
 	 *                         object first, before the `$injector` is consulted.
 	 * @returns {*} the value returned by the invoked `fn` function.
 	 */	
-	public function invoke(fn:Dynamic, ?self:Dynamic, ?locals:Dynamic):Dynamic;
+	public function invoke(fn:Array<Dynamic>, ?self:Dynamic, ?locals:Dynamic):Dynamic;
 	/**
 	 * Allows the user to query if the particular service exist.
 	 *
