@@ -58,7 +58,7 @@ extern class Angular
 	 *     See: {@link angular.module modules}
 	 * @returns {auto.$injector} Returns the newly created injector for this app.
 	 */
-    public static function bootstrap(element:js.html.Element, modules:Array<String>) : Injector;
+    public static function bootstrap(element:js.html.Element, modules:Array<String>) : NgInjector;
 	 /**
 	 * Creates a deep copy of `source`, which should be an object or an array.
 	 * @param {*} source The source that will be used to make a copy.
@@ -115,13 +115,11 @@ extern class Angular
 	/**
 	 * Creates an injector function that can be used for retrieving services as well as for
 	 * dependency injection (see {@link guide/di dependency injection}).
-	 *
-
 	 * @param {Array.<string|Function>} modules A list of module functions or their aliases. See
 	 *        {@link angular.module}. The `ng` module must be explicitly added.
 	 * @returns {function()} Injector function. See {@link auto.$injector $injector}.
 	 */
-	public static function injector(modules:Array<String>):Injector;
+	public static function injector(modules:Array<String>):NgInjector;
 	/**
 	 * Determines if a reference is an `Array`.
 	 *
@@ -314,33 +312,201 @@ extern class Module
 /**
  * A function service, when called, it checks current value of `$location.hash()` and scroll to related element
  */
-typedef AnchorScroll = Void->Void;
+typedef NgAnchorScroll = Void->Void;
 
 //@:native("$anchorScrollProvider")
-extern class AnchorScrollProvider {
+extern class NgAnchorScrollProvider {
 	public function disableAutoScrolling():Void;
 }
 
 //@:native("$rootScope")
-//typedef RootScope = Dynamic;//how to add functions to it?
-extern class RootScope{
+//typedef NgRootScope = Dynamic;//how to add functions to it?
+extern class NgRootScope{
     public function digest():Void;
     public function broadcast():Void;
 }
 
 //@:native("$scope")
-typedef Scope = RootScope;
+typedef NgScope = NgRootScope;
 
-//@:native("$location")
-typedef Location = Dynamic;
-
-//@:native("$http")
-extern class Http{
+//@:native("$brower")
+extern class NgBrowser{
 
 }
 
+//@:native("$location")
+extern class NgLocation {
+   /**
+   * Return full url representation with all segments encoded according to rules specified in
+   * [RFC 3986](http://www.ietf.org/rfc/rfc3986.txt).
+   *
+   * @return {string} full url
+   */
+	public function absUrl():String;
+  /**
+   * Return url (e.g. `/path?a=b#hash`) when called without any parameter.
+   * Change path, search and hash, when called with parameter and return `$location`.
+   *
+   * @param {string=} url New url without base prefix (e.g. `/path?a=b#hash`)
+   * @param {string=} replace The path that will be changed
+   * @return {string} url
+   */	
+	@:overload(function(url:String, replace:String):NgLocation{})
+	public function url():String;
+	
+	public function protocol():String;
+	public function host():String;
+	public function port():Int;
+
+	//property(setter) in extern class seems not work, use @:overload instead
+	//public var path(default, default):String;
+	
+	@:overload(function(val:String):String{})
+	public function path():String;
+	@:overload(function(val:String):String{})
+	public function search():String;	
+	@:overload(function(val:String):String{})
+	public function hash():String;
+  /**
+   * If called, all changes to $location during current `$digest` will be replacing current history
+   * record, instead of adding new one.
+   */	
+	public function replace():NgLocation;
+}
+
+//@:native("$q")
+extern class NgQ {
+  /**
+   * Creates a `Deferred` object which represents a task which will finish in the future.
+   *
+   * @returns {Deferred} Returns a new instance of deferred.
+   */	
+	public function defer():NgDeferred;
+  /**
+   * @ngdoc method
+   * @name $q#reject
+   * @function
+   *
+   * @description
+   * Creates a promise that is resolved as rejected with the specified `reason`. This api should be
+   * used to forward rejection in a chain of promises. If you are dealing with the last promise in
+   * a promise chain, you don't need to worry about it.
+   *
+   * When comparing deferreds/promises to the familiar behavior of try/catch/throw, think of
+   * `reject` as the `throw` keyword in JavaScript. This also means that if you "catch" an error via
+   * a promise error callback and you want to forward the error to the promise derived from the
+   * current promise, you have to "rethrow" the error by returning a rejection constructed via
+   * `reject`.
+   * @param {*} reason Constant, message, exception or an object representing the rejection reason.
+   * @returns {Promise} Returns a promise that was already resolved as rejected with the `reason`.
+   */
+	public function reject(reason:Dynamic):NgPromise;
+  /**
+   * Wraps an object that might be a value or a (3rd party) then-able promise into a $q promise.
+   * This is useful when you are dealing with an object that might or might not be a promise, or if
+   * the promise comes from a source that can't be trusted.
+   *
+   * @param {*} value Value or a promise
+   * @returns {Promise} Returns a promise of the passed value or promise
+   */
+	public function when(value:Dynamic):NgPromise;
+  /**
+   * Combines multiple promises into a single promise that is resolved when all of the input
+   * promises are resolved.
+   *
+   * @param {Array.<Promise>|Object.<Promise>} promises An array or hash of promises.
+   * @returns {Promise} Returns a single promise that will be resolved with an array/hash of values,
+   *   each value corresponding to the promise at the same index/key in the `promises` array/hash.
+   *   If any of the promises is resolved with a rejection, this resulting promise will be rejected
+   *   with the same rejection value.
+   */
+	public function all(promises:Array<NgPromise>):NgPromise;  
+}
+
+extern class NgDeferred {
+	/**
+	 * promise object associated with this deferred.
+	 */
+	public var promise(default, null):NgPromise;
+	/**
+	 * resolves the derived promise with the `value`. If the value is a rejection
+	 * constructed via `$q.reject`, the promise will be rejected instead.
+	 */
+	public function resolve(value:Dynamic):Void;
+	/**
+	 * rejects the derived promise with the `reason`. This is equivalent to
+	 * resolving it with a rejection constructed via `$q.reject`.
+	 */
+	public function reject(reason:Dynamic):Void;
+	/**
+	 * provides updates on the status of the promise's execution. This may be called
+	 * multiple times before the promise is either resolved or rejected.
+	 */
+	public function notify(value:Dynamic):Void;
+}
+
+extern class NgPromise {
+	/**
+	 *   regardless of when the promise was or will be resolved or rejected, `then` calls one of the success 
+	 *   or error callbacks asynchronously as soon as the result is available. 
+	 *   The callbacks are called with a single argument: the result or rejection reason. 
+	 *   Additionally, the notify callback may be called zero or more times to provide a progress indication, 
+	 *   before the promise is resolved or rejected.
+	 *   This method *returns a new promise* which is resolved or rejected via the return value of the
+	 *   `successCallback`, `errorCallback`. It also notifies via the return value of the
+	 *   `notifyCallback` method. The promise can not be resolved or rejected from the notifyCallback  method.
+	 */
+	public function then(successCallback:Dynamic, ?errorCallback:Dynamic, ?notifyCallback:Dynamic):NgPromise;
+	//catch is keyward in haxe	
+	//public function catch (errorCallback:Dynamic):NgPromise;
+	
+	/**
+	 *   allows you to observe either the fulfillment or rejection of a promise,
+	 *   but to do so without modifying the final value. This is useful to release resources or do some
+	 *   clean-up that needs to be done whether the promise was rejected or resolved. See the [full
+	 *   specification](https://github.com/kriskowal/q/wiki/API-Reference#promisefinallycallback) for
+	 *   more information.
+	 *
+	 *   Because `finally` is a reserved word in JavaScript and reserved keywords are not supported as
+	 *   property names by ES3, you'll need to invoke the method like `promise['finally'](callback)` to
+	 *   make your code IE8 and Android 2.x compatible. 
+	 *   Hero Haxe, it already called like `promise['finally'](callback)`
+	 */
+	public function finally(callbackFn:Dynamic):NgPromise;
+}
+
+//@:native("$http")
+extern class NgHttp{
+    /**
+     * Shortcut method to perform `GET` request.
+     *
+     * @param {string} url Relative or absolute URL specifying the destination of the request
+     * @param {Object=} config Optional configuration object
+     * @returns {HttpPromise} Future object
+     */
+	public function get(url:String, ?config:Dynamic):NgPromise;
+	public function delete(url:String, ?config:Dynamic):NgPromise;
+	public function head(url:String, ?config:Dynamic):NgPromise;	
+    /**
+     * Shortcut method to perform `JSONP` request.
+     *
+     * @param {string} url Relative or absolute URL specifying the destination of the request.
+     *                     Should contain `JSON_CALLBACK` string.
+     * @param {Object=} config Optional configuration object
+     * @returns {HttpPromise} Future object
+     */	
+	public function jsonp(url:String, ?config:Dynamic):NgPromise;
+	public function put(url:String,data:Dynamic, ?config:Dynamic):NgPromise;
+	public function post(url:String, data:Dynamic, ?config:Dynamic):NgPromise;
+    /**
+     * Runtime equivalent of the `$httpProvider.defaults` property. Allows configuration of
+     * default headers, withCredentials as well as request and response transformations.
+     */	
+	public var defaults(default,default):Dynamic;
+}
+
 //@:native("$injector")
-extern class Injector {
+extern class NgInjector {
 	/**
 	 * Return an instance of the service.
 	 *
@@ -358,6 +524,7 @@ extern class Injector {
 	 *                         object first, before the `$injector` is consulted.
 	 * @returns {*} the value returned by the invoked `fn` function.
 	 */	
+	@:overload(function(fn:Dynamic, ?self:Dynamic, ?locals:Dynamic):Dynamic{})
 	public function invoke(fn:Array<Dynamic>, ?self:Dynamic, ?locals:Dynamic):Dynamic;
 	/**
 	 * Allows the user to query if the particular service exist.

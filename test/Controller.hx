@@ -9,7 +9,7 @@ import ng.Angular;
  */
 
 typedef HomeScope = {
-	>Scope,
+	>NgScope,
 	home: {
 		name:String,
 		location:String
@@ -17,7 +17,7 @@ typedef HomeScope = {
 }
 
 typedef ScrollScope = {
-	>Scope,
+	>NgScope,
 	gotoBottom:Void->Void
 }
 
@@ -34,12 +34,12 @@ class Controller implements IController
 	}
 
 	@:inject("$scope", "$location", "$anchorScroll")
-	public static var scrollController:Dynamic = function(scope:ScrollScope, location:Location, anchorScroll:AnchorScroll) {
+	public static var scrollController:Dynamic = function(scope:ScrollScope, location:NgLocation, anchorScroll:NgAnchorScroll) {
         scope.gotoBottom = function (){
            // set the location.hash to the id of
            // the element you wish to scroll to.
-           location.hash('bottom');
-
+           location.hash('bottom'); 
+		   trace(location.protocol());
            // call $anchorScroll()
            anchorScroll();
          };
