@@ -9,3 +9,13 @@ package ng;
 interface IProvider
 {
 }
+
+@:autoBuild(ng.macro.InjectionBuilder.buildProviderType())
+class BaseProvider {
+    //public function new() {}
+
+    //@:inject("$location", "$anchorScroll")
+	// public function get():Int{
+	// 	return 200;
+	// }
+}

@@ -4,8 +4,18 @@ import js.Browser;
 import js.html.Document;
 import ng.Angular;
 import ng.IConfig;
-//import ng.Animate;
+import ng.IProvider;
 using ng.Angular.NgTimeoutHelper;
+
+
+class XX extends BaseProvider{
+	@:inject("$location", "$anchorScroll")
+	public function get():Int{
+		return 2000;
+	}
+	//public function new() untyped{this.$get = ["$location","$anchorScroll",get];}
+	public function new(){}
+}
 
 class App implements IConfig
 {
@@ -38,6 +48,9 @@ class App implements IConfig
 			var p = timeout(function() { trace("after 1 second:" + http.defaults.xsrfHeaderName); }, 1000, true);
 			//timeout.cancel(p);
 			} ]);
+		var xx = new XX();
+		var ret = untyped {xx["$get"];};
+		trace(ret[2]());
 	}
 	
 	@:inject("$httpProvider")

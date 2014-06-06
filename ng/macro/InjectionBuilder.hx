@@ -21,6 +21,9 @@ class InjectionBuilder
     private static var mainField:Field;
     private static var mainFn:Function;
 
+    private static var ctorField:Field;
+    private static var ctor:Function;
+
     private static var block:Array<Expr>;
 
     private static function getClsName() {
@@ -49,6 +52,46 @@ class InjectionBuilder
         switch(mainFn.expr.expr) {
             case EBlock(b): block = b;
             default: block = [mainFn.expr];
+        }
+    }
+
+    private static function getCtorAndBlock() {
+        for (f in allFields) {
+            switch(f.kind) {
+                case FFun(func) :
+                    if (!f.access.has(AStatic) && f.name == 'new') {
+                        ctor = func;
+                        ctorField = f;
+                    }
+                default:
+            }
+        }
+        if (ctor == null) throw new Error("No new function found", Context.currentPos());
+        switch(ctor.expr.expr) {
+            case EBlock(b): block = b;
+            default: block = [ctor.expr];
+        }
+    }
+
+    private static function addExpr2CtorBlock(){
+    	for (f in allFields) {
+            if (f.access.has(AStatic)) continue;
+            if (f.access.has(APrivate)) continue;
+            if (f.name == 'new') continue;
+            switch(f.kind) {
+                case FFun(_) :{
+                    var injects = f.meta.filter(metaExists(":inject"));
+                    var inject = null;
+					if (injects != null && injects.length > 0 && (inject = injects[0]) != null)
+					{
+						//var str =  "untyped this.$get = [" + metaToString(inject.params).join(",") + ","+currentClsName+"."+f.name+"]";
+						var str =  "untyped this.$get = [" + metaToString(inject.params).join(",") + ","+f.name+"]";
+						var ett = Context.parse(str,Context.currentPos());
+						block.push(macro {$ett;});
+					}
+                }
+                default:
+            }
         }
     }
 
@@ -129,6 +172,13 @@ class InjectionBuilder
         getMainFnBlock();
         addExpr2MainFnBlock(type);
         return allFields;
+    }
+
+    macro public static function buildProviderType():Array<haxe.macro.Field>{
+    	allFields = Context.getBuildFields();
+    	getCtorAndBlock();
+    	addExpr2CtorBlock();
+    	return allFields;
     }
 
 	macro public static function inject(module:Expr, name: Expr,fn:Expr):haxe.macro.Expr
