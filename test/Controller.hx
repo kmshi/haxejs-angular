@@ -8,17 +8,37 @@ using ng.Angular.ScopeCalls;
  * @author Richard Shi
  */
 
-typedef HomeScope = {
-	>NgScope,
-	home: {
-		name:String,
-		location:String
-		}
+//use class/type as controller model
+class Home{
+	public var name(default, default):String;
+	public var location(default, default):String;
+	public function new(scope:NgScope) {
+		name = "Blue sky";
+		location = "Guangzhou";
+		trace("use Model class as controller");
+		scope.on("bb", function(event, args) { trace(args); } );
+		scope.emit("bb", ["Hello event!", name, location]);
+		scope.setModel("home", this);
+	}
 }
 
-typedef ScrollScope = {
-	>NgScope,
-	gotoBottom:Void->Void
+class Scroll {
+	private var location:NgLocation;
+	private var anchorScroll:NgAnchorScroll;
+	public function gotoBottom():Void {
+		// set the location.hash to the id of
+        // the element you wish to scroll to.
+        location.hash('bottom'); 
+		trace(location.protocol());
+        // call $anchorScroll()
+        anchorScroll();
+	}
+	
+	public function new(scope:NgScope, location:NgLocation, anchorScroll:NgAnchorScroll) {
+		this.location = location;
+		this.anchorScroll = anchorScroll;
+		scope.setModel("scroll", this);
+	}
 }
 
 class Controller implements IController
@@ -28,25 +48,8 @@ class Controller implements IController
     }
 
 	@:inject("$scope")
-	public static var homeController:Dynamic = function(scope:HomeScope){
-		scope.home = { name:"Blue sky", location:"Guangzhou" };
-		scope.on("bb", function(event, args) { trace(args); } );
-		scope.emit("bb", ["Hello event!",scope.home]);
-		trace("homeController");
-	}
+	public static var homeController:Dynamic = Home;
 
 	@:inject("$scope", "$location", "$anchorScroll")
-	public static var scrollController:Dynamic = function(scope:ScrollScope, location:NgLocation, anchorScroll:NgAnchorScroll) {
-        scope.gotoBottom = function (){
-           // set the location.hash to the id of
-           // the element you wish to scroll to.
-           location.hash('bottom'); 
-		   trace(location.protocol());
-           // call $anchorScroll()
-           anchorScroll();
-         };
-        trace("scrollController");
-    }
-
-
+	public static var scrollController:Dynamic = Scroll;
 }

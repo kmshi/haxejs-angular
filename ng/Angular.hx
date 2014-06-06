@@ -344,6 +344,14 @@ extern class NgRootScopeProvider {
 typedef NgScope = {}
 
 class ScopeCalls {
+
+	public static function setModel(scope:NgScope, name:String, value:Dynamic):Void untyped {
+		scope[name] = value;
+	}
+	
+	public static function getModel(scope:NgScope, name:String):Dynamic untyped {
+		return scope[name];
+	}
 	/**
 	 * Creates a new child, $new(isolate)
 	 */
