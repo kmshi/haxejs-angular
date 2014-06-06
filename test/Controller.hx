@@ -2,7 +2,7 @@ package test;
 
 import ng.IController;
 import ng.Angular;
-
+using ng.Angular.ScopeCalls;
 /**
  * ...
  * @author Richard Shi
@@ -29,7 +29,9 @@ class Controller implements IController
 
 	@:inject("$scope")
 	public static var homeController:Dynamic = function(scope:HomeScope){
-		scope.home = { name:"Blue sky",location:"Guangzhou" };
+		scope.home = { name:"Blue sky", location:"Guangzhou" };
+		scope.on("bb", function(event, args) { trace(args); } );
+		scope.emit("bb", ["Hello event!",scope.home]);
 		trace("homeController");
 	}
 

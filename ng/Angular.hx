@@ -1,11 +1,7 @@
 package ng;
-
-
 /**
  * @author Richard Shi
- */
-
-
+ */ 
 import js.JQuery;
 
 @:initPackage
@@ -320,14 +316,277 @@ extern class NgAnchorScrollProvider {
 }
 
 //@:native("$rootScope")
-//typedef NgRootScope = Dynamic;//how to add functions to it?
-extern class NgRootScope{
-    public function digest():Void;
-    public function broadcast():Void;
+typedef NgRootScope = NgScope;
+
+//@:native("$rootScopeProvider")
+extern class NgRootScopeProvider {
+	/**
+	 * Sets the number of `$digest` iterations the scope should attempt to execute before giving up and
+	 * assuming that the model is unstable.
+	 *
+	 * The current default is 10 iterations.
+	 *
+	 * In complex applications it's possible that the dependencies between `$watch`s will result in
+	 * several digest iterations. However if an application needs more than the default 10 digest
+	 * iterations for its model to stabilize then you should investigate what is causing the model to
+	 * continuously change during the digest.
+	 *
+	 * Increasing the TTL could have performance implications, so you should not change it without
+	 * proper justification.
+	 *
+	 * @param {number} limit The number of digest iterations.
+	 */	
+	public function digestTtl(limit:Int):Void;
 }
 
+
 //@:native("$scope")
-typedef NgScope = NgRootScope;
+typedef NgScope = {}
+
+class ScopeCalls {
+	/**
+	 * Creates a new child, $new(isolate)
+	 */
+	public static function newScope(scope:NgScope,isolate:Bool):NgScope untyped{
+		//var fn = Reflect.field(scope, "$new");
+		//return Reflect.callMethod(scope, fn, [isolate]);
+		return scope["$new"](isolate);
+	}
+	/**
+	 * Registers a `listener` callback to be executed whenever the `watchExpression` changes
+	 * @param {(function()|string)} watchExpression Expression that is evaluated on each
+     *    {@link ng.$rootScope.Scope#$digest $digest} cycle. A change in the return value triggers
+     *    a call to the `listener`.
+     *
+     *    - `string`: Evaluated as {@link guide/expression expression}
+     *    - `function(scope)`: called with current `scope` as a parameter.
+     * @param {(function()|string)=} listener Callback called whenever the return value of
+     *   the `watchExpression` changes.
+     *    - `function(newValue, oldValue, scope)`: called with current and previous values as
+     *      parameters.
+     * @returns {function()} Returns a deregistration function for this listener.
+	 */
+	 public static function watch(scope:NgScope,watchExpression:Dynamic, listener:Dynamic):Dynamic untyped{
+		//var fn = Reflect.field(scope, "$watch");
+		//return Reflect.callMethod(scope, fn, [watchExpression,listener]);
+		return scope["$watch"](watchExpression,listener);
+	}
+	/**
+	 * Shallow watches the properties of an object and fires whenever any of the properties change
+     * (for arrays, this implies watching the array items; for object maps, this implies watching
+     * the properties). If a change is detected, the `listener` callback is fired.
+     * @param {string|function(scope)} obj Evaluated as {@link guide/expression expression}. The
+     *    expression value should evaluate to an object or an array which is observed on each
+     *    {@link ng.$rootScope.Scope#$digest $digest} cycle. Any shallow change within the
+     *    collection will trigger a call to the `listener`.
+     *
+     * @param {function(newCollection, oldCollection, scope)} listener a callback function called
+     *    when a change is detected.
+     *    - The `newCollection` object is the newly modified data obtained from the `obj` expression
+     *    - The `oldCollection` object is a copy of the former collection data.
+     *      Due to performance considerations, the`oldCollection` value is computed only if the
+     *      `listener` function declares two or more arguments.
+     *    - The `scope` argument refers to the current scope.
+     *
+     * @returns {function()} Returns a de-registration function for this listener. When the
+     *    de-registration function is executed, the internal watch operation is terminated.
+	 */
+	public static function watchCollection(scope:NgScope,obj:Dynamic, listener:Dynamic):Dynamic untyped{
+		//var fn = Reflect.field(scope, "$watchCollection");
+		//return Reflect.callMethod(scope, fn, [obj,listener]);
+		return scope["$watchCollection"](obj,listener);
+	}
+	/**
+	 * Processes all of the {@link ng.$rootScope.Scope#$watch watchers} of the current scope and
+     * its children. Because a {@link ng.$rootScope.Scope#$watch watcher}'s listener can change
+     * the model, the `$digest()` keeps calling the {@link ng.$rootScope.Scope#$watch watchers}
+     * until no more listeners are firing. This means that it is possible to get into an infinite
+     * loop. This function will throw `'Maximum iteration limit exceeded.'` if the number of
+     * iterations exceeds 10.
+     *
+     * Usually, you don't call `$digest()` directly in
+     * {@link ng.directive:ngController controllers} or in
+     * {@link ng.$compileProvider#directive directives}.
+     * Instead, you should call {@link ng.$rootScope.Scope#$apply $apply()} (typically from within
+     * a {@link ng.$compileProvider#directive directives}), which will force a `$digest()`.
+     *
+     * If you want to be notified whenever `$digest()` is called,
+     * you can register a `watchExpression` function with
+     * {@link ng.$rootScope.Scope#$watch $watch()} with no `listener`.
+     *
+     * In unit tests, you may need to call `$digest()` to simulate the scope life cycle.
+	 */
+	 public static function digest(scope:NgScope):Void untyped{
+		//var fn = Reflect.field(scope, "$digest");
+		//Reflect.callMethod(scope, fn, []);
+		scope["$digest"]();
+	}
+      /**
+       * Removes the current scope (and all of its children) from the parent scope. Removal implies
+       * that calls to {@link ng.$rootScope.Scope#$digest $digest()} will no longer
+       * propagate to the current scope and its children. Removal also implies that the current
+       * scope is eligible for garbage collection.
+       *
+       * The `$destroy()` is usually used by directives such as
+       * {@link ng.directive:ngRepeat ngRepeat} for managing the
+       * unrolling of the loop.
+       *
+       * Just before a scope is destroyed, a `$destroy` event is broadcasted on this scope.
+       * Application code can register a `$destroy` event handler that will give it a chance to
+       * perform any necessary cleanup.
+       *
+       * Note that, in AngularJS, there is also a `$destroy` jQuery event, which can be used to
+       * clean up DOM bindings before an element is removed from the DOM.
+       */
+	public static function destroy(scope:NgScope):Void untyped {
+		//var fn = Reflect.field(scope, "$destroy");
+		//Reflect.callMethod(scope, fn, []);
+		scope["$destroy"]();
+	}
+      /**
+       * Executes the `expression` on the current scope and returns the result. Any exceptions in
+       * the expression are propagated (uncaught). This is useful when evaluating Angular
+       * expressions.
+       * @param {(string|function())=} expression An angular expression to be executed.
+       *
+       *    - `string`: execute using the rules as defined in  {@link guide/expression expression}.
+       *    - `function(scope)`: execute the function with the current `scope` parameter.
+       *
+       * @param {(object)=} locals Local variables object, useful for overriding values in scope.
+       * @returns {*} The result of evaluating the expression.
+	   */
+	public static function eval(scope:NgScope,expr:Dynamic, ?locals:Dynamic):Dynamic untyped {
+		//var fn = Reflect.field(scope, "$eval");
+		//return Reflect.callMethod(scope, fn, [expr,locals]);
+		return scope["$eval"](expr,locals);
+	}
+      /**
+       * Executes the expression on the current scope at a later point in time.
+       *
+       * The `$evalAsync` makes no guarantees as to when the `expression` will be executed, only
+       * that:
+       *
+       *   - it will execute after the function that scheduled the evaluation (preferably before DOM
+       *     rendering).
+       *   - at least one {@link ng.$rootScope.Scope#$digest $digest cycle} will be performed after
+       *     `expression` execution.
+       *
+       * Any exceptions from the execution of the expression are forwarded to the
+       * {@link ng.$exceptionHandler $exceptionHandler} service.
+       *
+       * __Note:__ if this function is called outside of a `$digest` cycle, a new `$digest` cycle
+       * will be scheduled. However, it is encouraged to always call code that changes the model
+       * from within an `$apply` call. That includes code evaluated via `$evalAsync`.
+       *
+       * @param {(string|function())=} expr An angular expression to be executed.
+       *
+       *    - `string`: execute using the rules as defined in {@link guide/expression expression}.
+       *    - `function(scope)`: execute the function with the current `scope` parameter.
+       *
+       */	
+	public static function evalAsync(scope:NgScope,expr:Dynamic):Void untyped {
+		//var fn = Reflect.field(scope, "$evalAsync");
+		//Reflect.callMethod(scope, fn, [expr]);
+		scope["$evalAsync"](expr);
+	}
+      /**
+       * `$apply()` is used to execute an expression in angular from outside of the angular
+       * framework. (For example from browser DOM events, setTimeout, XHR or third party libraries).
+       * Because we are calling into the angular framework we need to perform proper scope life
+       * cycle of {@link ng.$exceptionHandler exception handling},
+       * {@link ng.$rootScope.Scope#$digest executing watches}.
+	   * 
+       * Scope's `$apply()` method transitions through the following stages:
+       *
+       * 1. The {@link guide/expression expression} is executed using the
+       *    {@link ng.$rootScope.Scope#$eval $eval()} method.
+       * 2. Any exceptions from the execution of the expression are forwarded to the
+       *    {@link ng.$exceptionHandler $exceptionHandler} service.
+       * 3. The {@link ng.$rootScope.Scope#$watch watch} listeners are fired immediately after the
+       *    expression was executed using the {@link ng.$rootScope.Scope#$digest $digest()} method.
+       *
+       * @param {(string|function())=} exp An angular expression to be executed.
+       *
+       *    - `string`: execute using the rules as defined in {@link guide/expression expression}.
+       *    - `function(scope)`: execute the function with current `scope` parameter.
+       *
+       * @returns {*} The result of evaluating the expression.
+       */
+	public static function apply(scope:NgScope,expr:Dynamic):Dynamic untyped {
+		//var fn = Reflect.field(scope, "$apply");
+		//return Reflect.callMethod(scope, fn, [expr]);
+		return scope["$apply"](expr);
+	}
+      /**
+       * Listens on events of a given type. See {@link ng.$rootScope.Scope#$emit $emit} for
+       * discussion of event life cycle.
+       *
+       * The event listener function format is: `function(event, args...)`. The `event` object
+       * passed into the listener has the following attributes:
+       *
+       *   - `targetScope` - `{Scope}`: the scope on which the event was `$emit`-ed or
+       *     `$broadcast`-ed.
+       *   - `currentScope` - `{Scope}`: the current scope which is handling the event.
+       *   - `name` - `{string}`: name of the event.
+       *   - `stopPropagation` - `{function=}`: calling `stopPropagation` function will cancel
+       *     further event propagation (available only for events that were `$emit`-ed).
+       *   - `preventDefault` - `{function}`: calling `preventDefault` sets `defaultPrevented` flag
+       *     to true.
+       *   - `defaultPrevented` - `{boolean}`: true if `preventDefault` was called.
+       *
+       * @param {string} name Event name to listen on.
+       * @param {function(event, ...args)} listener Function to call when the event is emitted.
+       * @returns {function()} Returns a deregistration function for this listener.
+       */
+	public static function on(scope:NgScope,name:String,listener:Dynamic):Dynamic untyped {
+		//var fn = Reflect.field(scope, "$on");
+		//return Reflect.callMethod(scope, fn, [name,listener]);
+		return scope["$on"](name,listener);
+	}
+      /**
+       * Dispatches an event `name` upwards through the scope hierarchy notifying the
+       * registered {@link ng.$rootScope.Scope#$on} listeners.
+       *
+       * The event life cycle starts at the scope on which `$emit` was called. All
+       * {@link ng.$rootScope.Scope#$on listeners} listening for `name` event on this scope get
+       * notified. Afterwards, the event traverses upwards toward the root scope and calls all
+       * registered listeners along the way. The event will stop propagating if one of the listeners
+       * cancels it.
+       *
+       * Any exception emitted from the {@link ng.$rootScope.Scope#$on listeners} will be passed
+       * onto the {@link ng.$exceptionHandler $exceptionHandler} service.
+       *
+       * @param {string} name Event name to emit.
+       * @param {...*} args Optional one or more arguments which will be passed onto the event listeners.
+       * @return {Object} Event object (see {@link ng.$rootScope.Scope#$on}).
+       */
+	public static function emit(scope:NgScope,name:String,?args:Array<Dynamic>):Dynamic untyped {
+		//var fn = Reflect.field(scope, "$emit");
+		//return Reflect.callMethod(scope, fn, [name,args];//args need cancat to the array!!!!
+		return scope["$emit"](name,args);
+	}
+      /**
+       * Dispatches an event `name` downwards to all child scopes (and their children) notifying the
+       * registered {@link ng.$rootScope.Scope#$on} listeners.
+       *
+       * The event life cycle starts at the scope on which `$broadcast` was called. All
+       * {@link ng.$rootScope.Scope#$on listeners} listening for `name` event on this scope get
+       * notified. Afterwards, the event propagates to all direct and indirect scopes of the current
+       * scope and calls all registered listeners along the way. The event cannot be canceled.
+       *
+       * Any exception emitted from the {@link ng.$rootScope.Scope#$on listeners} will be passed
+       * onto the {@link ng.$exceptionHandler $exceptionHandler} service.
+       *
+       * @param {string} name Event name to broadcast.
+       * @param {...*} args Optional one or more arguments which will be passed onto the event listeners.
+       * @return {Object} Event object, see {@link ng.$rootScope.Scope#$on}
+       */	
+	public static function broadcast(scope:NgScope,name:String,?args:Array<Dynamic>):Dynamic untyped {
+		//var fn = Reflect.field(scope, "$broadcast");
+		//return Reflect.callMethod(scope, fn, [name,args];//args need cancat to the array!!!!
+		return scope["$broadcast"](name,args);
+	}	
+}
 
 //@:native("$brower")
 extern class NgBrowser{
