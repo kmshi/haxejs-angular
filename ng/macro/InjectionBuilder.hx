@@ -53,7 +53,7 @@ class InjectionBuilder
     }
 
     private static function addExpr2MainFnBlock(type:String) {
-        block.push(macro {
+        block.unshift(macro {
 	        try {
 	    		Angular.module('$currentPackName');
 	  		} catch (e:Dynamic) {
@@ -62,7 +62,7 @@ class InjectionBuilder
 	    		Angular.module('$currentPackName',deps);
 	  		}
         });//use package as module name
-    	//block.push(macro {Angular.module('$currentClsName',[]);});
+    	//block.unshift(macro {Angular.module('$currentClsName',[]);});
         for (f in allFields) {
             if (!f.access.has(AStatic)) continue;
             if (f.access.has(APrivate)) continue;
