@@ -5,6 +5,7 @@ import js.html.Document;
 import ng.Angular;
 import ng.IConfig;
 //import ng.Animate;
+using ng.Angular.NgTimeoutHelper;
 
 class App implements IConfig
 {
@@ -33,5 +34,14 @@ class App implements IConfig
 		inj.invoke(["locServ", function(locServ:test.Service.LocServ) { trace(locServ.getA()); } ]);
 		inj.invoke(["$http", function(http:NgHttp) { trace(http.defaults.xsrfHeaderName); } ]);
 		trace(Angular.element(Browser.window.document.body.firstElementChild).html());
+		inj.invoke(["$timeout", "$http", function(timeout:NgTimeout, http:NgHttp) {
+			var p = timeout(function() { trace("after 1 second:" + http.defaults.xsrfHeaderName); }, 1000, true);
+			//timeout.cancel(p);
+			} ]);
+	}
+	
+	@:inject("$httpProvider")
+	public static var runConfig:Dynamic = function(httpProvider:NgHttpProvider) {
+		httpProvider.defaults.xsrfHeaderName = "haha";
 	}
 }

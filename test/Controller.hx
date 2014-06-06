@@ -2,7 +2,7 @@ package test;
 
 import ng.IController;
 import ng.Angular;
-using ng.Angular.ScopeCalls;
+
 /**
  * ...
  * @author Richard Shi
@@ -19,6 +19,7 @@ class Home{
 		scope.on("bb", function(event, args) { trace(args); } );
 		scope.emit("bb", ["Hello event!", name, location]);
 		scope.setModel("home", this);
+		scope["arrayaccess"] = 1;
 	}
 }
 

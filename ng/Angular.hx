@@ -371,24 +371,28 @@ extern class NgRootScopeProvider {
 
 
 //@:native("$scope")
-typedef NgScope = {}
-
-class ScopeCalls {
-
-	public static function setModel(scope:NgScope, name:String, value:Dynamic):Void untyped {
-		scope[name] = value;
+abstract NgScope({}) from {} {
+    @:arrayAccess public inline function arrayAccess(key:String):Dynamic {
+        return Reflect.field(this, key);
+    }
+    
+    @:arrayAccess public inline function arrayWrite<T>(key:String, value:T):Void {
+        Reflect.setField(this, key, value);
+    }
+	
+	public inline function setModel(name:String, value:Dynamic):Void untyped {
+		this[name] = value;
 	}
 	
-	public static function getModel(scope:NgScope, name:String):Dynamic untyped {
-		return scope[name];
+	public inline function getModel(name:String):Dynamic untyped {
+		return this[name];
 	}
+	
 	/**
 	 * Creates a new child, $new(isolate)
 	 */
-	public static function newScope(scope:NgScope,isolate:Bool):NgScope untyped{
-		//var fn = Reflect.field(scope, "$new");
-		//return Reflect.callMethod(scope, fn, [isolate]);
-		return scope["$new"](isolate);
+	public inline function newScope(isolate:Bool):NgScope untyped{
+		return this["$new"](isolate);
 	}
 	/**
 	 * Registers a `listener` callback to be executed whenever the `watchExpression` changes
@@ -404,10 +408,8 @@ class ScopeCalls {
      *      parameters.
      * @returns {function()} Returns a deregistration function for this listener.
 	 */
-	 public static function watch(scope:NgScope,watchExpression:Dynamic, listener:Dynamic):Dynamic untyped{
-		//var fn = Reflect.field(scope, "$watch");
-		//return Reflect.callMethod(scope, fn, [watchExpression,listener]);
-		return scope["$watch"](watchExpression,listener);
+	 public inline function watch(watchExpression:Dynamic, listener:Dynamic):Dynamic untyped{
+		return this["$watch"](watchExpression,listener);
 	}
 	/**
 	 * Shallow watches the properties of an object and fires whenever any of the properties change
@@ -429,10 +431,8 @@ class ScopeCalls {
      * @returns {function()} Returns a de-registration function for this listener. When the
      *    de-registration function is executed, the internal watch operation is terminated.
 	 */
-	public static function watchCollection(scope:NgScope,obj:Dynamic, listener:Dynamic):Dynamic untyped{
-		//var fn = Reflect.field(scope, "$watchCollection");
-		//return Reflect.callMethod(scope, fn, [obj,listener]);
-		return scope["$watchCollection"](obj,listener);
+	public inline function watchCollection(obj:Dynamic, listener:Dynamic):Dynamic untyped{
+		return this["$watchCollection"](obj,listener);
 	}
 	/**
 	 * Processes all of the {@link ng.$rootScope.Scope#$watch watchers} of the current scope and
@@ -454,10 +454,8 @@ class ScopeCalls {
      *
      * In unit tests, you may need to call `$digest()` to simulate the scope life cycle.
 	 */
-	 public static function digest(scope:NgScope):Void untyped{
-		//var fn = Reflect.field(scope, "$digest");
-		//Reflect.callMethod(scope, fn, []);
-		scope["$digest"]();
+	 public inline function digest():Void untyped{
+		this["$digest"]();
 	}
       /**
        * Removes the current scope (and all of its children) from the parent scope. Removal implies
@@ -476,10 +474,8 @@ class ScopeCalls {
        * Note that, in AngularJS, there is also a `$destroy` jQuery event, which can be used to
        * clean up DOM bindings before an element is removed from the DOM.
        */
-	public static function destroy(scope:NgScope):Void untyped {
-		//var fn = Reflect.field(scope, "$destroy");
-		//Reflect.callMethod(scope, fn, []);
-		scope["$destroy"]();
+	public inline function destroy():Void untyped {
+		this["$destroy"]();
 	}
       /**
        * Executes the `expression` on the current scope and returns the result. Any exceptions in
@@ -493,10 +489,8 @@ class ScopeCalls {
        * @param {(object)=} locals Local variables object, useful for overriding values in scope.
        * @returns {*} The result of evaluating the expression.
 	   */
-	public static function eval(scope:NgScope,expr:Dynamic, ?locals:Dynamic):Dynamic untyped {
-		//var fn = Reflect.field(scope, "$eval");
-		//return Reflect.callMethod(scope, fn, [expr,locals]);
-		return scope["$eval"](expr,locals);
+	public inline function eval(expr:Dynamic, ?locals:Dynamic):Dynamic untyped {
+		return this["$eval"](expr,locals);
 	}
       /**
        * Executes the expression on the current scope at a later point in time.
@@ -522,10 +516,8 @@ class ScopeCalls {
        *    - `function(scope)`: execute the function with the current `scope` parameter.
        *
        */	
-	public static function evalAsync(scope:NgScope,expr:Dynamic):Void untyped {
-		//var fn = Reflect.field(scope, "$evalAsync");
-		//Reflect.callMethod(scope, fn, [expr]);
-		scope["$evalAsync"](expr);
+	public inline function evalAsync(expr:Dynamic):Void untyped {
+		this["$evalAsync"](expr);
 	}
       /**
        * `$apply()` is used to execute an expression in angular from outside of the angular
@@ -550,10 +542,8 @@ class ScopeCalls {
        *
        * @returns {*} The result of evaluating the expression.
        */
-	public static function apply(scope:NgScope,expr:Dynamic):Dynamic untyped {
-		//var fn = Reflect.field(scope, "$apply");
-		//return Reflect.callMethod(scope, fn, [expr]);
-		return scope["$apply"](expr);
+	public inline function apply(expr:Dynamic):Dynamic untyped {
+		return this["$apply"](expr);
 	}
       /**
        * Listens on events of a given type. See {@link ng.$rootScope.Scope#$emit $emit} for
@@ -576,10 +566,8 @@ class ScopeCalls {
        * @param {function(event, ...args)} listener Function to call when the event is emitted.
        * @returns {function()} Returns a deregistration function for this listener.
        */
-	public static function on(scope:NgScope,name:String,listener:Dynamic):Dynamic untyped {
-		//var fn = Reflect.field(scope, "$on");
-		//return Reflect.callMethod(scope, fn, [name,listener]);
-		return scope["$on"](name,listener);
+	public inline function on(name:String,listener:Dynamic):Dynamic untyped {
+		return this["$on"](name,listener);
 	}
       /**
        * Dispatches an event `name` upwards through the scope hierarchy notifying the
@@ -598,10 +586,8 @@ class ScopeCalls {
        * @param {...*} args Optional one or more arguments which will be passed onto the event listeners.
        * @return {Object} Event object (see {@link ng.$rootScope.Scope#$on}).
        */
-	public static function emit(scope:NgScope,name:String,?args:Array<Dynamic>):Dynamic untyped {
-		//var fn = Reflect.field(scope, "$emit");
-		//return Reflect.callMethod(scope, fn, [name,args];//args need cancat to the array!!!!
-		return scope["$emit"](name,args);
+	public inline function emit(name:String,?args:Array<Dynamic>):Dynamic untyped {
+		return this["$emit"](name,args);
 	}
       /**
        * Dispatches an event `name` downwards to all child scopes (and their children) notifying the
@@ -619,10 +605,8 @@ class ScopeCalls {
        * @param {...*} args Optional one or more arguments which will be passed onto the event listeners.
        * @return {Object} Event object, see {@link ng.$rootScope.Scope#$on}
        */	
-	public static function broadcast(scope:NgScope,name:String,?args:Array<Dynamic>):Dynamic untyped {
-		//var fn = Reflect.field(scope, "$broadcast");
-		//return Reflect.callMethod(scope, fn, [name,args];//args need cancat to the array!!!!
-		return scope["$broadcast"](name,args);
+	public inline function broadcast(name:String,?args:Array<Dynamic>):Dynamic untyped {
+		return this["$broadcast"](name,args);
 	}	
 }
 
@@ -943,9 +927,18 @@ extern class NgTemplateCache {
 }
 
 //@:native("$timeout")
-extern class NgTimeout {
-	
+typedef NgTimeout = Dynamic->Int->Bool->NgPromise;
+//static extension for NgTimeout
+class NgTimeoutHelper {   
+    public static function cancel(timeout:NgTimeout,promise:NgPromise):Bool untyped{
+        return timeout.cancel(promise);
+    }
 }
+/*abstract NgTimeout(Dynamic->Int->Bool->NgPromise) from Dynamic->Int->Bool->NgPromise {
+	 public inline function cancel(promise:NgPromise):Bool untyped{
+        return this.cancel(promise);
+    }
+}*/
 
 //@:native("$window")
 extern class NgWindow {
