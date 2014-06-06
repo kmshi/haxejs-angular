@@ -69,7 +69,8 @@ extern class Angular
 	 * @param {string|DOMElement} element HTML string or DOMElement to be wrapped into jQuery.
 	 * @returns {Object} jQuery object.
 	 */
-    public static function element(element:js.html.Element):JQuery;//JQLite to be better
+	@:overload(function( element : String ) : NgJQuery {})
+    public static function element(element:js.html.Element):NgJQuery;
 	
 	public static function equals(o1:Dynamic, o2:Dynamic):Bool;
 	/**
@@ -215,6 +216,35 @@ typedef Version = {
   minor: Int,
   dot: Int,
   codeName: String	
+}
+
+extern class NgJQuery extends JQuery {
+	/**
+	 * retrieves the controller of the current element or its parent. By default
+	 * retrieves controller associated with the `ngController` directive. If `name` is provided as
+	 * camelCase directive name, then the controller for this directive will be retrieved (e.g.`'ngModel'`).
+	 */
+	public function controller(?name:String):NgController;
+	/**
+	 * retrieves the injector of the current element or its parent.
+	 */
+	public function injector():NgInjector;
+	/**
+	 * retrieves the {@link ng.$rootScope.Scope scope} of the current element or its parent.
+	 */
+	public function scope():NgScope;
+	/**
+	 * retrieves an isolate {@link ng.$rootScope.Scope scope} if one is attached directly to the current element. 
+	 * This getter should be used only on elements that contain a directive which starts a new isolate scope. 
+	 * Calling `scope()` on this element always returns the original non-isolate scope.
+	 */
+	public function isolateScope():NgScope;
+	/**
+	 * same as `data()`, but walks up the DOM until a value is found or the top parent element is reached.
+	 */
+	@:overload(function() : Dynamic {})
+	@:overload(function( key : String ) : Dynamic {})
+	public function inheritedData(key : String, value : Dynamic):NgJQuery;
 }
 
 extern class Module
@@ -769,7 +799,12 @@ extern class NgHttp{
      * Runtime equivalent of the `$httpProvider.defaults` property. Allows configuration of
      * default headers, withCredentials as well as request and response transformations.
      */	
-	public var defaults(default,default):Dynamic;
+	public var defaults(default,null):HttpDefaults;
+}
+
+//@:native("$httpProvider")
+extern class NgHttpProvider {
+	public var defaults(default,null):HttpDefaults;
 }
 
 //@:native("$injector")
@@ -822,4 +857,102 @@ extern class NgInjector {
 	 * @returns {Array.<string>} The names of the services which the function requires.
 	 */ 
 	public function annotate(fn:Dynamic):Array<String>;
+}
+
+typedef HttpDefaults = {
+	transformResponse:Array<Dynamic>,// transform incoming response data
+	transformRequest:Array<Dynamic>, // transform outgoing request data
+	headers: {
+		common:Dynamic,
+		post:Dynamic,
+		put:Dynamic,
+		patch:Dynamic
+	},
+	xsrfCookieName:String,
+	xsrfHeaderName:String
+}
+
+//@:native("$compile")
+extern class NgCompile {
+	
+}
+
+//@:native("$animate")
+extern class NgAnimate {
+	
+}
+
+//@:native("$cacheFactory")
+extern class NgCacheFactory {
+	
+}
+
+//@:native("$document")
+extern class NgDocument {
+	
+}
+
+//@:native("$exceptionHandler")
+extern class NgExceptionHandler {
+	
+}
+
+//@:native("$interpolate")
+extern class NgInterpolate {
+	
+}
+
+//@:native("$interval")
+extern class NgInterval {
+	
+}
+
+//@:native("$httpBackend")
+extern class NgHttpBackend {
+	
+}
+
+//@:native("$log")
+extern class NgLog {
+	
+}
+
+//@:native("$parse")
+extern class NgParse {
+	
+}
+
+//@:native("$sce")
+extern class NgSce {
+	
+}
+
+//@:native("$sceDelegate")
+extern class NgSceDelegate {
+	
+}
+
+//@:native("$sniffer")
+extern class NgSniffer {
+	
+}
+
+//@:native("$templateCache")
+extern class NgTemplateCache {
+	
+}
+
+//@:native("$timeout")
+extern class NgTimeout {
+	
+}
+
+//@:native("$window")
+extern class NgWindow {
+	
+}
+
+//@:native("$controller")
+extern class NgController {
+	
 }

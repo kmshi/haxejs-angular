@@ -1,5 +1,7 @@
 package test;
 
+import js.Browser;
+import js.html.Document;
 import ng.Angular;
 import ng.IConfig;
 //import ng.Animate;
@@ -28,6 +30,8 @@ class App implements IConfig
 		var inj = Angular.injector( ["ng", "test"] );
 		trace(inj.get("locServ").getA());
 		inj.invoke(["locServ",function(locServ:test.Service.LocServ){trace(locServ.getA());}]);
-		inj.invoke(["locServ",function(locServ:test.Service.LocServ){trace(locServ.getA());}]);
+		inj.invoke(["locServ", function(locServ:test.Service.LocServ) { trace(locServ.getA()); } ]);
+		inj.invoke(["$http", function(http:NgHttp) { trace(http.defaults.xsrfHeaderName); } ]);
+		trace(Angular.element(Browser.window.document.body.firstElementChild).html());
 	}
 }
