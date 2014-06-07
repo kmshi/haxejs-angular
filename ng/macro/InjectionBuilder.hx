@@ -66,14 +66,34 @@ class InjectionBuilder
                 default:
             }
         }
-        if (ctor == null) throw new Error("No new function found", Context.currentPos());
-        switch(ctor.expr.expr) {
-            case EBlock(b): block = b;
-            default: block = [ctor.expr];
+        //if (ctor == null) throw new Error("No new function found", Context.currentPos());
+        if (ctor == null) {
+        	block = new Array<Expr>();
+        	ctor = {
+                args: [],
+                ret: null,
+                expr: macro $a{block},
+                params: []
+            };
+            ctorField = {
+	            name: "new",
+	            doc: null,
+	            access: [APublic],
+	            kind: FFun(ctor),
+	            pos: Context.currentPos(),
+	            meta : null
+	        };
+	        allFields.push(ctorField);
+        }else{
+        	switch(ctor.expr.expr) {
+	            case EBlock(b): block = b;
+	            default: block = [ctor.expr];
+	        }
         }
     }
 
     private static function addExpr2CtorBlock(){
+    	var hasMeta:Bool = false;
     	for (f in allFields) {
             if (f.access.has(AStatic)) continue;
             if (f.access.has(APrivate)) continue;
@@ -88,11 +108,15 @@ class InjectionBuilder
 						var str =  "untyped this.$get = [" + metaToString(inject.params).join(",") + ","+f.name+"]";
 						var ett = Context.parse(str,Context.currentPos());
 						block.push(macro {$ett;});
+						hasMeta = true;
 					}
                 }
                 default:
             }
         }
+        if(!hasMeta){
+			trace(currentClsName+":Please add public member function with @:inject('$xx','$yy') alike to macro setup this.$get");
+		}
     }
 
     private static function addExpr2MainFnBlock(type:String) {
@@ -106,6 +130,7 @@ class InjectionBuilder
 	  		}
         });//use package as module name
     	//block.unshift(macro {Angular.module('$currentClsName',[]);});
+    	var hasMeta:Bool = false;
         for (f in allFields) {
             if (!f.access.has(AStatic)) continue;
             if (f.access.has(APrivate)) continue;
@@ -122,10 +147,14 @@ class InjectionBuilder
 						var ett = register(f.name,f.name,type);
 						//trace(ett);
 						if (ett!=null) block.push(macro {$ett;});
+						hasMeta = true;
 					}
                 }
                 default:
             }
+        }
+        if(!hasMeta){
+			trace(currentClsName + ":Please add public static variable with @:inject('$xx','$yy') alike to macro setup $inject");
         }
 
     }
@@ -176,6 +205,7 @@ class InjectionBuilder
 
     macro public static function buildProviderType():Array<haxe.macro.Field>{
     	allFields = Context.getBuildFields();
+    	getClsName();
     	getCtorAndBlock();
     	addExpr2CtorBlock();
     	return allFields;
