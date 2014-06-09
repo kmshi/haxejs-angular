@@ -1,7 +1,7 @@
 package test;
 
 import ng.Angular;
-import ng.IService;
+import ng.IServices;
 
 class LocServ{
 	public var a:Int = 10;
@@ -12,7 +12,7 @@ class LocServ{
 	}
 }
 
-class Service implements IService{
+class Service implements IServices{
 	@:inject("$http","$q")
 	public static var locServ:Dynamic = LocServ;
 

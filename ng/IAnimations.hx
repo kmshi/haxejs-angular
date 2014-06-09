@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("animation"))
-interface IAnimation
+interface IAnimations
 {
 }

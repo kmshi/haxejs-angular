@@ -3,8 +3,8 @@ package test;
 import js.Browser;
 import js.html.Document;
 import ng.Angular;
-import ng.IConfig;
-import ng.IProvider;
+import ng.IConfigs;
+import ng.IProviders;
 using ng.Angular.NgTimeoutHelper;
 
 
@@ -13,11 +13,12 @@ class XX extends BaseProvider{
 	public function get():Int{
 		return 2000;
 	}
+
 	//public function new() untyped{this.$get = ["$location","$anchorScroll",get];}
-	public function new(){}
+	public function new(){trace("hello XX");}
 }
 
-class App implements IConfig
+class App implements IConfigs
 {
 	public static function main(){
 		test.Controller.main();
@@ -25,7 +26,7 @@ class App implements IConfig
 		var a = {weight:3 };
 		var b = {"weight":4 };
 		trace(Angular.fromJson(Angular.toJson(b)));
-		var argNames = Angular.injector(["ng"]).annotate(test.Controller.scrollController);
+		var argNames = Angular.injector(["ng"]).annotate(test.Controller.scrollCtrl);
 		trace(argNames);
 		trace(Angular.injector(["ng", "test"]).has("loginController"));	
 		var d = new Date(2014,6,3,3,52,50);

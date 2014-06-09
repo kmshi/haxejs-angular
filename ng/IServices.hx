@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("service"))
-interface IService
+interface IServices
 {
 }

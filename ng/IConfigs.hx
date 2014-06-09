@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("config"))
-interface IConfig
+interface IConfigs
 {
 }

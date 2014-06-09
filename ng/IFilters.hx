@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("filter"))
-interface IFilter
+interface IFilters
 {
 }

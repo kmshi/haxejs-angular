@@ -1,6 +1,6 @@
 package test;
 
-import ng.IController;
+import ng.IControllers;
 import ng.Angular;
 
 /**
@@ -9,27 +9,28 @@ import ng.Angular;
  */
 
 //use class/type as controller model
-class Home{
+class HomeCtrl extends BaseCtrl{
 	public var name(default, default):String;
 	public var location(default, default):String;
 	public function new(scope:NgScope) {
+		super(scope);
 		name = "Blue sky";
 		location = "Guangzhou";
 		trace("use Model class as controller");
 		scope.on("bb", function(event, args) { trace(args); } );
 		scope.emit("bb", ["Hello event!", name, location]);
-		scope.setModel("home", this);
 		scope["arrayaccess"] = 1;
 	}
 }
 
-class Scroll {
+class ScrollCtrl  extends BaseCtrl{
 	private var location:NgLocation;
 	private var anchorScroll:NgAnchorScroll;
+	private var target:String;
 	public function gotoBottom():Void {
 		// set the location.hash to the id of
         // the element you wish to scroll to.
-        location.hash('bottom'); 
+        location.hash(target); 
 		trace(location.protocol());
         // call $anchorScroll()
         anchorScroll();
@@ -38,19 +39,34 @@ class Scroll {
 	public function new(scope:NgScope, location:NgLocation, anchorScroll:NgAnchorScroll) {
 		this.location = location;
 		this.anchorScroll = anchorScroll;
-		scope.setModel("scroll", this);
+		this.target = 'bottom';
+		super(scope);
 	}
 }
 
-class Controller implements IController
+class ClockCtrl  extends BaseCtrl{
+	public var clock:Date = Date.now();
+	public function updateClock(){
+		clock = Date.now();
+	}
+	public function new(scope:NgScope,interval:NgInterval){
+		interval(this.updateClock,1000,0,false);
+		super(scope);
+	}
+}
+
+class Controller implements IControllers
 {
     public static function main(){
     	trace("--main--");
     }
 
 	@:inject("$scope")
-	public static var homeController:Dynamic = Home;
+	public static var homeCtrl:Dynamic = HomeCtrl;
 
 	@:inject("$scope", "$location", "$anchorScroll")
-	public static var scrollController:Dynamic = Scroll;
+	public static var scrollCtrl:Dynamic = ScrollCtrl;
+
+	@:inject("$scope","$interval")
+	public static var clockCtrl:Dynamic = ClockCtrl;
 }

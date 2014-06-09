@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("factory"))
-interface IFactory
+interface IFactories
 {
 }

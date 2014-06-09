@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("value"))
-interface IValue
+interface IValues
 {
 }

@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("constant"))
-interface IConstant
+interface IConstants
 {
 }

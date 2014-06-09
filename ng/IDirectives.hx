@@ -6,6 +6,6 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("directive"))
-interface IDirective
+interface IDirectives
 {
 }

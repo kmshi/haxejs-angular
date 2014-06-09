@@ -380,11 +380,11 @@ abstract NgScope({}) from {} {
         Reflect.setField(this, key, value);
     }
 	
-	public inline function setModel(name:String, value:Dynamic):Void untyped {
+	public inline function setViewModel(name:String, value:Dynamic):Void untyped {
 		this[name] = value;
 	}
 	
-	public inline function getModel(name:String):Dynamic untyped {
+	public inline function getViewModel(name:String):Dynamic untyped {
 		return this[name];
 	}
 	
@@ -887,8 +887,12 @@ extern class NgInterpolate {
 }
 
 //@:native("$interval")
-extern class NgInterval {
-	
+typedef NgInterval = Dynamic->Int->Int->Bool->NgPromise;
+//static extension for NgInterval
+class NgIntervalHelper {   
+    public static function cancel(interval:NgInterval,promise:NgPromise):Bool untyped{
+        return interval.cancel(promise);
+    }
 }
 
 //@:native("$httpBackend")

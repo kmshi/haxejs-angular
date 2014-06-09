@@ -6,7 +6,7 @@ package ng;
  */
 
 @:autoBuild(ng.macro.InjectionBuilder.build("provider"))
-interface IProvider
+interface IProviders
 {
 }
 
