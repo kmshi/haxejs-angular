@@ -338,7 +338,12 @@ extern class Module
 /**
  * A function service, when called, it checks current value of `$location.hash()` and scroll to related element
  */
-typedef NgAnchorScroll = Void->Void;
+//typedef NgAnchorScroll = Void->Void;
+abstract NgAnchorScroll({}) from {} {
+    public inline function run():Void untyped{
+        this();
+    }
+}
 
 //@:native("$anchorScrollProvider")
 extern class NgAnchorScrollProvider {
@@ -391,7 +396,7 @@ abstract NgScope({}) from {} {
 	/**
 	 * Creates a new child, $new(isolate)
 	 */
-	public inline function newScope(isolate:Bool):NgScope untyped{
+	public inline function newScope(isolate:Bool=false):NgScope untyped{
 		return this["$new"](isolate);
 	}
 	/**
@@ -857,8 +862,13 @@ typedef HttpDefaults = {
 }
 
 //@:native("$compile")
-extern class NgCompile {
-	
+abstract NgCompile({}) from {} {
+    public inline function runJ(element:NgJQuery):NgScope->Array<js.html.Element> untyped{
+        return this(element);
+    }
+    public inline function run(element:String):NgScope->Array<js.html.Element> untyped{
+        return this(element);
+    }
 }
 
 //@:native("$animate")
@@ -887,11 +897,22 @@ extern class NgInterpolate {
 }
 
 //@:native("$interval")
-typedef NgInterval = Dynamic->Int->Int->Bool->NgPromise;
-//static extension for NgInterval
-class NgIntervalHelper {   
-    public static function cancel(interval:NgInterval,promise:NgPromise):Bool untyped{
-        return interval.cancel(promise);
+//typedef NgInterval = Dynamic->Int->Int->Bool->NgPromise;
+abstract NgInterval({}) from {} {
+    public inline function run(fn:Dynamic, delay:Int, count:Int=0, invokeApply:Bool=true):NgPromise untyped{
+      return this(fn,delay,count,invokeApply);
+    }
+
+    public inline function cancel(promise:NgPromise):Bool untyped{
+        return this.cancel(promise);
+    }
+
+    /**
+    * In tests you can use flush(millis) to move forward by `millis` milliseconds and trigger any functions 
+    * scheduled to run in that time.
+    */
+    public inline function flush(millis:Int):Void untyped{
+        this.flush(millis);
     }
 }
 
@@ -931,18 +952,15 @@ extern class NgTemplateCache {
 }
 
 //@:native("$timeout")
-typedef NgTimeout = Dynamic->Int->Bool->NgPromise;
-//static extension for NgTimeout
-class NgTimeoutHelper {   
-    public static function cancel(timeout:NgTimeout,promise:NgPromise):Bool untyped{
-        return timeout.cancel(promise);
+//typedef NgTimeout = Dynamic->Int->Bool->NgPromise;
+abstract NgTimeout({}) from {} {
+    public inline function run(fn:Dynamic, delay:Int,invokeApply:Bool=true):NgPromise untyped{
+        return this(fn,delay,invokeApply);
     }
-}
-/*abstract NgTimeout(Dynamic->Int->Bool->NgPromise) from Dynamic->Int->Bool->NgPromise {
-	 public inline function cancel(promise:NgPromise):Bool untyped{
+    public inline function cancel(promise:NgPromise):Bool untyped{
         return this.cancel(promise);
     }
-}*/
+}
 
 //@:native("$window")
 extern class NgWindow {

@@ -5,7 +5,7 @@ import js.html.Document;
 import ng.Angular;
 import ng.IConfigs;
 import ng.IProviders;
-using ng.Angular.NgTimeoutHelper;
+import js.JQuery;
 
 
 class XX extends BaseProvider{
@@ -46,9 +46,16 @@ class App implements IConfigs
 		inj.invoke(["$http", function(http:NgHttp) { trace(http.defaults.xsrfHeaderName); } ]);
 		trace(Angular.element(Browser.window.document.body.firstElementChild).html());
 		inj.invoke(["$timeout", "$http", function(timeout:NgTimeout, http:NgHttp) {
-			var p = timeout(function() { trace("after 1 second:" + http.defaults.xsrfHeaderName); }, 1000, true);
+			var p = timeout.run(function() { trace("after 1 second:" + http.defaults.xsrfHeaderName); }, 1000, true);
 			//timeout.cancel(p);
 			} ]);
+		inj.invoke(["$compile","$rootScope",function(compile:NgCompile,rootScope:NgRootScope){
+			var scope = rootScope.newScope();
+			scope["name"] = "kill game";
+			var elem = Angular.element("<div>hi {{name}}</div>");
+			trace(compile.runJ(elem)(scope));
+			//trace(compile.run("<div>hi {{name}}</div>")(scope)[0]);
+			}]);
 		var xx = new XX();
 		var ret = untyped {xx["$get"];};
 		trace(ret[2]());

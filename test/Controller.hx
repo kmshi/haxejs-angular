@@ -33,7 +33,7 @@ class ScrollCtrl  extends BaseCtrl{
         location.hash(target); 
 		trace(location.protocol());
         // call $anchorScroll()
-        anchorScroll();
+        anchorScroll.run();
 	}
 	
 	public function new(scope:NgScope, location:NgLocation, anchorScroll:NgAnchorScroll) {
@@ -50,7 +50,7 @@ class ClockCtrl  extends BaseCtrl{
 		clock = Date.now();
 	}
 	public function new(scope:NgScope,interval:NgInterval){
-		interval(this.updateClock,1000,0,false);
+		interval.run(this.updateClock,1000,0,false);
 		super(scope);
 	}
 }
