@@ -46,12 +46,19 @@ class ScrollCtrl  extends BaseCtrl{
 
 class ClockCtrl  extends BaseCtrl{
 	public var clock:Date = Date.now();
+	private var handle:NgPromise;
+	private var interval:NgInterval;
 	public function updateClock(){
 		clock = Date.now();
 	}
-	public function new(scope:NgScope,interval:NgInterval){
-		interval.run(this.updateClock,1000,0,false);
+	public function new(scope:NgScope,interval:NgInterval,exceptionHandler:NgExceptionHandler){
+		handle = interval.run(this.updateClock, 1000, 0, false);
+		this.interval = interval;
+		exceptionHandler.run(new js.Error("SA"), "HCC");
 		super(scope);
+	}
+	public function stopClock() {
+		interval.cancel(handle);
 	}
 }
 
@@ -67,6 +74,6 @@ class Controller implements IControllers
 	@:inject("$scope", "$location", "$anchorScroll")
 	public static var scrollCtrl:Dynamic = ScrollCtrl;
 
-	@:inject("$scope","$interval")
+	@:inject("$scope","$interval","$exceptionHandler")
 	public static var clockCtrl:Dynamic = ClockCtrl;
 }

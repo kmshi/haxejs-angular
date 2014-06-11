@@ -20,6 +20,7 @@
 </div>
 <div ng-controller="clockCtrl">
   Hi {{clockCtrl.clock}}
+  <p><a ng-click="clockCtrl.stopClock()">stop clock</a></p>
 </div>
 <div id="scrollArea" ng-controller="scrollCtrl">
     <a ng-click="scrollCtrl.gotoBottom()">Go to bottom</a>

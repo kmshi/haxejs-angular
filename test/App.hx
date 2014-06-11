@@ -49,12 +49,15 @@ class App implements IConfigs
 			var p = timeout.run(function() { trace("after 1 second:" + http.defaults.xsrfHeaderName); }, 1000, true);
 			//timeout.cancel(p);
 			} ]);
-		inj.invoke(["$compile","$rootScope",function(compile:NgCompile,rootScope:NgRootScope){
+		inj.invoke(["$compile","$rootScope","$interpolate",function(compile:NgCompile,rootScope:NgRootScope,interpolate:NgInterpolate){
 			var scope = rootScope.newScope();
 			scope["name"] = "kill game";
 			var elem = Angular.element("<div>hi {{name}}</div>");
 			trace(compile.runJ(elem)(scope));
 			//trace(compile.run("<div>hi {{name}}</div>")(scope)[0]);
+			trace(interpolate.endSymbol());
+			var exp = interpolate.run('Hello {{name | uppercase}}!');
+			trace(exp( { name:'Angular'} ));
 			}]);
 		var xx = new XX();
 		var ret = untyped {xx["$get"];};

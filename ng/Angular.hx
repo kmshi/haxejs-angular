@@ -2,6 +2,9 @@ package ng;
 /**
  * @author Richard Shi
  */ 
+import js.html.Document;
+import js.html.DOMWindow;
+//import js.Browser;
 import js.JQuery;
 
 @:initPackage
@@ -615,10 +618,9 @@ abstract NgScope({}) from {} {
 	}	
 }
 
-//@:native("$brower")
-extern class NgBrowser{
-
-}
+//@:native("$brower")//! This is a private undocumented service !
+//extern class NgBrowser{
+//}
 
 //@:native("$location")
 extern class NgLocation {
@@ -882,18 +884,34 @@ extern class NgCacheFactory {
 }
 
 //@:native("$document")
-extern class NgDocument {
+extern class NgDocument extends NgJQuery{
 	
 }
 
 //@:native("$exceptionHandler")
-extern class NgExceptionHandler {
-	
+abstract NgExceptionHandler({}) from {} {
+	public inline function run(exception:js.Error, ?cause:String):Void untyped {
+		this(exception, cause);
+	}
 }
 
 //@:native("$interpolate")
-extern class NgInterpolate {
-	
+abstract NgInterpolate({}) from {} {
+	public inline function run(text:String, ?mustHaveExpression:Bool, ?trustedContext:String):Dynamic->String untyped {
+		return this(text,mustHaveExpression,trustedContext);
+	}
+	public inline function startSymbol():String untyped {
+		return this.startSymbol();
+	}
+	public inline function endSymbol():String untyped {
+		return this.endSymbol();
+	}
+}
+
+//@:native("$interpolateProvider")
+extern class NgInterpolateProvider {
+	public var startSymbol(default, default):String;
+	public var endSymbol(default,default):String;
 }
 
 //@:native("$interval")
@@ -963,7 +981,7 @@ abstract NgTimeout({}) from {} {
 }
 
 //@:native("$window")
-extern class NgWindow {
+extern class NgWindow extends DOMWindow{
 	
 }
 
