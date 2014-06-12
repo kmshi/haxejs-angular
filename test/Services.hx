@@ -12,7 +12,7 @@ class LocServ{
 	}
 }
 
-class Service implements IServices{
+class Services implements IServices{
 	@:inject("$http","$q")
 	public static var locServ:Dynamic = LocServ;
 

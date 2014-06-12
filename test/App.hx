@@ -21,12 +21,13 @@ class XX extends BaseProvider{
 class App implements IConfigs
 {
 	public static function main(){
-		test.Controller.main();
-		test.Service.main();
+		Controllers.main();
+		Services.main();
+		Directives.main();
 		var a = {weight:3 };
 		var b = {"weight":4 };
 		trace(Angular.fromJson(Angular.toJson(b)));
-		var argNames = Angular.injector(["ng"]).annotate(test.Controller.scrollCtrl);
+		var argNames = Angular.injector(["ng"]).annotate(test.Controllers.scrollCtrl);
 		trace(argNames);
 		trace(Angular.injector(["ng", "test"]).has("loginController"));	
 		var d = new Date(2014,6,3,3,52,50);
@@ -41,8 +42,8 @@ class App implements IConfigs
 		trace(Angular.version.full);
 		var inj = Angular.injector( ["ng", "test"] );
 		trace(inj.get("locServ").getA());
-		inj.invoke(["locServ",function(locServ:test.Service.LocServ){trace(locServ.getA());}]);
-		inj.invoke(["locServ", function(locServ:test.Service.LocServ) { trace(locServ.getA()); } ]);
+		inj.invoke(["locServ",function(locServ:test.Services.LocServ){trace(locServ.getA());}]);
+		inj.invoke(["locServ", function(locServ:test.Services.LocServ) { trace(locServ.getA()); } ]);
 		inj.invoke(["$http", function(http:NgHttp) { trace(http.defaults.xsrfHeaderName); } ]);
 		trace(Angular.element(Browser.window.document.body.firstElementChild).html());
 		inj.invoke(["$timeout", "$http", function(timeout:NgTimeout, http:NgHttp) {

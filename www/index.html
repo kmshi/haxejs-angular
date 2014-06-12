@@ -21,6 +21,8 @@
 <div ng-controller="clockCtrl">
   Hi {{clockCtrl.clock}}
   <p><a ng-click="clockCtrl.stopClock()">stop clock</a></p>
+  <div>Angular seed app: v<span app-version></span></div>
+  <div>Angular seed app: vv <app-version /></div>
 </div>
 <div id="scrollArea" ng-controller="scrollCtrl">
     <a ng-click="scrollCtrl.gotoBottom()">Go to bottom</a>

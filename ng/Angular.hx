@@ -989,3 +989,219 @@ extern class NgWindow extends DOMWindow{
 extern class NgController {
 	
 }
+
+class NgDirectiveDefinition {
+	/**
+	 * When there are multiple directives defined on a single DOM element, sometimes it
+	 * is necessary to specify the order in which the directives are applied. The `priority` is used
+	 * to sort the directives before their `compile` functions get called. Priority is defined as a
+	 * number. Directives with greater numerical `priority` are compiled first. Pre-link functions
+	 * are also run in priority order, but post-link functions are run in reverse order. The order
+	 * of directives with the same priority is undefined. The default priority is `0`.
+	 */
+	public var priority(default, default):Int = 0;
+	/**
+	 * string '<div></div>' or  function(tElement, tAttrs) { ... }
+	 * replace the current element with the contents of the HTML. The replacement process
+	 * migrates all of the attributes / classes from the old element to the new one. See the
+	 * {@link guide/directive#creating-custom-directives_creating-directives_template-expanding-directive
+	 * Directives Guide} for an example.
+	 *
+	 * You can specify `template` as a string representing the template or as a function which takes
+	 * two arguments `tElement` and `tAttrs` (described in the `compile` function api below) and
+	 * returns a string value representing the template.
+	 */
+	public var template(default, default):Dynamic = null;
+	/**
+	 * string 'directive.html' or  function(tElement, tAttrs) { ... }
+	 * Same as `template` but the template is loaded from the specified URL. Because
+	 * the template loading is asynchronous the compilation/linking is suspended until the template
+	 * is loaded.
+	 *
+	 * You can specify `templateUrl` as a string representing the URL or as a function which takes two
+	 * arguments `tElement` and `tAttrs` (described in the `compile` function api below) and returns
+	 * a string value representing the url.  In either case, the template URL is passed through {@link
+	 * api/ng.$sce#getTrustedResourceUrl $sce.getTrustedResourceUrl}.
+	 */
+	public var templateUrl(default, default):Dynamic = null;
+	/**
+	 * specify where the template should be inserted. Defaults to `false`.
+	 *
+	 * * `true` - the template will replace the current element.
+	 * * `false` - the template will replace the contents of the current element.
+	 */
+	public var replace(default, default):Bool = false;
+	/**
+	 * compile the content of the element and make it available to the directive.
+	 * Typically used with {@link ng.directive:ngTransclude
+	 * ngTransclude}. The advantage of transclusion is that the linking function receives a
+	 * transclusion function which is pre-bound to the correct scope. In a typical setup the widget
+	 * creates an `isolate` scope, but the transclusion is not a child, but a sibling of the `isolate`
+	 * scope. This makes it possible for the widget to have private state, and the transclusion to
+	 * be bound to the parent (pre-`isolate`) scope.
+	 *
+	 * * `true` - transclude the content of the directive.
+	 * * `'element'` - transclude the whole element including any directives defined at lower priority.
+	 */
+	public var transclude(default, default):Dynamic = null;
+	/**
+	 * String of subset of `EACM` which restricts the directive to a specific directive
+	 * declaration style. If omitted, the default (attributes only) is used.
+	 *
+	 * * `E` - Element name: `<my-directive></my-directive>`
+	 * * `A` - Attribute (default): `<div my-directive="exp"></div>`
+	 * * `C` - Class: `<div class="my-directive: exp;"></div>`
+	 * * `M` - Comment: `<!-- directive: my-directive exp -->`
+	 */
+	public var restrict(default, default):String = 'A';
+	/**
+	 * **If set to `true`,** then a new scope will be created for this directive. If multiple directives on the
+	 * same element request a new scope, only one new scope is created. The new scope rule does not
+	 * apply for the root of the template since the root of the template always gets a new scope.
+	 *
+	 * **If set to `{}` (object hash),** then a new "isolate" scope is created. The 'isolate' scope differs from
+	 * normal scope in that it does not prototypically inherit from the parent scope. This is useful
+	 * when creating reusable components, which should not accidentally read or modify data in the
+	 * parent scope.
+	 *
+	 * The 'isolate' scope takes an object hash which defines a set of local scope properties
+	 * derived from the parent scope. These local properties are useful for aliasing values for
+	 * templates. Locals definition is a hash of local scope property to its source:
+	 *
+	 * * `@` or `@attr` - bind a local scope property to the value of DOM attribute. The result is
+	 *   always a string since DOM attributes are strings. If no `attr` name is specified  then the
+	 *   attribute name is assumed to be the same as the local name.
+	 *   Given `<widget my-attr="hello {{name}}">` and widget definition
+	 *   of `scope: { localName:'@myAttr' }`, then widget scope property `localName` will reflect
+	 *   the interpolated value of `hello {{name}}`. As the `name` attribute changes so will the
+	 *   `localName` property on the widget scope. The `name` is read from the parent scope (not
+	 *   component scope).
+	 *
+	 * * `=` or `=attr` - set up bi-directional binding between a local scope property and the
+	 *   parent scope property of name defined via the value of the `attr` attribute. If no `attr`
+	 *   name is specified then the attribute name is assumed to be the same as the local name.
+	 *   Given `<widget my-attr="parentModel">` and widget definition of
+	 *   `scope: { localModel:'=myAttr' }`, then widget scope property `localModel` will reflect the
+	 *   value of `parentModel` on the parent scope. Any changes to `parentModel` will be reflected
+	 *   in `localModel` and any changes in `localModel` will reflect in `parentModel`. If the parent
+	 *   scope property doesn't exist, it will throw a NON_ASSIGNABLE_MODEL_EXPRESSION exception. You
+	 *   can avoid this behavior using `=?` or `=?attr` in order to flag the property as optional.
+	 *
+	 * * `&` or `&attr` - provides a way to execute an expression in the context of the parent scope.
+	 *   If no `attr` name is specified then the attribute name is assumed to be the same as the
+	 *   local name. Given `<widget my-attr="count = count + value">` and widget definition of
+	 *   `scope: { localFn:'&myAttr' }`, then isolate scope property `localFn` will point to
+	 *   a function wrapper for the `count = count + value` expression. Often it's desirable to
+	 *   pass data from the isolated scope via an expression and to the parent scope, this can be
+	 *   done by passing a map of local variable names and values into the expression wrapper fn.
+	 *   For example, if the expression is `increment(amount)` then we can specify the amount value
+	 *   by calling the `localFn` as `localFn({amount: 22})`.
+	 */
+	public var scope(default, default):Dynamic = true;
+	/**
+	 * Controller constructor function. The controller is instantiated before the
+	 * pre-linking phase and it is shared with other directives (see
+	 * `require` attribute). This allows the directives to communicate with each other and augment
+	 * each other's behavior. The controller is injectable (and supports bracket notation) with the following locals:
+	 *
+	 * * `$scope` - Current scope associated with the element
+	 * * `$element` - Current element
+	 * * `$attrs` - Current attributes object for the element
+	 * * `$transclude` - A transclude linking function pre-bound to the correct transclusion scope.
+	 *    The scope can be overridden by an optional first argument.
+	 *   `function([scope], cloneLinkingFn)`.
+	 */
+	public var controller(default, default):Dynamic = null;
+	/**
+	 * Controller alias at the directive scope. An alias for the controller so it
+	 * can be referenced at the directive template. The directive needs to define a scope for this
+	 * configuration to be used. Useful in the case when directive is used as component.
+	 */
+	public var controllerAs(default, default):String = null;
+	/**
+	 * Require another directive and inject its controller as the fourth argument to the linking function. The
+	 * `require` takes a string name (or array of strings) of the directive(s) to pass in. If an array is used, the
+	 * injected argument will be an array in corresponding order. If no such directive can be
+	 * found, or if the directive does not have a controller, then an error is raised. The name can be prefixed with:
+	 *
+	 * * (no prefix) - Locate the required controller on the current element. Throw an error if not found.
+	 * * `?` - Attempt to locate the required controller or pass `null` to the `link` fn if not found.
+	 * * `^` - Locate the required controller by searching the element's parents. Throw an error if not found.
+	 * * `?^` - Attempt to locate the required controller by searching the element's parents or pass `null` to the
+	 *   `link` fn if not found.
+	 */
+	public var require(default, default):Array<String> = null;
+	/**
+	 * The compile function deals with transforming the template DOM. Since most directives do not do
+	 * template transformation, it is not used often. Examples that require compile functions are
+	 * directives that transform template DOM, such as {@link
+	 * api/ng.directive:ngRepeat ngRepeat}, or load the contents
+	 * asynchronously, such as {@link ngRoute.directive:ngView ngView}. The
+	 * compile function takes the following arguments.
+	 *
+	 *   * `tElement` - template element - The element where the directive has been declared. It is
+	 *     safe to do template transformation on the element and child elements only.
+	 *
+	 *   * `tAttrs` - template attributes - Normalized list of attributes declared on this element shared
+	 *     between all directive compile functions.
+	 *
+	 *   * `transclude` -  [*DEPRECATED*!] A transclude linking function: `function(scope, cloneLinkingFn)`
+	 * 
+	 * A compile function can have a return value which can be either a function or an object.
+	 *
+	 * * returning a (post-link) function - is equivalent to registering the linking function via the
+	 *   `link` property of the config object when the compile function is empty.
+	 *    **function postLink(scope, iElement, iAttrs, controller) { ... }**
+	 * 
+	 * * returning an object with function(s) registered via `pre` and `post` properties - allows you to
+	 *   control when a linking function should be called during the linking phase. See info about
+	 *   pre-linking and post-linking functions below.
+	 * 	{
+	 *    pre: function preLink(scope, iElement, iAttrs, controller) { ... },
+	 *    post: function postLink(scope, iElement, iAttrs, controller) { ... }
+	 *  }
+	 */
+	public var compile(default, default):Dynamic = null;
+	/**
+	 * This property is used only if the `compile` property is not defined.
+	 * The link function is responsible for registering DOM listeners as well as updating the DOM. It is
+	 * executed after the template has been cloned. This is where most of the directive logic will be
+	 * put.
+	 *
+	 *   * `scope` - {@link ng.$rootScope.Scope Scope} - The scope to be used by the
+	 *     directive for registering {@link ng.$rootScope.Scope#$watch watches}.
+	 *
+	 *   * `iElement` - instance element - The element where the directive is to be used. It is safe to
+	 *     manipulate the children of the element only in `postLink` function since the children have
+	 *     already been linked.
+	 *
+	 *   * `iAttrs` - instance attributes - Normalized list of attributes declared on this element shared
+	 *     between all directive linking functions.
+	 *
+	 *   * `controller` - a controller instance - A controller instance if at least one directive on the
+	 *     element defines a controller. The controller is shared among all the directives, which allows
+	 *     the directives to use the controllers as a communication channel.
+	 *
+	 *   * `transcludeFn` - A transclude linking function pre-bound to the correct transclusion scope.
+	 *     The scope can be overridden by an optional first argument. This is the same as the `$transclude`
+	 *     parameter of directive controllers.
+	 *     `function([scope], cloneLinkingFn)`.
+	 *
+	 *
+	 * #### Pre-linking function
+	 *
+	 * Executed before the child elements are linked. Not safe to do DOM transformation since the
+	 * compiler linking function will fail to locate the correct elements for linking.
+	 *
+	 * #### Post-linking function
+	 *
+	 * Executed after the child elements are linked. It is safe to do DOM transformation in the post-linking function.
+	 * 
+	 * return	{
+	 *    pre: function preLink(scope, iElement, iAttrs, controller) { ... },
+	 *    post: function postLink(scope, iElement, iAttrs, controller) { ... }
+	 *  }
+	 * or return function postLink(scope, iElement, iAttrs, controller) { ... }
+	 */
+	public var link(default, default):Dynamic = null;
+}

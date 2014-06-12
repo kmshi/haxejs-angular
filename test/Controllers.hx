@@ -54,7 +54,7 @@ class ClockCtrl  extends BaseCtrl{
 	public function new(scope:NgScope,interval:NgInterval,exceptionHandler:NgExceptionHandler){
 		handle = interval.run(this.updateClock, 1000, 0, false);
 		this.interval = interval;
-		exceptionHandler.run(new js.Error("SA"), "HCC");
+		//exceptionHandler.run(new js.Error("SA"), "HCC");
 		super(scope);
 	}
 	public function stopClock() {
@@ -62,7 +62,7 @@ class ClockCtrl  extends BaseCtrl{
 	}
 }
 
-class Controller implements IControllers
+class Controllers implements IControllers
 {
     public static function main(){
     	trace("--main--");
