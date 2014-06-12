@@ -1,19 +1,21 @@
 {
   "name": "haxe-angular",
   "dependencies": {
-    "angular": "1.2.16"
-	,"angular-animate":"1.2.16"
-	,"angular-cookies":"1.2.16"
-	,"angular-resource":"1.2.16"
-	,"angular-route":"1.2.16"
-	,"angular-sanitize":"1.2.16"
-	,"angular-touch":"1.2.16"
-	,"angular-scenario":"1.2.16"
-	,"angular-loader":"1.2.16"
-	,"angular-i18n":"1.2.16"
+    "angular": "1.2.12"
+	,"angular-animate":"1.2.12"
+	,"angular-cookies":"1.2.12"
+	,"angular-resource":"1.2.12"
+	,"angular-route":"1.2.12"
+	,"angular-sanitize":"1.2.12"
+	,"angular-touch":"1.2.12"
+	,"angular-scenario":"1.2.12"
+	,"angular-loader":"1.2.12"
+	,"angular-i18n":"1.2.12"
 	,"angular-ui-bootstrap":"0.11.0"
-	,"angular-ui-router":"0.2.10"
+	,"angular-ui-router":"0.2.7"
 	,"angular-ui-utils":"0.1.1"
+	,"ionic":"0.9.27"
+	,"ngCordova":""
   },
   "devDependencies": {
     "angular-mocks": "1.2.16"
