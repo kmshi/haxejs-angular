@@ -3,12 +3,10 @@
   , "version": "0.0.1"
   , "private": true
   , "scripts": {
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "postinstall": "bower install"
   }
   , "dependencies": {
-      "bower": ""
-      ,"http-proxy":""
-      ,"node-static":""
+      "http-proxy":""
       ,"express":""
   }
 }

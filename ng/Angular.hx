@@ -991,6 +991,7 @@ extern class NgController {
 }
 
 class NgDirectiveDefinition {
+  public function new(){}
 	/**
 	 * When there are multiple directives defined on a single DOM element, sometimes it
 	 * is necessary to specify the order in which the directives are applied. The `priority` is used
