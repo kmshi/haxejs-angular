@@ -873,10 +873,6 @@ abstract NgCompile({}) from {} {
     }
 }
 
-//@:native("$animate")
-extern class NgAnimate {
-	
-}
 
 //@:native("$cacheFactory")
 extern class NgCacheFactory {
