@@ -120,16 +120,6 @@ class InjectionBuilder
     }
 
     private static function addExpr2MainFnBlock(type:String) {
-        block.unshift(macro {
-	        try {
-	    		Angular.module('$currentPackName');
-	  		} catch (e:Dynamic) {
-	  			var deps:Array<String> = untyped window.hxdeps?window.hxdeps:[];
-	  			//trace("deps:"+deps);
-	    		Angular.module('$currentPackName',deps);
-	  		}
-        });//use package as module name
-    	//block.unshift(macro {Angular.module('$currentClsName',[]);});
     	var hasMeta:Bool = false;
         for (f in allFields) {
             if (!f.access.has(AStatic)) continue;
@@ -140,13 +130,13 @@ class InjectionBuilder
                     var inject = null;
 					if (injects != null && injects.length > 0 && (inject = injects[0]) != null)
 					{
+						var ett = register(f.name,f.name,type);
+						if (ett != null) block.unshift(macro { $ett; } );
+						
 						var et = getInjectionExpr(f.name, metaToString(inject.params));
 						if (type!="constant" && type!="value")//it is not value or constant
 							block.unshift(macro { $et; }); //block.insert(0, macro { $et; } );
 
-						var ett = register(f.name,f.name,type);
-						//trace(ett);
-						if (ett!=null) block.push(macro {$ett;});
 						hasMeta = true;
 					}
                 }
@@ -156,7 +146,17 @@ class InjectionBuilder
         if(!hasMeta){
 			trace(currentClsName + ":Please add public static variable with @:inject('$xx','$yy') alike to macro setup $inject");
         }
-
+		
+        block.unshift(macro {
+	        try {
+	    		Angular.module('$currentPackName');
+	  		} catch (e:Dynamic) {
+	  			var deps:Array<String> = untyped window.hxdeps?window.hxdeps:[];
+	  			//trace("deps:"+deps);
+	    		Angular.module('$currentPackName',deps);
+	  		}
+        });//use package as module name
+    	//block.unshift(macro {Angular.module('$currentClsName',[]);});
     }
 
     private static function register(name:String,fvar:String,type:String):Expr
