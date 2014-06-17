@@ -875,8 +875,60 @@ abstract NgCompile({}) from {} {
 
 
 //@:native("$cacheFactory")
-extern class NgCacheFactory {
-	
+abstract NgCacheFactory( { } ) from { } {
+	/**
+	 * Factory that constructs cache objects and gives access to them.
+	 * @param {string} cacheId Name or id of the newly created cache.
+	 * @param {object=} options Options object that specifies the cache behavior. Properties:
+	 *
+	 *   - `{number=}` `capacity` — turns the cache into LRU cache.
+	 */
+	public inline function newCache(cacheId:String, ?options:Dynamic):NgCache untyped {
+		return this(cacheId,options);
+	}
+	/**
+     * Get information about all the of the caches that have been created
+     *
+     * @returns {Object} - key-value map of `cacheId` to the result of calling `cache#info`
+    */
+	public inline function info():Dynamic untyped {
+		return this.info();
+	}
+	/**
+	 * Get access to a cache object by the `cacheId` used when it was created.
+	 * @param {string} cacheId Name or id of a cache to access.
+	 * @returns {object} Cache object identified by the cacheId or undefined if no such cache.
+	 */
+	public inline function get(cacheId:String):NgCache untyped {
+		return this.get(cacheId);
+	}
+}
+
+extern class NgCache {
+	/**
+	 * Returns id, size, and options of cache.
+	 */
+	public function info():Dynamic;
+	/**
+	 * Puts a new key-value pair into the cache and returns the value
+	 */
+	public function put(key:String, value:Dynamic):Dynamic;
+	/**
+	 * Returns cached value for `key` or undefined for cache miss.
+	 */
+	public function get(key:String):Dynamic;
+	/**
+	 * Removes a key-value pair from the cache.
+	 */
+	public function remove(key:String):Void;
+	/**
+	 * Removes all cached values.
+	 */
+	public function removeAll():Void;
+	/**
+	 * Removes references to this cache from $cacheFactory.
+	 */
+	public function destroy():Void;
 }
 
 //@:native("$document")

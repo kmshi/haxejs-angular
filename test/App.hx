@@ -63,6 +63,14 @@ class App implements IConfigs
 		var xx = new XX();
 		var ret = untyped {xx["$get"];};
 		trace(ret[2]());
+		inj.invoke(["$cacheFactory", function(cacheFactory:NgCacheFactory) {
+			var cache:NgCache = cacheFactory.newCache("haha");
+			cache.put("hcc", 2014);
+			trace("hcc=" + cache.get("hcc"));
+			trace("hcc=" + cacheFactory.get("haha").get("hcc"));
+			trace(cache.info());
+			trace(cacheFactory.info());
+			}]);
 	}
 	
 	@:inject("$httpProvider")
