@@ -1078,9 +1078,44 @@ extern class NgLogProvider {
 	public function debugEnabled(flag:Bool):NgLogProvider;
 }
 
+abstract NgExprFn( { } ) from { } {
+	/**
+	 *  * `context` – `{object}` – an object against which any expressions embedded in the strings
+	 *      are evaluated against (typically a scope object).
+	 *  * `locals` – `{object=}` – local variables context object, useful for overriding values in
+	 *      `context`.
+	 */
+	public inline function run(context:Dynamic, ?locals:Dynamic):Dynamic untyped {
+		return this(context,locals);
+	}
+	/**
+	 * whether the expression's top-level node is a JavaScript literal.
+	 */
+	public inline function literal():Bool untyped {
+		return this.literal;
+	}
+	/**
+	 * whether the expression is made entirely of JavaScript constant literals.
+	 */
+	public inline function constant():Bool untyped {
+		return this.constant;
+	}
+	/**
+	 * if the expression is assignable, this will be set to a function to change its value on the given context.
+	 */
+	public inline function assign():Dynamic->Dynamic->Void untyped {
+		return this.assign;
+	}
+}
+
 //@:native("$parse")
-extern class NgParse {
-	
+abstract NgParse( { } ) from { } {
+	/**
+	 * Converts Angular {@link guide/expression expression} into a function.
+	 */
+	public inline function run(expression:String):NgExprFn untyped {
+		return this(expression);
+	}
 }
 
 //@:native("$sce")
@@ -1099,9 +1134,7 @@ extern class NgSniffer {
 }
 
 //@:native("$templateCache")
-extern class NgTemplateCache {
-	
-}
+typedef NgTemplateCache = NgCache;
 
 //@:native("$timeout")
 //typedef NgTimeout = Dynamic->Int->Bool->NgPromise;

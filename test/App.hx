@@ -78,6 +78,18 @@ class App implements IConfigs
 			log.warn("warn:---");
 			log.error("error:---");
 			}]);
+		inj.invoke(["$parse", function(parse:NgParse) {
+			var getter = parse.run('user.name');
+			var setter = getter.assign();
+			var context = { user: { name:'angular' }};
+			var locals = { user: { name:'local' }};
+			trace("parse:" + getter.run(context));
+			trace("parse:" + getter.run(context, locals));
+			setter(context, "parse changed");
+			trace("parse:" + getter.run(context));
+			trace("parse:" + getter.constant());
+			trace("parse:" + getter.literal());
+			}]);
 	}
 	
 	@:inject("$httpProvider","$logProvider")
