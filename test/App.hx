@@ -44,10 +44,10 @@ class App implements IConfigs
 		trace(inj.get("locServ").getA());
 		inj.invoke(["locServ",function(locServ:test.Services.LocServ){trace(locServ.getA());}]);
 		inj.invoke(["locServ", function(locServ:test.Services.LocServ) { trace(locServ.getA()); } ]);
-		inj.invoke(["$http", function(http:NgHttp) { trace(http.defaults.xsrfHeaderName); } ]);
+		inj.invoke(["$http", function(http:NgHttp) { trace(http.defaults().xsrfHeaderName); } ]);
 		trace(Angular.element(Browser.window.document.body.firstElementChild).html());
 		inj.invoke(["$timeout", "$http", function(timeout:NgTimeout, http:NgHttp) {
-			var p = timeout.run(function() { trace("after 1 second:" + http.defaults.xsrfHeaderName); }, 1000, true);
+			var p = timeout.run(function() { trace("after 1 second:" + http.defaults().xsrfHeaderName); }, 1000, true);
 			//timeout.cancel(p);
 			} ]);
 		inj.invoke(["$compile","$rootScope","$interpolate",function(compile:NgCompile,rootScope:NgRootScope,interpolate:NgInterpolate){

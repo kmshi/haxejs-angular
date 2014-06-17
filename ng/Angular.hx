@@ -763,8 +763,70 @@ extern class NgPromise {
 	public function finally(callbackFn:Dynamic):NgPromise;
 }
 
+extern class NgHttpPromise extends NgPromise {
+	/**
+	 * successCallback: function(data, status, headers, config)
+	 * The arguments passed into these functions are destructured representation of the response object passed into the
+     *   `then` method. The response object has these properties:
+     *
+     *   - **data** – `{string|Object}` – The response body transformed with the transform
+     *     functions.
+     *   - **status** – `{number}` – HTTP status code of the response.
+     *   - **headers** – `{function([headerName])}` – Header getter function.
+     *   - **config** – `{Object}` – The configuration object that was used to generate the request.
+	 * A response status code between 200 and 299 is considered a success status and
+     * will result in the success callback being called. Note that if the response is a redirect,
+     * XMLHttpRequest will transparently follow it, meaning that the error callback will not be
+     * called for such responses.
+	 */
+	public function success(successCallback:Dynamic):NgHttpPromise;
+	/**
+	 * errorCallback: function(data, status, headers, config)
+	 */
+	public function error(errorCallback:Dynamic):NgHttpPromise;
+}
+
 //@:native("$http")
-extern class NgHttp{
+abstract NgHttp( { } ) from { } {
+	/**
+	 * send out http request
+	 * @param {object} requestConfig Object describing the request to be made and how it should be
+     *    processed. The object has following properties:
+     *
+     *    - **method** – `{string}` – HTTP method (e.g. 'GET', 'POST', etc)
+     *    - **url** – `{string}` – Absolute or relative URL of the resource that is being requested.
+     *    - **params** – `{Object.<string|Object>}` – Map of strings or objects which will be turned
+     *      to `?key1=value1&key2=value2` after the url. If the value is not a string, it will be
+     *      JSONified.
+     *    - **data** – `{string|Object}` – Data to be sent as the request message data.
+     *    - **headers** – `{Object}` – Map of strings or functions which return strings representing
+     *      HTTP headers to send to the server. If the return value of a function is null, the
+     *      header will not be sent.
+     *    - **xsrfHeaderName** – `{string}` – Name of HTTP header to populate with the XSRF token.
+     *    - **xsrfCookieName** – `{string}` – Name of cookie containing the XSRF token.
+     *    - **transformRequest** –
+     *      `{function(data, headersGetter)|Array.<function(data, headersGetter)>}` –
+     *      transform function or an array of such functions. The transform function takes the http
+     *      request body and headers and returns its transformed (typically serialized) version.
+     *    - **transformResponse** –
+     *      `{function(data, headersGetter)|Array.<function(data, headersGetter)>}` –
+     *      transform function or an array of such functions. The transform function takes the http
+     *      response body and headers and returns its transformed (typically deserialized) version.
+     *    - **cache** – `{boolean|Cache}` – If true, a default $http cache will be used to cache the
+     *      GET request, otherwise if a cache instance built with
+     *      {@link ng.$cacheFactory $cacheFactory}, this cache will be used for
+     *      caching.
+     *    - **timeout** – `{number|Promise}` – timeout in milliseconds, or {@link ng.$q promise}
+     *      that should abort the request when resolved.
+     *    - **withCredentials** - `{boolean}` - whether to to set the `withCredentials` flag on the
+     *      XHR object. See {@link https://developer.mozilla.org/en/http_access_control#section_5
+     *      requests with credentials} for more information.
+     *    - **responseType** - `{string}` - see {@link
+     *      https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType requestType}.
+	 */
+	 public inline function run(requestConfig:Dynamic):NgHttpPromise untyped {
+		return this(requestConfig);
+	}
     /**
      * Shortcut method to perform `GET` request.
      *
@@ -772,9 +834,15 @@ extern class NgHttp{
      * @param {Object=} config Optional configuration object
      * @returns {HttpPromise} Future object
      */
-	public function get(url:String, ?config:Dynamic):NgPromise;
-	public function delete(url:String, ?config:Dynamic):NgPromise;
-	public function head(url:String, ?config:Dynamic):NgPromise;	
+	public inline function get(url:String, ?config:Dynamic):NgHttpPromise untyped {
+		return this.get(url,config);
+	}
+	public inline function delete(url:String, ?config:Dynamic):NgHttpPromise untyped {
+		return this.delete(url,config);
+	}
+	public inline function head(url:String, ?config:Dynamic):NgHttpPromise untyped {
+		return this.head(url,config);
+	}
     /**
      * Shortcut method to perform `JSONP` request.
      *
@@ -783,19 +851,28 @@ extern class NgHttp{
      * @param {Object=} config Optional configuration object
      * @returns {HttpPromise} Future object
      */	
-	public function jsonp(url:String, ?config:Dynamic):NgPromise;
-	public function put(url:String,data:Dynamic, ?config:Dynamic):NgPromise;
-	public function post(url:String, data:Dynamic, ?config:Dynamic):NgPromise;
+	public inline function jsonp(url:String, ?config:Dynamic):NgHttpPromise untyped {
+		return this.jsonp(url,config);
+	}
+	public inline function put(url:String, data:Dynamic, ?config:Dynamic):NgHttpPromise untyped {
+		return this.put(url,config);
+	}
+	public inline function post(url:String, data:Dynamic, ?config:Dynamic):NgHttpPromise untyped {
+		return this.post(url,config);
+	}
     /**
      * Runtime equivalent of the `$httpProvider.defaults` property. Allows configuration of
      * default headers, withCredentials as well as request and response transformations.
      */	
-	public var defaults(default,null):HttpDefaults;
+	public inline function defaults():HttpDefaults untyped {
+		return this.defaults;
+	}
 }
 
 //@:native("$httpProvider")
 extern class NgHttpProvider {
-	public var defaults(default,null):HttpDefaults;
+	public var defaults(default, null):HttpDefaults;
+	public var interceptors(default, null):Array<Dynamic>;
 }
 
 //@:native("$injector")
