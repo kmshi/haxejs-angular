@@ -1060,13 +1060,22 @@ abstract NgInterval({}) from {} {
 }
 
 //@:native("$httpBackend")
-extern class NgHttpBackend {
-	
-}
+/*extern class NgHttpBackend {
+}*/
 
 //@:native("$log")
 extern class NgLog {
-	
+	public function debug(message:Dynamic):Void;
+	public function log(message:Dynamic):Void;
+	public function warn(message:Dynamic):Void;
+	public function info(message:Dynamic):Void;
+	public function error(message:Dynamic):Void;
+}
+
+//@:native("$logProvider")
+extern class NgLogProvider {
+	@:overload(function():Bool{})
+	public function debugEnabled(flag:Bool):NgLogProvider;
 }
 
 //@:native("$parse")

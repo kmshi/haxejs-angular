@@ -71,10 +71,20 @@ class App implements IConfigs
 			trace(cache.info());
 			trace(cacheFactory.info());
 			}]);
+		inj.invoke(["$log", function(log:NgLog) {
+			log.debug("debug:---");
+			log.log("log:---");
+			log.info("info:---");
+			log.warn("warn:---");
+			log.error("error:---");
+			}]);
 	}
 	
-	@:inject("$httpProvider")
-	public static var runConfig:Dynamic = function(httpProvider:NgHttpProvider) {
+	@:inject("$httpProvider","$logProvider")
+	public static var runConfig:Dynamic = function(httpProvider:NgHttpProvider,logProvider:NgLogProvider) {
 		httpProvider.defaults.xsrfHeaderName = "haha";
+		trace("debugEnabled:" + logProvider.debugEnabled());
+		logProvider.debugEnabled(false);
+		trace("debugEnabled:" + logProvider.debugEnabled());
 	}
 }
