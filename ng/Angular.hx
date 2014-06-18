@@ -1120,18 +1120,90 @@ abstract NgParse( { } ) from { } {
 
 //@:native("$sce")
 extern class NgSce {
-	
+	public function isEnabled():Bool;
+	public function parse(type:String, expression:String):NgExprFn;
+	public function parseAsHtml(expression:String):NgExprFn;
+	public function parseAsCss(expression:String):NgExprFn;
+	public function parseAsJs(expression:String):NgExprFn;
+	public function parseAsUrl(expression:String):NgExprFn;
+	public function parseAsResourceUrl(expression:String):NgExprFn;
+	public function trustAs(type:String, value:Dynamic):Dynamic;
+	public function trustAsHtml(value:Dynamic):Dynamic;
+	public function trustAsCss(value:Dynamic):Dynamic;
+	public function trustAsUrl(value:Dynamic):Dynamic;
+	public function trustAsResourceUrl(value:Dynamic):Dynamic;
+	public function trustAsJs(value:Dynamic):Dynamic;
+	public function getTrusted(type:String, maybeTrusted:Dynamic):Dynamic;
+	public function getTrustedHtml(maybeTrusted:Dynamic):Dynamic;
+	public function getTrustedCss(maybeTrusted:Dynamic):Dynamic;
+	public function getTrustedUrl(maybeTrusted:Dynamic):Dynamic;
+	public function getTrustedResourceUrl(maybeTrusted:Dynamic):Dynamic;
+	public function getTrustedJs(maybeTrusted:Dynamic):Dynamic;
+}
+
+//@:native("$sceProvider")
+extern class NgSceProvider {
+	@:overload(function():Bool{})
+	public function enabled(value:Bool):Bool;
 }
 
 //@:native("$sceDelegate")
 extern class NgSceDelegate {
-	
+    /**
+     * Returns an object that is trusted by angular for use in specified strict
+     * contextual escaping contexts (such as ng-bind-html, ng-include, any src
+     * attribute interpolation, any dom event binding attribute interpolation
+     * such as for onclick,  etc.) that uses the provided value.
+     * See {@link ng.$sce $sce} for enabling strict contextual escaping.
+     *
+     * @param {string} type The kind of context in which this value is safe for use.  e.g. url,
+     *   resourceUrl, html, js and css.
+     * @param {*} value The value that that should be considered trusted/safe.
+     * @returns {*} A value that can be used to stand in for the provided `value` in places
+     * where Angular expects a $sce.trustAs() return value.
+     */	
+	public function trustAs(type:String, value:Dynamic):Dynamic;
+    /**
+     * If the passed parameter had been returned by a prior call to {@link ng.$sceDelegate#methods_trustAs
+     * `$sceDelegate.trustAs`}, returns the value that had been passed to {@link
+     * ng.$sceDelegate#methods_trustAs `$sceDelegate.trustAs`}.
+     *
+     * If the passed parameter is not a value that had been returned by {@link
+     * ng.$sceDelegate#methods_trustAs `$sceDelegate.trustAs`}, returns it as-is.
+     *
+     * @param {*} value The result of a prior {@link ng.$sceDelegate#methods_trustAs `$sceDelegate.trustAs`}
+     *      call or anything else.
+     * @returns {*} The `value` that was originally provided to {@link ng.$sceDelegate#methods_trustAs
+     *     `$sceDelegate.trustAs`} if `value` is the result of such a call.  Otherwise, returns
+     *     `value` unchanged.
+     */	
+	public function valueOf(maybeTrusted:Dynamic):Dynamic;
+    /**
+     * Takes the result of a {@link ng.$sceDelegate#methods_trustAs `$sceDelegate.trustAs`} call and
+     * returns the originally supplied value if the queried context type is a supertype of the
+     * created type.  If this condition isn't satisfied, throws an exception.
+     *
+     * @param {string} type The kind of context in which this value is to be used.
+     * @param {*} maybeTrusted The result of a prior {@link ng.$sceDelegate#methods_trustAs
+     *     `$sceDelegate.trustAs`} call.
+     * @returns {*} The value the was originally provided to {@link ng.$sceDelegate#methods_trustAs
+     *     `$sceDelegate.trustAs`} if valid in this context.  Otherwise, throws an exception.
+     */	
+	public function getTrusted(type:String, maybeTrusted:Dynamic):Dynamic;
+}
+
+//@:native("$sceDelegateProvider")
+extern class NgSceDelegateProvider {
+	@:overload(function():Array<String>{})
+	public function resourceUrlWhitelist(value:Array<String>):Array<String>;
+	@:overload(function():Array<String>{})
+	public function resourceUrlBlacklist(value:Array<String>):Array<String>;
 }
 
 //@:native("$sniffer")
-extern class NgSniffer {
-	
-}
+//!!! This is an undocumented "private" service !!!
+/*extern class NgSniffer {	
+}*/
 
 //@:native("$templateCache")
 typedef NgTemplateCache = NgCache;
