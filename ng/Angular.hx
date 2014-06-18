@@ -227,7 +227,7 @@ extern class NgJQuery extends JQuery {
 	 * retrieves controller associated with the `ngController` directive. If `name` is provided as
 	 * camelCase directive name, then the controller for this directive will be retrieved (e.g.`'ngModel'`).
 	 */
-	public function controller(?name:String):NgController;
+	public function controller(?name:String):Dynamic;
 	/**
 	 * retrieves the injector of the current element or its parent.
 	 */
@@ -1225,8 +1225,27 @@ extern class NgWindow extends DOMWindow{
 }
 
 //@:native("$controller")
-extern class NgController {
-	
+abstract NgController( { } ) from { } {
+    /**
+     * `$controller` service is responsible for instantiating controllers.
+     * @param {Function|string} constructor If called with a function then it's considered to be the
+     *    controller constructor function. Otherwise it's considered to be a string which is used
+     *    to retrieve the controller constructor using the following steps:
+     *
+     *    * check if a controller with given name is registered via `$controllerProvider`
+     *    * check if evaluating the string on the current scope returns a constructor
+     *    * check `window[constructor]` on the global `window` object
+     *
+     * @param {Object} locals Injection locals for Controller.
+     * @return {Object} Instance of given controller.
+     * It's just a simple call to {@link AUTO.$injector $injector}, but extracted into
+     * a service, so that one can override this service with {@link https://gist.github.com/1649788
+     * BC version}.
+     */	
+	@:overload(function(expression:Dynamic, locals:Dynamic):Dynamic{})
+	public inline function run(expression:String, locals:Dynamic):Dynamic untyped {
+		return this(expression,locals);
+	}
 }
 
 class NgDirectiveDefinition {
