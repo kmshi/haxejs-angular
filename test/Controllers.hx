@@ -2,6 +2,7 @@ package test;
 
 import ng.IControllers;
 import ng.Angular;
+import ng.NgRoute;
 
 /**
  * ...
@@ -12,7 +13,7 @@ import ng.Angular;
 class HomeCtrl extends BaseCtrl{
 	public var name(default, default):String;
 	public var location(default, default):String;
-	public function new(scope:NgScope) {
+	public function new(scope:NgScope,route:NgRoute) {
 		super(scope);
 		name = "Blue sky";
 		location = "Guangzhou";
@@ -20,6 +21,8 @@ class HomeCtrl extends BaseCtrl{
 		scope.on("bb", function(event, args) { trace(args); } );
 		scope.emit("bb", ["Hello event!", name, location]);
 		scope["arrayaccess"] = 1;
+		trace(route);
+		trace(route.routes);
 	}
 }
 
@@ -68,7 +71,7 @@ class Controllers implements IControllers
     	trace("--main--");
     }
 
-	@:inject("$scope")
+	@:inject("$scope","$route")
 	public static var homeCtrl:Dynamic = HomeCtrl;
 
 	@:inject("$scope", "$location", "$anchorScroll")

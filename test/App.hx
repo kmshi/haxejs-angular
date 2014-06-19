@@ -7,6 +7,7 @@ import ng.IConfigs;
 import ng.IProviders;
 import js.JQuery;
 import ng.NgResource;
+import ng.NgRoute;
 
 
 class XX extends BaseProvider{
