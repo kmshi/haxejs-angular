@@ -6,6 +6,7 @@ import ng.Angular;
 import ng.IConfigs;
 import ng.IProviders;
 import js.JQuery;
+import ng.NgResource;
 
 
 class XX extends BaseProvider{
@@ -89,6 +90,9 @@ class App implements IConfigs
 			trace("parse:" + getter.run(context));
 			trace("parse:" + getter.constant());
 			trace("parse:" + getter.literal());
+			}]);
+		inj.invoke(["$resource", function(resource:NgResource) {
+			resource.run("http://www.zaobao.com");
 			}]);
 	}
 	
