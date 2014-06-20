@@ -157,3 +157,8 @@ class RouteMapping{
 	*/	
 	public var caseInsensitiveMatch(default, default):Bool = false;
 }
+
+//directives
+/**
+ * ngView
+*/

@@ -1465,7 +1465,7 @@ class NgDirectiveDefinition {
 	public var link(default, default):Dynamic = null;
 }
 
-//Directives
+//directives
 /**
    a: htmlAnchorDirective,
    input: inputDirective,
@@ -1522,14 +1522,14 @@ abstract NgFilter( { } ) from { } {
 }
 
 //filters
-/* 
-    currency,
-    date,
-    filter,
-    json,
-    limitTo,
-    lowercase,
-    number,
-    orderBy,
-    uppercase,
+/*
+    currency(amount, currencySymbol) -- Formats a number as a currency (ie $1,234.56). When no currency symbol is provided, default symbol for current locale is used.
+    date(date, format) -- Formats `date` to a string based on the requested `format`.
+    filter(array, expression, comparator) -- Selects a subset of items from `array` and returns it as a new array.
+    json(object) -- Allows you to convert a JavaScript object into JSON string.
+    limitTo(input, limit) -- Creates a new array or string containing only a specified number of elements.
+    lowercase(str) -- Converts string to lowercase
+    number(number, fractionSize) -- Formats a number as text.
+    orderBy(array, sortPredicate, reverseOrder) --  Orders a specified `array` by the `expression` predicate.
+    uppercase(str) -- Converts string to uppercase
   */   

@@ -8,7 +8,7 @@ import ng.IProviders;
 import js.JQuery;
 import ng.NgResource;
 import ng.NgRoute;
-
+import ng.NgSanitize;
 
 class XX extends BaseProvider{
 	@:inject("$location", "$anchorScroll")
@@ -97,6 +97,12 @@ class App implements IConfigs
 			}]);
 		inj.invoke(["$filter", function(filter:NgFilter) {
 			trace(filter.run("uppercase")("http://www.zaobao.com"));
+			}]);
+		inj.invoke(["$sce", function(sce:NgSce) {
+			trace("sce:"+ sce.trustAsHtml("<alert />"));//trust it, do not sanitize it
+			}]);
+		inj.invoke(["$sanitize", function(sanitize:NgSanitize) {
+			trace("sanitize:"+ sanitize.run("<alert />"));
 			}]);
 	}
 	
