@@ -95,6 +95,9 @@ class App implements IConfigs
 		inj.invoke(["$resource", function(resource:NgResource) {
 			resource.run("http://www.zaobao.com");
 			}]);
+		inj.invoke(["$filter", function(filter:NgFilter) {
+			trace(filter.run("uppercase")("http://www.zaobao.com"));
+			}]);
 	}
 	
 	@:inject("$httpProvider","$logProvider")

@@ -1464,3 +1464,72 @@ class NgDirectiveDefinition {
 	 */
 	public var link(default, default):Dynamic = null;
 }
+
+//Directives
+/**
+   a: htmlAnchorDirective,
+   input: inputDirective,
+   textarea: inputDirective,
+   form: formDirective,
+   script: scriptDirective,
+   select: selectDirective,
+   style: styleDirective,
+   option: optionDirective,
+   ngBind: ngBindDirective,
+   ngBindHtml: ngBindHtmlDirective,
+   ngBindTemplate: ngBindTemplateDirective,
+   ngClass: ngClassDirective,
+   ngClassEven: ngClassEvenDirective,
+   ngClassOdd: ngClassOddDirective,
+   ngCloak: ngCloakDirective,
+   ngController: ngControllerDirective,
+   ngForm: ngFormDirective,
+   ngHide: ngHideDirective,
+   ngIf: ngIfDirective,
+   ngInclude: ngIncludeDirective,
+   ngInit: ngInitDirective,
+   ngNonBindable: ngNonBindableDirective,
+   ngPluralize: ngPluralizeDirective,
+   ngRepeat: ngRepeatDirective,
+   ngShow: ngShowDirective,
+   ngStyle: ngStyleDirective,
+   ngSwitch: ngSwitchDirective,
+   ngSwitchWhen: ngSwitchWhenDirective,
+   ngSwitchDefault: ngSwitchDefaultDirective,
+   ngOptions: ngOptionsDirective,
+   ngTransclude: ngTranscludeDirective,
+   ngModel: ngModelDirective,
+   ngList: ngListDirective,
+   ngChange: ngChangeDirective,
+   required: requiredDirective,
+   ngRequired: requiredDirective,
+   ngValue: ngValueDirective
+   ngInclude: ngIncludeFillContentDirective
+   ngAttributeAliasDirectives
+   ngEventDirectives
+*/
+
+//@:native("$filter")
+abstract NgFilter( { } ) from { } {
+	/**
+	 * retrieve a filter function 
+	 * @param	name Name of the filter function to retrieve, like "lowercase"
+	 * @return  filter function
+	 */
+	public inline function run(name:String):Dynamic untyped {
+		return this(name);
+	}
+}
+
+//filters
+/* 
+    currency,
+    date,
+    filter,
+    json,
+    limitTo,
+    lowercase,
+    number,
+    orderBy,
+    uppercase,
+  */   
