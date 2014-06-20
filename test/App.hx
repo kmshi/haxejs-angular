@@ -9,6 +9,7 @@ import js.JQuery;
 import ng.NgResource;
 import ng.NgRoute;
 import ng.NgSanitize;
+import ng.NgCookies;
 
 class XX extends BaseProvider{
 	@:inject("$location", "$anchorScroll")
@@ -103,6 +104,16 @@ class App implements IConfigs
 			}]);
 		inj.invoke(["$sanitize", function(sanitize:NgSanitize) {
 			trace("sanitize:"+ sanitize.run("<alert />"));
+			}]);
+		inj.invoke(["$cookies","$cookieStore", function(cookies:NgCookies,cookieStore:NgCookieStore) {
+			trace("cookies old:"+ cookies.get("bei"));
+			cookies.put("bei","long long ago");
+			trace("cookies new:"+ cookies.get("bei"));
+			cookies.remove("bei");
+
+			trace("cookieStore old:"+ cookieStore.get("ben"));
+			cookieStore.put("ben","long long ago");
+			trace("cookieStore new:"+ cookieStore.get("ben"));
 			}]);
 	}
 	
