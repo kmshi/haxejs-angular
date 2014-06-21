@@ -3,7 +3,7 @@ package test;
 import ng.IControllers;
 import ng.Angular;
 import ng.NgRoute;
-
+import ng.NgTouch;
 /**
  * ...
  * @author Richard Shi
@@ -29,6 +29,7 @@ class HomeCtrl extends BaseCtrl{
 class ScrollCtrl  extends BaseCtrl{
 	private var location:NgLocation;
 	private var anchorScroll:NgAnchorScroll;
+	private var swipe:NgSwipe;
 	private var target:String;
 	public function gotoBottom():Void {
 		// set the location.hash to the id of
@@ -37,11 +38,14 @@ class ScrollCtrl  extends BaseCtrl{
 		trace(location.protocol());
         // call $anchorScroll()
         anchorScroll.run();
+        //seems swipe.bind not work as expected
+        //swipe.bind(untyped __js__("window.document"),new EventHandlers(null,function(point:js.html.Point){trace(point);}));
 	}
 	
-	public function new(scope:NgScope, location:NgLocation, anchorScroll:NgAnchorScroll) {
+	public function new(scope:NgScope, location:NgLocation, anchorScroll:NgAnchorScroll,swipe:NgSwipe) {
 		this.location = location;
 		this.anchorScroll = anchorScroll;
+		this.swipe = swipe;
 		this.target = 'bottom';
 		super(scope);
 	}
@@ -63,6 +67,10 @@ class ClockCtrl  extends BaseCtrl{
 	public function stopClock() {
 		interval.cancel(handle);
 	}
+	public function swipeLeft(){
+		trace("swipe left");
+		interval.cancel(handle);
+	}
 }
 
 class Controllers implements IControllers
@@ -74,7 +82,7 @@ class Controllers implements IControllers
 	@:inject("$scope","$route")
 	public static var homeCtrl:Dynamic = HomeCtrl;
 
-	@:inject("$scope", "$location", "$anchorScroll")
+	@:inject("$scope", "$location", "$anchorScroll","$swipe")
 	public static var scrollCtrl:Dynamic = ScrollCtrl;
 
 	@:inject("$scope","$interval","$exceptionHandler")
