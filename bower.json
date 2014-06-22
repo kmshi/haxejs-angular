@@ -10,6 +10,7 @@
 	,"angular-touch":"1.2.12"
 	,"angular-loader":"1.2.12"
 	,"angular-i18n":"1.2.12"
+	,"angular-bindonce":""
 	,"angular-ui-bootstrap":"0.11.0"
 	,"angular-ui-router":"0.2.7"
 	,"angular-ui-utils":"0.1.1"

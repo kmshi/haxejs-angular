@@ -10,6 +10,7 @@ import ng.NgResource;
 import ng.NgRoute;
 import ng.NgSanitize;
 import ng.NgCookies;
+import ng.NgBindOnce;
 
 class XX extends BaseProvider{
 	@:inject("$location", "$anchorScroll")
