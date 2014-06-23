@@ -12,6 +12,7 @@ import ng.NgSanitize;
 import ng.NgCookies;
 import ng.NgBindOnce;
 import ng.NgGestures;
+import ng.NgUiRouter;
 
 class XX extends BaseProvider{
 	@:inject("$location", "$anchorScroll")
