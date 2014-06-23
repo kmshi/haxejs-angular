@@ -62,7 +62,8 @@ extern class NgRouteProvider{
 }
 
 //@:native("$routeParams")
-abstract NgRouteParams({}) from {} {
+typedef NgRouteParams = Dynamic;
+/*abstract NgRouteParams({}) from {} {
     @:arrayAccess public inline function arrayAccess(key:String):Dynamic {
         return Reflect.field(this, key);
     }
@@ -70,7 +71,7 @@ abstract NgRouteParams({}) from {} {
     @:arrayAccess public inline function arrayWrite<T>(key:String, value:T):Void {
         Reflect.setField(this, key, value);
     }	
-}
+}*/
 
 class RouteMapping{
 	public function new(?controller:Dynamic,?controllerAs:Dynamic,?template:Dynamic,?templateUrl:Dynamic,?resolve:Dynamic,?redirectTo:Dynamic){
