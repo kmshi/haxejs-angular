@@ -24,9 +24,6 @@ extern class Angular
         //add "ng" to global module dependencies,default already
         //if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
         //window.hxdeps.push("ng");
-
-        //if not include jquery, use jqLite embedded in angular.js, however, it is not public yet
-        //if (js.JQuery==null) js.JQuery = jqLite;
     }
 
 	 /** 
