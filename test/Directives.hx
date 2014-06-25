@@ -12,13 +12,12 @@ class Directives implements IDirectives
 
 	@:inject("locServ")
 	public static var appVersion:Dynamic = function(locServ:LocServ) {
-		var obj =  new NgDirectiveDefinition();
-		obj.restrict = "EA";
-		obj.link = function(scope:NgScope, elm:NgJQuery,attr) {
+		return new NgDirectiveDefinition()
+		.set_restrict("EA")
+		.set_link(function(scope:NgScope, elm:NgJQuery,attr) {
           elm.text("1.0.0alpha");
 		  trace("app-version uses other services:"+locServ.getA());
-		};
-		return obj;
+		});
 	}
 
     public static function main(){
