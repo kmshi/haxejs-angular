@@ -14,6 +14,8 @@ extern class Angular
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular/angular.min.js");
+        #else
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular/angular.min.js");
         #end
 
         ng.Angular = window.angular;

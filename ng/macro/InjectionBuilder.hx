@@ -211,53 +211,23 @@ class InjectionBuilder
     	return allFields;
     }
 
-	macro public static function inject(module:Expr, name: Expr,fn:Expr):haxe.macro.Expr
-  	{
-	    var field;
-	    var cls;
-	    //trace(fn);
-	    switch(fn.expr){
-	    	case EField(expr, m):{
-	    		cls = switch(expr.expr){
-	    			case EConst(CIdent(clsName)):clsName;
-	    			case _:null;
-	    		}
-	    		field = m;
-	    	}
-	    	case _:null;
-	    }
+    macro public static function copyFile( fileName : Expr ) {
+        var str = switch( fileName.expr ) {
+            case EConst(c):
+                switch( c ) {
+                case CString(str): str;
+                default: null;
+                }
+            default: null;
+        }
+        if( str == null ) Context.error("Should be a constant string", fileName.pos);
 
-	    //trace(cls);
-	    //trace(field);
-	    //trace(haxe.macro.Context.getType(cls);
-	    var injects:Array<String> = new Array<String>();
-	    switch (haxe.macro.Context.getType(cls))
-	    {
-	      case TInst(cl,_):{
-	      	for (st in cl.get().statics.get())
-	      		if (st.name==field){
-	      			//var meta: Metadata = st.meta;
-	      			for (meta in st.meta.get())
-	      			   if (meta.name == ":inject"){
-	      			   		for(param in meta.params)
-	      			   			switch(param.expr){
-	      			   				case EConst(CString(injectName)): injects.push('"$injectName"');
-	      			   				case _:null;
-	      			   			}
-	      			   }
-	      		}
-	      		//trace(st.name);
-	      }
-	        
-	      case _:
-	    }
-	    //trace(injects);
-	    var untypedJs = Context.parse(cls+"."+field+ ".$inject = [" + injects.join(",") + "]",Context.currentPos());
-	    return macro {
-	    	$untypedJs;
-	    	$module.controller($name, $fn);
-	    }
+        //trace(Context.resolvePath(str));
+        //trace(sys.FileSystem.fullPath(str));
 
-	  }
-
+        var lastIndex = str.lastIndexOf("/");
+        sys.FileSystem.createDirectory(sys.FileSystem.fullPath(str.substr(0,lastIndex)));
+        sys.io.File.copy( Context.resolvePath(str) , sys.FileSystem.fullPath(str) );
+        return macro null;
+    }
 }

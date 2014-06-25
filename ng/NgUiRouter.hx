@@ -10,6 +10,8 @@ extern class NgUiRouter
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-ui-router/release/angular-ui-router.min.js");
+        #else
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-ui-router/release/angular-ui-router.min.js");
         #end
 
         //add "ui.router" to global module dependencies
