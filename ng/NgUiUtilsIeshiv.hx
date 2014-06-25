@@ -25,10 +25,10 @@ extern class NgUiUtilsIeshiv
 
     private static function __init__() : Void untyped {
         #if embed_js
-          haxe.macro.Compiler.includeFile("www/js/bower_components/angular-ui-utils/ui-utils-ieshiv.min.js");
+          haxe.macro.Compiler.includeFile("www/bower_components/angular-ui-utils/ui-utils-ieshiv.min.js");
         #else
-          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-ui-utils/ui-utils-ieshiv.min.js");
-          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-ui-utils/ui-utils-ieshiv.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-ui-utils/ui-utils-ieshiv.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-ui-utils/ui-utils-ieshiv.js");
         #end
     }
 }
