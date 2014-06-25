@@ -223,12 +223,11 @@ class InjectionBuilder
         if( str == null ) Context.error("Should be a constant string", fileName.pos);
 
         //trace(Context.resolvePath(str));
-        //trace(sys.FileSystem.fullPath(str));
-        
-        if (!sys.FileSystem.exists( sys.FileSystem.fullPath(str) )){
+
+        if (!sys.FileSystem.exists( str )){
             var lastIndex = str.lastIndexOf("/");
-            sys.FileSystem.createDirectory(sys.FileSystem.fullPath(str.substr(0,lastIndex)));
-            sys.io.File.copy( Context.resolvePath(str) , sys.FileSystem.fullPath(str) );
+            sys.FileSystem.createDirectory(str.substr(0,lastIndex));
+            sys.io.File.copy( Context.resolvePath(str) , str);
         }
         return macro null;
     }
