@@ -12,7 +12,7 @@ extern class NgRoute
         #if embed_js
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-route/angular-route.min.js");
         #else
-          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-route/angular-route.js");
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-route/angular-route.min.js");
         #end
 		//add "ngRoute" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
