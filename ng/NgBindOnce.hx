@@ -13,6 +13,7 @@ extern class NgBindOnce
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-bindonce/bindonce.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-bindonce/bindonce.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-bindonce/bindonce.js");
         #end
 		//add "pasvaz.bindonce" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

@@ -13,6 +13,7 @@ extern class NgUiUtils
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-ui-utils/ui-utils.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-ui-utils/ui-utils.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-ui-utils/ui-utils.js");
         #end
 		//add "ui.utils" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

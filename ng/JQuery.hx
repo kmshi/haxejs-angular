@@ -399,6 +399,7 @@ extern class JQuery implements ArrayAccess<Element> {
 			haxe.macro.Compiler.includeFile("www/js/bower_components/jquery/jquery.min.js");
 		#else
 		  ng.macro.InjectionBuilder.copyFile("www/js/bower_components/jquery/jquery.min.js");
+		  ng.macro.InjectionBuilder.copyFile("www/js/bower_components/jquery/jquery.js");
 		#end
 		var q : Dynamic = (untyped js.Browser.window).jQuery;
 		ng.JQuery = q;

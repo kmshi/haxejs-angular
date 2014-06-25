@@ -14,6 +14,7 @@ abstract NgCookies({}) from {}
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-cookies/angular-cookies.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-cookies/angular-cookies.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-cookies/angular-cookies.js");
         #end
 		//add "ngCookies" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

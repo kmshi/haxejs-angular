@@ -16,6 +16,7 @@ extern class Angular
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular/angular.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular/angular.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular/angular.js");
         #end
 
         ng.Angular = window.angular;

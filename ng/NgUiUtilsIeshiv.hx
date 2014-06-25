@@ -28,6 +28,7 @@ extern class NgUiUtilsIeshiv
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-ui-utils/ui-utils-ieshiv.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-ui-utils/ui-utils-ieshiv.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-ui-utils/ui-utils-ieshiv.js");
         #end
     }
 }

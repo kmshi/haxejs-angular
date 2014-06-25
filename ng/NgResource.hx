@@ -14,6 +14,7 @@ abstract NgResource({}) from {}
           haxe.macro.Compiler.includeFile("www/js/bower_components/angular-resource/angular-resource.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-resource/angular-resource.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/js/bower_components/angular-resource/angular-resource.js");
         #end
 		//add "ngResource" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
