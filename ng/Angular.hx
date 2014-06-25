@@ -5,7 +5,7 @@ package ng;
 import js.html.Document;
 import js.html.DOMWindow;
 //import js.Browser;
-import js.JQuery;
+import ng.JQuery;
 
 @:initPackage
 //@:native("angular")
@@ -1258,7 +1258,8 @@ class NgDirectiveDefinition {
 	 * are also run in priority order, but post-link functions are run in reverse order. The order
 	 * of directives with the same priority is undefined. The default priority is `0`.
 	 */
-	public var priority(default, default):Int = 0;
+	public function set_priority(val:Int):NgDirectiveDefinition untyped{this.priority = val;return this;}
+	public function get_priority():Int untyped {return this.priority;}
 	/**
 	 * string '<div></div>' or  function(tElement, tAttrs) { ... }
 	 * replace the current element with the contents of the HTML. The replacement process
@@ -1270,7 +1271,8 @@ class NgDirectiveDefinition {
 	 * two arguments `tElement` and `tAttrs` (described in the `compile` function api below) and
 	 * returns a string value representing the template.
 	 */
-	public var template(default, default):Dynamic = null;
+	public function set_template(val:Dynamic):NgDirectiveDefinition untyped{this.template = val;return this;}
+	public function get_template():Dynamic untyped {return this.template;}
 	/**
 	 * string 'directive.html' or  function(tElement, tAttrs) { ... }
 	 * Same as `template` but the template is loaded from the specified URL. Because
@@ -1282,14 +1284,16 @@ class NgDirectiveDefinition {
 	 * a string value representing the url.  In either case, the template URL is passed through {@link
 	 * api/ng.$sce#getTrustedResourceUrl $sce.getTrustedResourceUrl}.
 	 */
-	public var templateUrl(default, default):Dynamic = null;
+	public function set_templateUrl(val:Dynamic):NgDirectiveDefinition untyped{this.templateUrl = val;return this;}
+	public function get_templateUrl():Dynamic untyped {return this.templateUrl;}
 	/**
 	 * specify where the template should be inserted. Defaults to `false`.
 	 *
 	 * * `true` - the template will replace the current element.
 	 * * `false` - the template will replace the contents of the current element.
 	 */
-	public var replace(default, default):Bool = false;
+	public function set_replace(val:Bool):NgDirectiveDefinition untyped{this.replace = val;return this;}
+	public function get_replace():Bool untyped {return this.replace;}
 	/**
 	 * compile the content of the element and make it available to the directive.
 	 * Typically used with {@link ng.directive:ngTransclude
@@ -1302,7 +1306,8 @@ class NgDirectiveDefinition {
 	 * * `true` - transclude the content of the directive.
 	 * * `'element'` - transclude the whole element including any directives defined at lower priority.
 	 */
-	public var transclude(default, default):Dynamic = null;
+	public function set_transclude(val:Dynamic):NgDirectiveDefinition untyped{this.transclude = val;return this;}
+	public function get_transclude():Dynamic untyped {return this.transclude;}
 	/**
 	 * String of subset of `EACM` which restricts the directive to a specific directive
 	 * declaration style. If omitted, the default (attributes only) is used.
@@ -1312,7 +1317,8 @@ class NgDirectiveDefinition {
 	 * * `C` - Class: `<div class="my-directive: exp;"></div>`
 	 * * `M` - Comment: `<!-- directive: my-directive exp -->`
 	 */
-	public var restrict(default, default):String = 'A';
+	public function set_restrict(val:String):NgDirectiveDefinition untyped{this.restrict = val;return this;}
+	public function get_restrict():String untyped {return this.restrict;}
 	/**
 	 * **If set to `true`,** then a new scope will be created for this directive. If multiple directives on the
 	 * same element request a new scope, only one new scope is created. The new scope rule does not
@@ -1356,7 +1362,8 @@ class NgDirectiveDefinition {
 	 *   For example, if the expression is `increment(amount)` then we can specify the amount value
 	 *   by calling the `localFn` as `localFn({amount: 22})`.
 	 */
-	public var scope(default, default):Dynamic = true;
+	public function set_scope(val:Dynamic):NgDirectiveDefinition untyped{this.scope = val;return this;}
+	public function get_scope():Dynamic untyped {return this.scope;}
 	/**
 	 * Controller constructor function. The controller is instantiated before the
 	 * pre-linking phase and it is shared with other directives (see
@@ -1370,13 +1377,15 @@ class NgDirectiveDefinition {
 	 *    The scope can be overridden by an optional first argument.
 	 *   `function([scope], cloneLinkingFn)`.
 	 */
-	public var controller(default, default):Dynamic = null;
+	public function set_controller(val:Dynamic):NgDirectiveDefinition untyped{this.controller = val;return this;}
+	public function get_controller():Dynamic untyped {return this.controller;}
 	/**
 	 * Controller alias at the directive scope. An alias for the controller so it
 	 * can be referenced at the directive template. The directive needs to define a scope for this
 	 * configuration to be used. Useful in the case when directive is used as component.
 	 */
-	public var controllerAs(default, default):String = null;
+	public function set_controllerAs(val:String):NgDirectiveDefinition untyped{this.controllerAs = val;return this;}
+	public function get_controllerAs():String untyped {return this.controllerAs;}
 	/**
 	 * Require another directive and inject its controller as the fourth argument to the linking function. The
 	 * `require` takes a string name (or array of strings) of the directive(s) to pass in. If an array is used, the
@@ -1389,7 +1398,8 @@ class NgDirectiveDefinition {
 	 * * `?^` - Attempt to locate the required controller by searching the element's parents or pass `null` to the
 	 *   `link` fn if not found.
 	 */
-	public var require(default, default):Array<String> = null;
+	public function set_require(val:Array<String>):NgDirectiveDefinition untyped{this.require = val;return this;}
+	public function get_require():Array<String> untyped {return this.require;}
 	/**
 	 * The compile function deals with transforming the template DOM. Since most directives do not do
 	 * template transformation, it is not used often. Examples that require compile functions are
@@ -1420,7 +1430,8 @@ class NgDirectiveDefinition {
 	 *    post: function postLink(scope, iElement, iAttrs, controller) { ... }
 	 *  }
 	 */
-	public var compile(default, default):Dynamic = null;
+	public function set_compile(val:Dynamic):NgDirectiveDefinition untyped{this.compile = val;return this;}
+	public function get_compile():Dynamic untyped {return this.compile;}
 	/**
 	 * This property is used only if the `compile` property is not defined.
 	 * The link function is responsible for registering DOM listeners as well as updating the DOM. It is
@@ -1462,7 +1473,8 @@ class NgDirectiveDefinition {
 	 *  }
 	 * or return function postLink(scope, iElement, iAttrs, controller) { ... }
 	 */
-	public var link(default, default):Dynamic = null;
+	public function set_link(val:Dynamic):NgDirectiveDefinition untyped{this.link = val;return this;}
+	public function get_link():Dynamic untyped {return this.link;}
 }
 
 //directives

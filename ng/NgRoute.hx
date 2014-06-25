@@ -74,25 +74,21 @@ typedef NgRouteParams = Dynamic;
 }*/
 
 class RouteMapping{
-	public function new(?controller:Dynamic,?controllerAs:Dynamic,?template:Dynamic,?templateUrl:Dynamic,?resolve:Dynamic,?redirectTo:Dynamic){
-		this.controller = controller;
-		this.controllerAs = controllerAs;
-		this.template = template;
-		this.templateUrl = templateUrl;
-		this.resolve = resolve;
-		this.redirectTo = redirectTo;
+	public function new(){
 	}
 	/**
 	*  Controller fn that should be associated with
    	*  newly created scope or the name of a {@link angular.Module#controller registered
    	*  controller} if passed as a string.
 	*/
-	public var controller(default, default):Dynamic = null;
+	public function set_controller(val:Dynamic):RouteMapping untyped{ this.controller = val; return this;}
+	public function get_controller():Dynamic untyped{return this.controller;}
 	/**
 	*  A controller alias name. If present the controller will be
    	*  published to scope under the `controllerAs` name.
 	*/	
-	public var controllerAs(default, default):String = null;
+	public function set_controllerAs(val:String):RouteMapping untyped{ this.controllerAs = val;return this;}
+	public function get_controllerAs():String untyped{return this.controllerAs;}
 	/**
 	*  html template as a string or a function that
    	*  returns an html template as a string which should be used by {@link
@@ -103,12 +99,14 @@ class RouteMapping{
     *      - `{Array.<Object>}` - route parameters extracted from the current
     *        `$location.path()` by applying the current route
 	*/	
-	public var template(default, default):Dynamic = null;
+	public function set_template(val:Dynamic):RouteMapping untyped{ this.template = val;return this;}
+	public function get_template():Dynamic untyped{return this.template;}
 	/**
 	*  path or function that returns a path to an html
     *  template that should be used by {@link ngRoute.directive:ngView ngView}.
 	*/	
-	public var templateUrl(default, default):Dynamic = null;
+	public function set_templateUrl(val:Dynamic):RouteMapping untyped{ this.templateUrl = val;return this;}
+	public function get_templateUrl():Dynamic untyped{return this.templateUrl;}
 	/**
 	*     An optional map of dependencies which should
    *      be injected into the controller. If any of these dependencies are promises, the router
@@ -128,7 +126,8 @@ class RouteMapping{
    *        `ngRoute.$routeParams` will still refer to the previous route within these resolve
    *        functions.  Use `$route.current.params` to access the new route parameters, instead.
 	*/	
-	public var resolve(default, default):Dynamic = null;
+	public function set_resolve(val:Dynamic):RouteMapping untyped{ this.resolve = val;return this;}
+	public function get_resolve():Dynamic untyped{return this.resolve;}
 	/**
 	*     value to update
    *      {@link ng.$location $location} path with and trigger route redirection.
@@ -143,20 +142,23 @@ class RouteMapping{
    *      The custom `redirectTo` function is expected to return a string which will be used
    *      to update `$location.path()` and `$location.search()`.
 	*/	
-	public var redirectTo(default, default):Dynamic = null;
+	public function set_redirectTo(val:Dynamic):RouteMapping untyped{ this.redirectTo = val;return this;}
+	public function get_redirectTo():Dynamic untyped{return this.redirectTo;}
 	/**
 	*  reload route when only `$location.search()` or `$location.hash()` changes.
 	*  If the option is set to `false` and url in the browser changes, then
     *  `$routeUpdate` event is broadcasted on the root scope.
 	*/
-	public var reloadOnSearch(default, default):Bool = true;
+	public function set_reloadOnSearch(val:Bool):RouteMapping untyped{ this.reloadOnSearch = val;return this;}
+	public function get_reloadOnSearch():Bool untyped{return this.reloadOnSearch;}
 	/**
 	*  match routes without being case sensitive
    *
    *      If the option is set to `true`, then the particular route can be matched without being
    *      case sensitive
 	*/	
-	public var caseInsensitiveMatch(default, default):Bool = false;
+	public function set_caseInsensitiveMatch(val:Bool):RouteMapping untyped{ this.caseInsensitiveMatch = val;return this;}
+	public function get_caseInsensitiveMatch():Bool untyped{return this.caseInsensitiveMatch;}
 }
 
 //directives
