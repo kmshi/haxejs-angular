@@ -24,7 +24,8 @@ class InjectionBuilder
     private static var ctorField:Field;
     private static var ctor:Function;
 
-    private static var block:Array<Expr>;
+    private static var blockMain:Array<Expr>;
+    private static var blockCtor:Array<Expr>;
 
     private static function getClsName() {
         switch(Context.getLocalType()) {
@@ -50,8 +51,8 @@ class InjectionBuilder
 
     private static function getMainFnBlock() {
         switch(mainFn.expr.expr) {
-            case EBlock(b): block = b;
-            default: block = [mainFn.expr];
+            case EBlock(b): blockMain = b;
+            default: blockMain = [mainFn.expr];
         }
     }
 
@@ -66,13 +67,15 @@ class InjectionBuilder
                 default:
             }
         }
-        //if (ctor == null) throw new Error("No new function found", Context.currentPos());
+
         if (ctor == null) {
-        	block = new Array<Expr>();
+            //the "expr: macro $a{blockCtor}" seems not work, so throw exception here
+            throw new Error("No constractor new function found", Context.currentPos());
+        	blockCtor = new Array<Expr>();
         	ctor = {
                 args: [],
                 ret: null,
-                expr: macro $a{block},
+                expr: macro $a{blockCtor},
                 params: []
             };
             ctorField = {
@@ -86,8 +89,8 @@ class InjectionBuilder
 	        allFields.push(ctorField);
         }else{
         	switch(ctor.expr.expr) {
-	            case EBlock(b): block = b;
-	            default: block = [ctor.expr];
+	            case EBlock(b): blockCtor = b;
+	            default: blockCtor = [ctor.expr];
 	        }
         }
     }
@@ -107,7 +110,7 @@ class InjectionBuilder
 						//var str =  "untyped this.$get = [" + metaToString(inject.params).join(",") + ","+currentClsName+"."+f.name+"]";
 						var str =  "untyped this.$get = [" + metaToString(inject.params).join(",") + ","+f.name+"]";
 						var ett = Context.parse(str,Context.currentPos());
-						block.push(macro {$ett;});
+						blockCtor.push(macro {$ett;});
 						hasMeta = true;
 					}
                 }
@@ -131,11 +134,11 @@ class InjectionBuilder
 					if (injects != null && injects.length > 0 && (inject = injects[0]) != null)
 					{
 						var ett = register(f.name,f.name,type);
-						if (ett != null) block.unshift(macro { $ett; } );
+						if (ett != null) blockMain.unshift(macro { $ett; } );
 						
 						var et = getInjectionExpr(f.name, metaToString(inject.params));
 						if (type!="constant" && type!="value")//it is not value or constant
-							block.unshift(macro { $et; }); //block.insert(0, macro { $et; } );
+							blockMain.unshift(macro { $et; }); //block.insert(0, macro { $et; } );
 
 						hasMeta = true;
 					}
@@ -147,7 +150,7 @@ class InjectionBuilder
 			trace(currentClsName + ":Please add public static variable with @:inject('$xx','$yy') alike to macro setup $inject");
         }
 		
-        block.unshift(macro {
+        blockMain.unshift(macro {
 	        try {
 	    		Angular.module('$currentPackName');
 	  		} catch (e:Dynamic) {
@@ -156,7 +159,7 @@ class InjectionBuilder
 	    		Angular.module('$currentPackName',deps);
 	  		}
         });//use package as module name
-    	//block.unshift(macro {Angular.module('$currentClsName',[]);});
+    	//blockMain.unshift(macro {Angular.module('$currentClsName',[]);});
     }
 
     private static function register(name:String,fvar:String,type:String):Expr
