@@ -69,13 +69,14 @@ class InjectionBuilder
         }
 
         if (ctor == null) {
-            //the "expr: macro $a{blockCtor}" seems not work, so throw exception here
-            throw new Error("No constractor new function found", Context.currentPos());
+            //the "expr: macro $b{blockCtor}" seems work now, do not need throw exception here
+            //throw new Error("No constractor new function found", Context.currentPos());
+            
         	blockCtor = new Array<Expr>();
         	ctor = {
                 args: [],
                 ret: null,
-                expr: macro $a{blockCtor},
+                expr: macro $b{blockCtor},
                 params: []
             };
             ctorField = {
