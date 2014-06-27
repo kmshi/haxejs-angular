@@ -141,7 +141,7 @@ class TestSuiteBuilder
         if (pendings.length==1) str = "untyped xdescribe('" + currentClsName+"',"+ currentClsName +")";
 
         var ett = Context.parse(str,Context.currentPos());
-        blockMain.unshift(macro {$ett;});
+        blockMain.push(macro {$ett;});
     }
 
 
