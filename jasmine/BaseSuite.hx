@@ -8,6 +8,7 @@ package jasmine;
 * the code in new and main function should be generated automatically
 * setup/teardown and test methods should all to be static public.
 * _testXXX method to be pending spec
+* based on jasmine 1.3 api
 */
 @:autoBuild(jasmine.macro.TestSuiteBuilder.buildSuite())
 class BaseSuite
