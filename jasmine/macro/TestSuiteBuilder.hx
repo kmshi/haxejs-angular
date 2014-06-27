@@ -109,6 +109,10 @@ class TestSuiteBuilder
                     if (f.name.toLowerCase() == 'teardown') str =  "untyped afterEach(" + f.name +")";
                     if (f.name.indexOf('test')==0) str =  "untyped it('" + f.name+"',"+ f.name +")";
                     if (f.name.indexOf('_test')==0) str =  "untyped xit('" + f.name+"',"+ f.name +")";
+                    //check if function has @:pending
+                    var pendings = f.meta.filter(metaExists(":pending"));
+                    if (pendings.length==1) str =  "untyped xit('" + f.name+"',"+ f.name +")";
+
                     if (str==null) continue;
 					var ett = Context.parse(str,Context.currentPos());
 					blockCtor.push(macro {$ett;});
@@ -124,6 +128,18 @@ class TestSuiteBuilder
 
     private static function addExpr2MainFnBlock() {	
         var str =  "untyped describe('" + currentClsName+"',"+ currentClsName +")";
+        //check if main static function has @:pending
+        var pendings = mainField.meta.filter(metaExists(":pending"));
+        if (pendings.length==1) str = "untyped xdescribe('" + currentClsName+"',"+ currentClsName +")";
+        //check if class itself has @:pending
+        var clsMeta;
+        switch(Context.getLocalType()) {
+            case TInst(ins, _): clsMeta = ins.get().meta.get();
+            default:
+        }
+        pendings = clsMeta.filter(metaExists(":pending"));
+        if (pendings.length==1) str = "untyped xdescribe('" + currentClsName+"',"+ currentClsName +")";
+
         var ett = Context.parse(str,Context.currentPos());
         blockMain.unshift(macro {$ett;});
     }
