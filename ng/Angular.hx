@@ -1217,6 +1217,12 @@ abstract NgTimeout({}) from {} {
     public inline function cancel(promise:NgPromise):Bool untyped{
         return this.cancel(promise);
     }
+    /**
+    * flush is only available in ngMock
+    */
+    public inline function flush(millis:Int):Int untyped{
+    	return this.flush(millis);
+    }
 }
 
 //@:native("$window")
