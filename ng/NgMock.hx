@@ -22,6 +22,12 @@ class NgMock
     public static function module(name: String) : Void {
 		untyped __js__("angular.mock.module(name)");
 	}
+	/**
+	* If an object literal{key:value} is passed they will be registered as values in the module
+	*/
+	public static function config(obj:Dynamic) : Void {
+		untyped __js__("angular.mock.module(obj)");
+	}
 
 	public static function inject(fn:Array<Dynamic>) : Void {
 		untyped __js__("angular.mock.inject(fn)");
