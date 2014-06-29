@@ -12,15 +12,11 @@
 	,"angular-i18n":"1.2.12"
 	,"angular-gestures":"0.2.2"
 	,"angular-bindonce":""
-	,"angular-ui-bootstrap":"0.11.0"
 	,"angular-ui-router":"0.2.7"
 	,"angular-ui-utils":"0.1.1"
 	,"jquery":"1.7.2"
-	,"ionic":"0.9.27"
-	,"ngCordova":""
   },
   "devDependencies": {
     "angular-mocks": "1.2.12"
-	,"angular-scenario":"1.2.12"	
   }
 }
