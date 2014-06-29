@@ -5,6 +5,7 @@
   "tags": [ "angular", "js" ],
   "description": "haxe extern for angular",
   "version": "0.0.1",
+  "classPath": ".",
   "releasenote": "First initiated",
   "contributors": [ "richard" ],
   "dependencies": {}
