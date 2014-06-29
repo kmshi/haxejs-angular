@@ -1,9 +1,0 @@
--cp .
--js www/js/app.js
--main test.App
-
---next
--cp .
--js www/js/app.embed.js
--main test.App
--D embed_js
