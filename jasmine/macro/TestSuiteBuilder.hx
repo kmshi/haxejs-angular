@@ -99,7 +99,11 @@ class TestSuiteBuilder
     private static function addExpr2CtorBlock(){
     	var hasMeta:Bool = false;
     	for (f in allFields) {
-            if (!f.access.has(AStatic)) continue;
+            if (f.name == 'new') continue;
+            if (!f.access.has(AStatic)) {
+                trace("warning:" + f.name + " should be static member field/function.");
+                continue;
+            }
             //if (f.access.has(APrivate)) continue;
             if (f.name == 'main') continue;
             switch(f.kind) {
