@@ -942,10 +942,10 @@ typedef HttpDefaults = {
 
 //@:native("$compile")
 abstract NgCompile({}) from {} {
-    public inline function runJ(element:NgJQuery):NgScope->Array<js.html.Element> untyped{
+    public inline function runJ(element:NgJQuery):NgScope->NgJQuery untyped{
         return this(element);
     }
-    public inline function run(element:String):NgScope->Array<js.html.Element> untyped{
+    public inline function run(element:String):NgScope->NgJQuery untyped{
         return this(element);
     }
 }
@@ -1485,6 +1485,68 @@ class NgDirectiveDefinition {
 	 */
 	public function set_link(val:Dynamic):NgDirectiveDefinition untyped{this.link = val;return this;}
 	public function get_link():Dynamic untyped {return this.link;}
+}
+
+//normally passed by iAttrs param in link func
+abstract NgAttributes({}) from {} {
+	//Normalized attribute names,Supports interpolation
+	public function get(attr:String):String untyped{
+		return this[attr];
+	}
+	//Directive inter-communication
+	public function set(attr:String,val:String):Void untyped{
+		this["$set"](attr,val);
+	}
+	//Observing interpolated attributes
+	public function observe(attr:String,fn:Dynamic):Void untyped{
+		this["$observe"](attr,fn);
+	}
+} 
+
+//normally passed by controller param in link func
+abstract NgFormController({}) from {} {
+	//$pristine True if user has not interacted with the form yet.
+	public function get_pristine():Bool untyped {
+		return this["$pristine"];
+	}
+	//$pristine True if user has not interacted with the form yet.
+	public function set_pristine(val:Bool):Void untyped {
+		this["$pristine"] = val;
+	}
+	//$dirty True if user has already interacted with the form.
+	public function get_dirty():Bool untyped {
+		return this["$dirty"];
+	}
+	//$dirty True if user has already interacted with the form.
+	public function set_dirty(val:Bool):Void untyped {
+		this["$dirty"] = val;
+	}
+	// $valid True if all of the containing forms and controls are valid.
+	public function get_valid():Bool untyped {
+		return this["$valid"];
+	}
+	// $valid True if all of the containing forms and controls are valid.
+	public function set_valid(val:Bool):Void untyped {
+		this["$valid"] = val;
+	}
+	//$invalid True if at least one containing control or form is invalid.
+	public function get_invalid():Bool untyped {
+		return this["$invalid"];
+	}
+	//$invalid True if at least one containing control or form is invalid.
+	public function set_invalid(val:Bool):Void untyped {
+		this["$invalid"] = val;
+	}
+	/**
+	* $error Is an object hash, containing references to all invalid controls or
+	 *  forms, where:
+	 *
+	 *  - keys are validation tokens (error names),
+	 *  - values are arrays of controls or forms that are invalid for given error name.
+	*/
+	public function get_error():Dynamic untyped {
+		return this["$error"];
+	}
 }
 
 //directives
