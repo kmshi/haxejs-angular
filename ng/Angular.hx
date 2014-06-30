@@ -1250,7 +1250,10 @@ abstract NgController( { } ) from { } {
      */	
 	@:overload(function(expression:Dynamic, locals:Dynamic):Dynamic{})
 	public inline function run(expression:String, locals:Dynamic):Dynamic untyped {
-		if (Angular.isUndefined(locals["$scope"])) locals["$scope"] = {};
+		if (locals!=null && Angular.isUndefined(locals["$scope"])) {
+			locals["$scope"] = {};
+			if (Angular.isDefined(locals["scope"])) Angular.copy(locals["scope"],locals["$scope"]);
+		}
 		return this(expression,locals);
 	}
 }
