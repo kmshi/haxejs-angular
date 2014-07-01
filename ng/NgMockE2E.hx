@@ -69,6 +69,6 @@ extern class NgHttpBackend{
 }
 
 typedef RequestHandler = {
-	function respond(status:Int, data:Dynamic, headers:Dynamic) :Void;
+	function respond(status:Int, data:Dynamic, ?headers:Dynamic) :Void;
   function passThrough():Void;
 }
