@@ -28,6 +28,12 @@ class NgMock
 	public static function config(obj:Dynamic) : Void {
 		untyped __js__("angular.mock.module(obj)");
 	}
+  /**
+  * used to configure all kinds of providers which is injected into fn, like: configProvider(function(xxProvider){...})
+  */
+  public static function configProvider(fn:Dynamic->Void) : Void {
+    untyped __js__("angular.mock.module(fn)");
+  }
 
 	public static function inject(fn:Array<Dynamic>) : Void {
 		untyped __js__("angular.mock.inject(fn)");

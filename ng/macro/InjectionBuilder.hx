@@ -135,7 +135,7 @@ class InjectionBuilder
 					if (injects != null && injects.length > 0 && (inject = injects[0]) != null)
 					{
 						var ett = register(f.name,f.name,type);
-						if (ett != null) blockMain.unshift(macro { $ett; } );
+						if (ett != null) blockMain.push(macro { $ett; } );
 						
 						var et = getInjectionExpr(f.name, metaToString(inject.params));
 						if (type!="constant" && type!="value")//it is not value or constant
