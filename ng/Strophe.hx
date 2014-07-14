@@ -47,7 +47,7 @@ extern class Strophe{
         DISCONNECTED: Int,
         DISCONNECTING: Int,
         ATTACHED: Int
-    },
+    };
 
     public static function addNamespace(name:String, value:String):Void;
     public static function forEachChild(elem:Element, elemName:String, func:Dynamic):Void;
@@ -137,7 +137,7 @@ class StropheHelper{
     }
 } 
 
-extern class StropheBuilder extends Element{
+extern class StropheBuilder{
 	public function tree():Element;
 	public function toString():String;
 	public function up():StropheBuilder;
@@ -225,6 +225,7 @@ extern class StropheConnection{
      *     [XMLElement] |
      *     Strophe.Builder) elem - The stanza to send.
      */	
+    @:overload(function(elem:StropheBuilder):Void{})
 	public function send(elem:Element):Void;
 	public function flush():Void;
     /** 
@@ -240,7 +241,8 @@ extern class StropheConnection{
      *
      *  Returns:
      *    The id used to send the IQ.
-    */	
+    */
+    @:overload(function(elem:StropheBuilder, callback:Dynamic, errback:Dynamic, ?timeout:Int):String{})	
 	public function sendIQ(elem:Element, callback:Dynamic, errback:Dynamic, ?timeout:Int):String;
     /** 
      *  Add a timed handler to the connection.
