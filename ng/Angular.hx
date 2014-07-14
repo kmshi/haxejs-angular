@@ -497,7 +497,7 @@ abstract NgScope({}) from {} {
        * @param {(object)=} locals Local variables object, useful for overriding values in scope.
        * @returns {*} The result of evaluating the expression.
 	   */
-	public inline function eval(expr:Dynamic, ?locals:Dynamic):Dynamic untyped {
+	public inline function eval(expr:Dynamic, ?locals:{}):Dynamic untyped {
 		return this["$eval"](expr,locals);
 	}
       /**
@@ -824,7 +824,7 @@ abstract NgHttp( { } ) from { } {
      *    - **responseType** - `{string}` - see {@link
      *      https://developer.mozilla.org/en-US/docs/DOM/XMLHttpRequest#responseType requestType}.
 	 */
-	 public inline function run(requestConfig:Dynamic):NgHttpPromise untyped {
+	 public inline function run(requestConfig:{}):NgHttpPromise untyped {
 		return this(requestConfig);
 	}
     /**
@@ -834,13 +834,13 @@ abstract NgHttp( { } ) from { } {
      * @param {Object=} config Optional configuration object
      * @returns {HttpPromise} Future object
      */
-	public inline function get(url:String, ?config:Dynamic):NgHttpPromise untyped {
+	public inline function get(url:String, ?config:{}):NgHttpPromise untyped {
 		return this.get(url,config);
 	}
-	public inline function delete(url:String, ?config:Dynamic):NgHttpPromise untyped {
+	public inline function delete(url:String, ?config:{}):NgHttpPromise untyped {
 		return this.delete(url,config);
 	}
-	public inline function head(url:String, ?config:Dynamic):NgHttpPromise untyped {
+	public inline function head(url:String, ?config:{}):NgHttpPromise untyped {
 		return this.head(url,config);
 	}
     /**
@@ -851,13 +851,13 @@ abstract NgHttp( { } ) from { } {
      * @param {Object=} config Optional configuration object
      * @returns {HttpPromise} Future object
      */	
-	public inline function jsonp(url:String, ?config:Dynamic):NgHttpPromise untyped {
+	public inline function jsonp(url:String, ?config:{}):NgHttpPromise untyped {
 		return this.jsonp(url,config);
 	}
-	public inline function put(url:String, data:Dynamic, ?config:Dynamic):NgHttpPromise untyped {
+	public inline function put(url:String, data:Dynamic, ?config:{}):NgHttpPromise untyped {
 		return this.put(url,config);
 	}
-	public inline function post(url:String, data:Dynamic, ?config:Dynamic):NgHttpPromise untyped {
+	public inline function post(url:String, data:Dynamic, ?config:{}):NgHttpPromise untyped {
 		return this.post(url,config);
 	}
     /**
@@ -894,8 +894,8 @@ extern class NgInjector {
 	 *                         object first, before the `$injector` is consulted.
 	 * @returns {*} the value returned by the invoked `fn` function.
 	 */	
-	@:overload(function(fn:Dynamic, ?self:Dynamic, ?locals:Dynamic):Dynamic{})
-	public function invoke(fn:Array<Dynamic>, ?self:Dynamic, ?locals:Dynamic):Dynamic;
+	@:overload(function(fn:Dynamic, ?self:Dynamic, ?locals:{}):Dynamic{})
+	public function invoke(fn:Array<Dynamic>, ?self:Dynamic, ?locals:{}):Dynamic;
 	/**
 	 * Allows the user to query if the particular service exist.
 	 *
@@ -913,7 +913,7 @@ extern class NgInjector {
 	 * object first, before the `$injector` is consulted.
 	 * @returns {Object} new instance of `Type`.
 	 */	
-	public function instantiate(type:Dynamic, ?locals:Dynamic):Dynamic;
+	public function instantiate(type:Dynamic, ?locals:{}):Dynamic;
 	/**
 	 * Returns an array of service names which the function is requesting for injection. This API is
 	 * used by the injector to determine which services need to be injected into the function when the
@@ -960,7 +960,7 @@ abstract NgCacheFactory( { } ) from { } {
 	 *
 	 *   - `{number=}` `capacity` — turns the cache into LRU cache.
 	 */
-	public inline function newCache(cacheId:String, ?options:Dynamic):NgCache untyped {
+	public inline function newCache(cacheId:String, ?options:{}):NgCache untyped {
 		return this(cacheId,options);
 	}
 	/**
@@ -1085,7 +1085,7 @@ abstract NgExprFn( { } ) from { } {
 	 *  * `locals` – `{object=}` – local variables context object, useful for overriding values in
 	 *      `context`.
 	 */
-	public inline function run(context:Dynamic, ?locals:Dynamic):Dynamic untyped {
+	public inline function run(context:Dynamic, ?locals:{}):Dynamic untyped {
 		return this(context,locals);
 	}
 	/**
@@ -1248,8 +1248,8 @@ abstract NgController( { } ) from { } {
      * a service, so that one can override this service with {@link https://gist.github.com/1649788
      * BC version}.
      */	
-	@:overload(function(expression:Dynamic, locals:Dynamic):Dynamic{})
-	public inline function run(expression:String, locals:Dynamic):Dynamic untyped {
+	@:overload(function(expression:Dynamic, locals:{}):Dynamic{})
+	public inline function run(expression:String, locals:{}):Dynamic untyped {
 		if (locals!=null && Angular.isUndefined(locals["$scope"])) {
 			locals["$scope"] = {};
 			if (Angular.isDefined(locals["scope"])) Angular.copy(locals["scope"],locals["$scope"]);
