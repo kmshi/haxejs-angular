@@ -1,5 +1,5 @@
 {
-  "name": "haxe-angular",
+  "name": "haxejs-angular",
   "dependencies": {
     "angular": "1.2.12"
 	,"angular-animate":"1.2.12"
