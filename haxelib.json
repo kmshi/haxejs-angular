@@ -1,8 +1,8 @@
 {
-  "name": "haxe-angular",
-  "url": "http://github.com/kmshi/haxe-angular",
+  "name": "haxejs-angular",
+  "url": "https://github.com/haxejs/haxejs-angular",
   "license": "MIT",
-  "tags": [ "angular", "js" ],
+  "tags": [ "angular", "js","haxe" ],
   "description": "haxe extern for angular",
   "version": "0.0.1",
   "classPath": ".",

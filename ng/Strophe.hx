@@ -142,7 +142,7 @@ extern class StropheBuilder{
 	public function toString():String;
 	public function up():StropheBuilder;
 	public function attrs(moreattrs:Dynamic):StropheBuilder;
-	public function c(name:String, attrs:Dynamic, ?text:String):StropheBuilder;
+	public function c(name:String, ?attrs:Dynamic, ?text:String):StropheBuilder;
 	public function cnode(elem:Element):StropheBuilder;//XMLElement type?
 	public function t(text:String):StropheBuilder;
 	public function h(html:String):StropheBuilder;
