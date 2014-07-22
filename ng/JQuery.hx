@@ -394,6 +394,9 @@ extern class JQuery implements ArrayAccess<Element> {
 	}
 
 	private static function __init__() : Void untyped {
+		#if use_jqlite
+			return;//do not include/use jquery library
+		#end
 		#if embed_js
 		  if( untyped __js__("typeof($) == 'undefined'") )
 			haxe.macro.Compiler.includeFile("www/bower_components/jquery/jquery.min.js");
