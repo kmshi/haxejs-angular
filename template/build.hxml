@@ -1,0 +1,25 @@
+-cp src
+-js www/js/app.js
+-main bat.App
+-lib haxejs-angular
+
+--next
+-cp src
+-js www/js/app.bundle.js
+-main bat.App
+-lib haxejs-angular
+-D embed_js
+
+--next
+-cp src
+-js test/unit/unitSpec.js
+-main test.Unit
+-lib haxejs-angular
+
+--next
+-cp src
+-js test/unit/unitSpec.bundle.js
+-main test.Unit
+-lib haxejs-angular
+-D embed_js
+

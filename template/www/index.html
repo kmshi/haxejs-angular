@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="bat" id="ng-app">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <title>Hello World Template</title>
+
+    <!-- Bootstrap css-->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Original Bootstrap's CSS depends on empty href attributes to style cursors for several components (pagination, tabs etc.). 
+         But in AngularJS adding empty href attributes to link tags will cause unwanted route changes.  
+         This is why we need to remove empty href attributes from directive templates and as a result styling is not applied correctly. 
+         The remedy is simple, just add the following styling to your application:
+    -->
+    <style type="text/css">.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }</style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- To make AngularJS work with IE7 and earlier, we need to polyfill JSON.stringify. -->
+    <!--[if lt IE 9]>
+      <script src="bower_components/html5shiv/dist/html5shiv.min.js"></script>
+      <script src="bower_components/respond/dest/respond.min.js"></script>
+      <script src="www/bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- Add angularjs and your custom tags here -->
+    <!--[if lt IE 9]>
+      <script>
+        //window.myCustomTags = [ 'yourCustomDirective', 'somebodyElsesDirective' ]; // optional
+      </script>
+      <script src="www/bower_components/angular-ui-utils/ui-utils-ieshiv.min.js"></script>
+    <![endif]-->
+
+  </head>
+  <body>
+    <ul class="nav nav-pills">
+      <li><a href="#/view1">view1</a></li>
+      <li><a href="#/view2">view2</a></li>
+    </ul>
+
+    <div ng-view></div>
+
+    <div>Angular seed app: v<span app-version></span></div>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed
+    --> 
+    <script src="js/app.bundle.js"></script>
+
+    <!-- Bootstrap js plugins if we use bootstrap components, however, it is not angular native style, 
+    please use haxejs-angular-bootstrap if IE9 and above support is ok.
+    
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    -->
+    
+  </body>
+</html>
