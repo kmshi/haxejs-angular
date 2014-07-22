@@ -394,9 +394,8 @@ extern class JQuery implements ArrayAccess<Element> {
 	}
 
 	private static function __init__() : Void untyped {
-		#if use_jqlite
-			return;//do not include/use jquery library
-		#end
+		#if !use_jqlite
+		
 		#if embed_js
 		  if( untyped __js__("typeof($) == 'undefined'") )
 			haxe.macro.Compiler.includeFile("www/bower_components/jquery/jquery.min.js");
@@ -409,5 +408,7 @@ extern class JQuery implements ArrayAccess<Element> {
 		__feature__('js.JQuery.iterator',
 			q.fn.iterator = function() return { pos : 0, j : __this__, hasNext : function() return __this__.pos < __this__.j.length, next : function() return $(__this__.j[__this__.pos++]) }
 		);
+
+		#end //!use_jqlite
 	}
 }
