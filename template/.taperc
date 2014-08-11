@@ -1,6 +1,0 @@
-[server]
-port = 3000
-root = ./www/
-
-[proxies]
-/xmpp-httpbind = http://bosh.metajack.im:5280/xmpp-httpbind
