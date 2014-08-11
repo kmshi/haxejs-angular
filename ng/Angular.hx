@@ -292,6 +292,10 @@ extern class Module
    *    configuration.
    */
 	public function config(configFn: Dynamic): Module;
+	/**
+	* $rootScope can only be resolved here
+	*/
+	public function run(runFn: Dynamic): Module;
   /**
    * @name angular.Module#directive
    * @param {string|Object} name Directive name, or an object map of directives where the
