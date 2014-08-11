@@ -50,7 +50,8 @@ extern class NgTranslateProvider
     public function useStaticFilesLoader(options:{prefix:String,suffix:String}):NgTranslateProvider;
     public function useLocalStorage():NgTranslateProvider;
     public function useCookieStorage():NgTranslateProvider;
-    public function determinePreferredLanguage(fn:Dynamic):NgTranslateProvider;
+    public function registerAvailableLanguageKeys(languageKeys:Array<String>, ?aliases:{}):NgTranslateProvider;
+    public function determinePreferredLanguage(?fn:Dynamic):NgTranslateProvider;
 }
 
 //directives need this dependency
