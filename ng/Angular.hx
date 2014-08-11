@@ -622,46 +622,6 @@ abstract NgScope({}) from {} {
 //extern class NgBrowser{
 //}
 
-//@:native("$location")
-extern class NgLocation {
-   /**
-   * Return full url representation with all segments encoded according to rules specified in
-   * [RFC 3986](http://www.ietf.org/rfc/rfc3986.txt).
-   *
-   * @return {string} full url
-   */
-	public function absUrl():String;
-  /**
-   * Return url (e.g. `/path?a=b#hash`) when called without any parameter.
-   * Change path, search and hash, when called with parameter and return `$location`.
-   *
-   * @param {string=} url New url without base prefix (e.g. `/path?a=b#hash`)
-   * @param {string=} replace The path that will be changed
-   * @return {string} url
-   */	
-	@:overload(function(url:String, replace:String):NgLocation{})
-	public function url():String;
-	
-	public function protocol():String;
-	public function host():String;
-	public function port():Int;
-
-	//property(setter) in extern class seems not work, use @:overload instead
-	//public var path(default, default):String;
-	
-	@:overload(function(val:String):String{})
-	public function path():String;
-	@:overload(function(val:String):String{})
-	public function search():String;	
-	@:overload(function(val:String):String{})
-	public function hash():String;
-  /**
-   * If called, all changes to $location during current `$digest` will be replacing current history
-   * record, instead of adding new one.
-   */	
-	public function replace():NgLocation;
-}
-
 //@:native("$q")
 extern class NgQ {
   /**
@@ -1096,10 +1056,15 @@ extern class NgLocation {
 	public function hash(val:String):NgLocation;
 	@:overload(function():String{})
 	public function url(url:String,?replace:String):NgLocation;
+
 	public function absUrl():String;
 	public function protocol():String;
 	public function host():String;
 	public function port():String;
+	/**
+   * If called, all changes to $location during current `$digest` will be replacing current history
+   * record, instead of adding new one.
+   */	
 	public function replace():NgLocation;
 }
 
