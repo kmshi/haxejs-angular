@@ -1078,6 +1078,31 @@ extern class NgLogProvider {
 	public function debugEnabled(flag:Bool):NgLogProvider;
 }
 
+//@:native("$locationProvider")
+extern class NgLocationProvider {
+	@:overload(function():String{})
+	public function hashPrefix(prefix:String):NgLocationProvider;
+	@:overload(function():Bool{})
+	public function html5Mode(mode:Bool):NgLocationProvider;
+}
+
+//@:native("$location")
+extern class NgLocation {
+	@:overload(function():String{})
+	public function path(val:String):NgLocation;
+	@:overload(function():String{})
+	public function search(val:String):NgLocation;
+	@:overload(function():String{})
+	public function hash(val:String):NgLocation;
+	@:overload(function():String{})
+	public function url(url:String,?replace:String):NgLocation;
+	public function absUrl():String;
+	public function protocol():String;
+	public function host():String;
+	public function port():String;
+	public function replace():NgLocation;
+}
+
 abstract NgExprFn( { } ) from { } {
 	/**
 	 *  * `context` – `{object}` – an object against which any expressions embedded in the strings
