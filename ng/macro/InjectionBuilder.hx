@@ -166,8 +166,8 @@ class InjectionBuilder
     private static function register(name:String,fvar:String,type:String):Expr
     {
 	   	var str =  "";
-    	if(type=="config") 
-    		str =  "Angular.module(\""+currentPackName+"\").config("+fvar+")";
+    	if(type=="config" || type=="run") 
+    		str =  "Angular.module(\""+currentPackName+"\")."+type+"("+fvar+")";
     	else
     		str =  "Angular.module(\""+currentPackName+"\")."+type+"(\""+name+"\","+fvar+")";
     	return Context.parse(str,Context.currentPos());
