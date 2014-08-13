@@ -49,6 +49,7 @@ extern class NgTranslateProvider
     public function addInterpolation(factory:Dynamic):NgTranslateProvider;
     @:overload(function(langKey:String):NgTranslateProvider{})
     public function preferredLanguage():String;
+    @:overload(function(langKeys:Array<String>):NgTranslateProvider{})
     public function fallbackLanguage(langKey:String):NgTranslateProvider;
     //@:overload(function(langKey:String):NgTranslateProvider{})
     //public function use():String;
