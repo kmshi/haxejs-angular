@@ -13,6 +13,8 @@ extern class NgTranslate
           haxe.macro.Compiler.includeFile("www/bower_components/angular-translate/angular-translate.min.js");
           haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-loader-url/angular-translate-loader-url.min.js");
           haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js");
+          haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js");
+          haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-storage-local/angular-translate-storage-local.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate/angular-translate.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate/angular-translate.js");
@@ -20,6 +22,10 @@ extern class NgTranslate
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-loader-url/angular-translate-loader-url.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-local/angular-translate-storage-local.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-local/angular-translate-storage-local.js");                    
         #end
         //add "pascalprecht.translate" to global module dependencies
         if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
@@ -44,8 +50,8 @@ extern class NgTranslateProvider
     @:overload(function(langKey:String):NgTranslateProvider{})
     public function preferredLanguage():String;
     public function fallbackLanguage(langKey:String):NgTranslateProvider;
-    @:overload(function(langKey:String):NgTranslateProvider{})
-    public function use():String;
+    //@:overload(function(langKey:String):NgTranslateProvider{})
+    //public function use():String;
     public function useUrlLoader(url:String):NgTranslateProvider;
     public function useStaticFilesLoader(options:{prefix:String,suffix:String}):NgTranslateProvider;
     public function useLocalStorage():NgTranslateProvider;

@@ -19,6 +19,8 @@
 	,"angular-translate":""
 	,"angular-translate-loader-url":""
 	,"angular-translate-loader-static-files":""
+	,"angular-translate-storage-cookie":""
+	,"angular-translate-storage-local":""
   },
   "devDependencies": {
     "angular-mocks": "1.2.12"
