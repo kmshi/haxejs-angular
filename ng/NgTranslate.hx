@@ -15,6 +15,7 @@ extern class NgTranslate
           haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js");
           haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.min.js");
           haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-storage-local/angular-translate-storage-local.min.js");
+          haxe.macro.Compiler.includeFile("www/bower_components/angular-translate-handler-log/angular-translate-handler-log.min.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate/angular-translate.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate/angular-translate.js");
@@ -26,6 +27,8 @@ extern class NgTranslate
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-local/angular-translate-storage-local.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-local/angular-translate-storage-local.js");                    
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-handler-log/angular-translate-handler-log.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-handler-log/angular-translate-handler-log.js");
         #end
         //add "pascalprecht.translate" to global module dependencies
         if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
@@ -57,8 +60,12 @@ extern class NgTranslateProvider
     public function useStaticFilesLoader(options:{prefix:String,suffix:String}):NgTranslateProvider;
     public function useLocalStorage():NgTranslateProvider;
     public function useCookieStorage():NgTranslateProvider;
+    public function useMissingTranslationHandlerLog():NgTranslateProvider;
     public function registerAvailableLanguageKeys(languageKeys:Array<String>, ?aliases:{}):NgTranslateProvider;
     public function determinePreferredLanguage(?fn:Dynamic):NgTranslateProvider;
+    public function useLoader(loaderFactory:Dynamic, ?options:{}):NgTranslateProvider;
+    public function useStorage(storageFactory:Dynamic):NgTranslateProvider;
+    public function useMissingTranslationHandler(factory:Dynamic):NgTranslateProvider;
 }
 
 //directives need this dependency
