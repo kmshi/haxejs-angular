@@ -49,13 +49,16 @@ extern class NgTranslateProvider
 {
     public function translations(langKey:String, translationTable:{}):NgTranslateProvider;
     public function cloakClassName(name:String):NgTranslateProvider;
-    public function addInterpolation(factory:Dynamic):NgTranslateProvider;
+
     @:overload(function(langKey:String):NgTranslateProvider{})
     public function preferredLanguage():String;
+
     @:overload(function(langKeys:Array<String>):NgTranslateProvider{})
     public function fallbackLanguage(langKey:String):NgTranslateProvider;
+
     //@:overload(function(langKey:String):NgTranslateProvider{})
     //public function use():String;
+
     public function useUrlLoader(url:String):NgTranslateProvider;
     public function useStaticFilesLoader(options:{prefix:String,suffix:String}):NgTranslateProvider;
     public function useLocalStorage():NgTranslateProvider;
@@ -63,9 +66,11 @@ extern class NgTranslateProvider
     public function useMissingTranslationHandlerLog():NgTranslateProvider;
     public function registerAvailableLanguageKeys(languageKeys:Array<String>, ?aliases:{}):NgTranslateProvider;
     public function determinePreferredLanguage(?fn:Dynamic):NgTranslateProvider;
-    public function useLoader(loaderFactory:Dynamic, ?options:{}):NgTranslateProvider;
-    public function useStorage(storageFactory:Dynamic):NgTranslateProvider;
-    public function useMissingTranslationHandler(factory:Dynamic):NgTranslateProvider;
+    public function useLoader(loaderFactoryName:String, ?options:{}):NgTranslateProvider;
+    public function useStorage(storageFactoryName:String):NgTranslateProvider;
+    public function useMissingTranslationHandler(factoryName:String):NgTranslateProvider;
+    public function useInterpolation(factoryName:String):NgTranslateProvider;
+    public function addInterpolation(factoryName:String):NgTranslateProvider;    
 }
 
 //directives need this dependency
