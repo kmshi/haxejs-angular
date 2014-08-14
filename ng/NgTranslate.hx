@@ -59,7 +59,13 @@ extern class NgTranslateProvider
     //@:overload(function(langKey:String):NgTranslateProvider{})
     //public function use():String;
 
+    /**
+    * url which expects a `lang` parameter to return a JSON: url?lang=en
+    */
     public function useUrlLoader(url:String):NgTranslateProvider;
+    /**
+    * angular-translate will concatenate the given information to `{{prefix}}{{langKey}}{{suffix}}`.
+    */    
     public function useStaticFilesLoader(options:{prefix:String,suffix:String}):NgTranslateProvider;
     public function useLocalStorage():NgTranslateProvider;
     public function useCookieStorage():NgTranslateProvider;
