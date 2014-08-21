@@ -1,13 +1,13 @@
 package ng;
 
-import Angular;
+import ng.Angular;
 /**
  * ...
  * @author Richard Shi
  */
 @:initPackage
 //@:native("$animate")
-extern class NgAnimate {
+extern class NgAnimate
 {
     private static function __init__() : Void untyped {
         #if embed_js

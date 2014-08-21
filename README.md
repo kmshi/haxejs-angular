@@ -1,3 +1,4 @@
-haxe extern for angular
+haxejs-angular
+==============
 
-This document is under construction...
+Haxe extern for angularjs, for documentation, please refer to [www.haxejs.com](http://www.haxejs.com)
