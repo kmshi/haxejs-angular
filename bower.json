@@ -1,15 +1,15 @@
 {
   "name": "haxejs-angular",
   "dependencies": {
-    "angular": "1.2.12"
-	,"angular-animate":"1.2.12"
-	,"angular-cookies":"1.2.12"
-	,"angular-resource":"1.2.12"
-	,"angular-route":"1.2.12"
-	,"angular-sanitize":"1.2.12"
-	,"angular-touch":"1.2.12"
-	,"angular-loader":"1.2.12"
-	,"angular-i18n":"1.2.12"
+    "angular": "1.2.22"
+	,"angular-animate":"1.2.22"
+	,"angular-cookies":"1.2.22"
+	,"angular-resource":"1.2.22"
+	,"angular-route":"1.2.22"
+	,"angular-sanitize":"1.2.22"
+	,"angular-touch":"1.2.22"
+	,"angular-loader":"1.2.22"
+	,"angular-i18n":"1.2.22"
 	,"angular-gestures":"0.2.2"
 	,"angular-bindonce":""
 	,"angular-ui-router":"0.2.7"
@@ -24,6 +24,6 @@
 	,"angular-translate-handler-log":""
   },
   "devDependencies": {
-    "angular-mocks": "1.2.12"
+    "angular-mocks": "1.2.22"
   }
 }
