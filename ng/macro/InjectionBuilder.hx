@@ -215,6 +215,20 @@ class InjectionBuilder
     	return allFields;
     }
 
+    macro public static function embedAlert( msg : Expr ) {
+        var str = switch( msg.expr ) {
+            case EConst(c):
+                switch( c ) {
+                case CString(str): str;
+                default: null;
+                }
+            default: null;
+        }
+        if( str == null ) Context.error("Should be a constant string", msg.pos);
+        trace(str);
+        return macro null;
+    }
+
     macro public static function copyFile( fileName : Expr ) {
         var str = switch( fileName.expr ) {
             case EConst(c):

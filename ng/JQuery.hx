@@ -397,11 +397,15 @@ extern class JQuery implements ArrayAccess<Element> {
 		#if !use_jqlite
 		
 		#if embed_js
-		  if( untyped __js__("typeof($) == 'undefined'") )
-			haxe.macro.Compiler.includeFile("www/bower_components/jquery/jquery.min.js");
+		  if( untyped __js__("typeof($) == 'undefined'") ){
+		  	//Looks like there is a bug that they can not be embeded after v1.8.2
+		  	//haxe.macro.Compiler.includeFile("www/bower_components/jquery/dist/jquery.min.js");
+		  	ng.macro.InjectionBuilder.embedAlert("Can not embed jquery 1.11.1,please reference by script tag before other scripts: bower_components/jquery/dist/jquery.min.js");
+		  	ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/dist/jquery.min.js");
+		  }
 		#else
-		  ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/jquery.min.js");
-		  ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/jquery.js");
+		  ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/dist/jquery.min.js");
+		  ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/dist/jquery.js");
 		#end
 		var q : Dynamic = (untyped js.Browser.window).jQuery;
 		ng.JQuery = q;
