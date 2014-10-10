@@ -107,7 +107,7 @@ extern class AVObject {
 
 	public function remove(attr:String,item:Object):AVObject;
 
-	public function op(attr:String):AVOp;
+	//public function op(attr:String):AVOp;
 
 	public function clear():AVObject;
 
@@ -146,11 +146,18 @@ extern class AVObject {
 
 @:native("AV.Relation")
 extern class AVRelation{
+	@:overload(function(object:AVObject) : Void {})
+	public function add(objects:Array<AVObject>):Void;
+	@:overload(function(object:AVObject) : Void {})
+	public function remove(objects:Array<AVObject>):Void;
+	public function toJSON():{};
+	public function query():AVQuery;
 
+	public static function reverseQuery(parentClass:String, relationKey:String, child:AVObject):AVQuery;
 }
 
 @:native("AV.Role")
-extern class AVRole{
+extern class AVRole extends AVObject{
 	public function new(name:String, acl:AVACL);
 	public function getName():String;
 	public function setName(name:String):AVRole;
@@ -160,16 +167,64 @@ extern class AVRole{
 
 @:native("AV.ACL")
 extern class AVACL{
+	@:overload(function(user:AVUser) : AVACL {})
+	@:overload(function(json:{}) : AVACL {})
+	public function new();
 
+	public function toJSON():{};
+
+	@:overload(function(userId:AVUser, allowed:Bool) : Void {})
+	public function setReadAccess(userId:String, allowed:Bool):Void;	
+	@:overload(function(userId:AVUser) : Bool {})
+	public function getReadAccess(userId:String):Bool;
+	@:overload(function(userId:AVUser, allowed:Bool) : Void {})
+	public function setWriteAccess(userId:String, allowed:Bool):Void;	
+	@:overload(function(userId:AVUser) : Bool {})
+	public function getWriteAccess(userId:String):Bool;
+
+	public function setPublicReadAccess(allowed:Bool):Void;	
+	public function getPublicReadAccess():Bool;
+	public function setPublicWriteAccess(allowed:Bool):Void;	
+	public function getPublicWriteAccess():Bool;
+
+	@:overload(function(role:AVRole, allowed:Bool) : Void {})
+	public function setRoleReadAccess(role:String, allowed:Bool):Void;	
+	@:overload(function(role:AVRole) : Bool {})
+	public function getRoleReadAccess(role:String):Bool;
+	@:overload(function(role:AVRole, allowed:Bool) : Void {})
+	public function setRoleWriteAccess(role:String, allowed:Bool):Void;	
+	@:overload(function(role:AVRole) : Bool {})
+	public function getRoleWriteAccess(role:String):Bool;	
 }
 
-@:native("AV.Op")
-extern class AVOp{
-
-}
+// @:native("AV.Op")
+// extern class AVOp{
+// }
 
 @:native("AV.Promise")
 extern class AVPromise{
+	public static function is(promise:Dynamic):Bool;
+	public static function as(val:Dynamic):AVPromise;
+	public static function error(err:Dynamic):AVPromise;
+	public static function when(promises:Array<AVPromise>):AVPromise;
+
+	public function resolve(result:Dynamic):Void;
+	public function reject(err:Dynamic):Void;
+	public function then(resolvedCallback:Dynamic, rejectedCallback:Dynamic):AVPromise;
+}
+
+@:native("AV.Query")
+extern class AVQuery{
+
+}
+
+@:native("AV.File")
+extern class AVFile{
+
+}
+
+@:native("AV.User")
+extern class AVUser extends AVObject{
 
 }
 
