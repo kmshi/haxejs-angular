@@ -1,7 +1,17 @@
 package av;
 
+@:initPackage
 @:native("AV")
 extern class AV{
+	private static function __init__() : Void untyped {
+        #if embed_js
+          haxe.macro.Compiler.includeFile("www/bower_components/avos/av-min.js");
+        #else
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av.js");
+        #end
+    }
+
 	public function initialize(applicationId:String,applicationKey:String,?masterKey:String):Void;
 	public function useAVCloudCN():Void;
 	public function useAVCloudUS():Void;
