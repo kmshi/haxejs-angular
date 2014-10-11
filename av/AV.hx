@@ -63,10 +63,10 @@ extern class AVError{
 
 @:native("AV.GeoPoint")
 extern class AVGeoPoint{
-	@:overload(function(point:{latitude:Float,longitude: Float}) : AVGeoPoint {})
-	@:overload(function(lat:Float,lon:Float) : AVGeoPoint {})
-	@:overload(function(arr:Array<Float>) : AVGeoPoint {})
-	@:overload(function(other:AVGeoPoint) : AVGeoPoint {})
+	@:overload(function(point:{latitude:Float,longitude: Float}) : Void {})
+	@:overload(function(lat:Float,lon:Float) : Void {})
+	@:overload(function(arr:Array<Float>) : Void {})
+	@:overload(function(other:AVGeoPoint) : Void {})
 	public function new();
 	public function toJSON():{};
 	public function radiansTo(point:AVGeoPoint):Float;
@@ -76,8 +76,17 @@ extern class AVGeoPoint{
 	public static function current():AVPromise;
 }
 
+@:native("AV.Events")
+extern class AVEvents {
+	public function on(events:String, callback:Dynamic, context:{}):AVObject;
+	public function bind(events:String, callback:Dynamic, context:{}):AVObject;
+	public function off(events:String, callback:Dynamic, context:{}):AVObject;
+	public function unbind(events:String, callback:Dynamic, context:{}):AVObject;
+	public function trigger(events:String):AVObject;
+}
+
 @:native("AV.Object")
-extern class AVObject {
+extern class AVObject extends AVEvents{
 	public function new(classname:String);
 
 	public function get(attr:String):Dynamic;
@@ -101,11 +110,11 @@ extern class AVObject {
 
 	public function increment(attr:String,amount:Int):AVObject;
 
-	public function add(attr:String,item:Object):AVObject;
+	public function add(attr:String,item:AVObject):AVObject;
 
-	public function addUnique(attr:String,item:Object):AVObject;
+	public function addUnique(attr:String,item:AVObject):AVObject;
 
-	public function remove(attr:String,item:Object):AVObject;
+	public function remove(attr:String,item:AVObject):AVObject;
 
 	//public function op(attr:String):AVOp;
 
@@ -116,6 +125,10 @@ extern class AVObject {
 	public function save():AVPromise;
 
 	public function destroy():AVPromise;
+
+	public function clone():AVObject;
+
+	public function change():AVObject;
 
 	public function isNew():Bool;
 
@@ -133,15 +146,24 @@ extern class AVObject {
 
 	public function setACL(acl:AVACL):AVObject;
 
-	//inherit from AV.Events
-	public function on(events:String, callback:Dynamic, context:{}):AVObject;
-	public function bind(events:String, callback:Dynamic, context:{}):AVObject;
-	public function off(events:String, callback:Dynamic, context:{}):AVObject;
-	public function unbind(events:String, callback:Dynamic, context:{}):AVObject;
-	public function trigger(events:String):AVObject;
-
     public static function destroyAll(objs:Array<AVObject>):AVPromise;
     public static function saveAll(objs:Array<AVObject>):AVPromise;
+}
+
+@:native("AV.Collection")
+extern class AVCollection extends AVEvents{
+	public function new(models:Array<AVObject>);
+	public function toJSON():Array<{}>;
+	@:overload(function(model:AVObject) : AVCollection {})
+	public function add(models:Array<AVObject>):AVCollection;
+	@:overload(function(model:AVObject) : AVCollection {})
+	public function remove(models:Array<AVObject>):AVCollection;
+	public function at(index:Int):AVObject;
+	public function pluck(attr:String):Array<Dynamic>;
+	public function reset(models:Array<AVObject>):AVCollection;
+	public var model:AVObject;
+	public function fetch():AVPromise;
+	//Underscore methods that we want to implement on the Collection.Like:'forEach', 'each'
 }
 
 @:native("AV.Relation")
@@ -167,8 +189,8 @@ extern class AVRole extends AVObject{
 
 @:native("AV.ACL")
 extern class AVACL{
-	@:overload(function(user:AVUser) : AVACL {})
-	@:overload(function(json:{}) : AVACL {})
+	@:overload(function(user:AVUser) : Void {})
+	@:overload(function(json:{}) : Void {})
 	public function new();
 
 	public function toJSON():{};
@@ -215,20 +237,149 @@ extern class AVPromise{
 
 @:native("AV.Query")
 extern class AVQuery{
+	public function new(objectClass:String);
+	public function get(objectId:String):AVPromise;
+	public function toJSON():{};
+	public function find():AVPromise;
+	public function destroyAll():AVPromise;
+	public function count():AVPromise;
+	public function first():AVPromise;
+	public function each(callback:Dynamic):AVPromise;
 
+	public function skip(n:Int):AVQuery;
+	public function limit(n:Int):AVQuery;
+	public function equalTo(key:String, value:Dynamic):AVQuery;
+	public function notEqualTo(key:String, value:Dynamic):AVQuery;
+	public function lessThan(key:String, value:Dynamic):AVQuery;
+	public function greaterThan(key:String, value:Dynamic):AVQuery;
+	public function lessThanOrEqualTo(key:String, value:Dynamic):AVQuery;
+	public function greaterThanOrEqualTo(key:String, value:Dynamic):AVQuery;
+	public function containedIn(key:String, values:Array<Dynamic>):AVQuery;
+	public function notContainedIn(key:String, values:Array<Dynamic>):AVQuery;
+	public function containsAll(key:String, values:Array<Dynamic>):AVQuery;
+	public function exists(key:String):AVQuery;
+	public function doesNotExist(key:String):AVQuery;
+	public function matches(key:String,regex:Dynamic, modifiers:String):AVQuery;
+	public function matchesQuery(key:String,query:AVQuery):AVQuery;
+	public function doesNotMatchQuery(key:String,query:AVQuery):AVQuery;
+	public function matchesKeyInQuery(key:String,queryKey:String,query:AVQuery):AVQuery;
+	public function doesNotMatchKeyInQuery(key:String,queryKey:String,query:AVQuery):AVQuery;
+	public function contains(key:String, value:Dynamic):AVQuery;
+	public function startsWith(key:String, value:Dynamic):AVQuery;
+	public function endsWith(key:String, value:Dynamic):AVQuery;
+	public function ascending(key:String):AVQuery;
+	public function addAscending(key:String):AVQuery;
+	public function descending(key:String):AVQuery;
+	public function addDescending(key:String):AVQuery;
+	public function near(key:String, point:AVGeoPoint):AVQuery;
+	public function withinRadians(key:String, point:AVGeoPoint, distance:Float):AVQuery;
+	public function withinMiles(key:String, point:AVGeoPoint, distance:Float):AVQuery;
+	public function withinKilometers(key:String, point:AVGeoPoint, distance:Float):AVQuery;
+	public function withinGeoBox(key:String, southwest:AVGeoPoint, northeast:AVGeoPoint):AVQuery;
+	public function include(key1:String,?key2:String,?key3:String):AVQuery;
+	public function select(key1:String,?key2:String,?key3:String):AVQuery;
+
+	public static function or(query1:AVQuery, query2:AVQuery):AVQuery;
+	/**
+	resolved result will be {results:Array,count:Int,className:String}
+	*/
+	public static function doCloudQuery(cql:String):AVPromise;
 }
 
 @:native("AV.File")
 extern class AVFile{
+	@:overload(function(name:String, data:{base64:String}, ?type:String) : Void {})
+	@:overload(function(name:String, data:Array<Int>, ?type:String) : Void {})
+	public function new(name:String, data:js.html.File, ?type:String);
+	public function name():String;
+	public function url():String;
+	public function metaData():{};
+	public function thumbnailURL(width:Int, height:Int, ?quality:Int, ?scaleToFit:Bool, ?fmt:String):String;
+	public function size():Int;
+	public function ownerId():String;
+	public function destroy():AVPromise;
+	public function save():AVPromise;
 
+	public static function withURL(name:String, url:String, ?metaData:{}, ?type:String):AVFile;
 }
 
 @:native("AV.User")
 extern class AVUser extends AVObject{
+	//public function signUp(attrs:{username:String,password:String}):AVPromise;
+	//public function logIn():AVPromise;
+	public function follow(target:AVUser):AVPromise;
+	public function unfollow(target:AVUser):AVPromise;
+	public function followerQuery():AVQuery;
+	public function followeeQuery():AVQuery;
+	public function isCurrent():Bool;
+	public function getUsername():String;
+	public function setUsername(username:String):AVUser;
+	public function getMobilePhoneNumber():String;
+	public function setMobilePhoneNumber(phone:String):AVUser;
+	public function setPassword(password:String):AVUser;
+	public function authenticated():Bool;
+	public function getEmail():String;
+	public function setEmail(email:String):AVUser;
+
+	public static function signUp(username:String,password:String):AVPromise;
+	public static function logIn(username:String,password:String):AVPromise;
+	public static function logInWithMobilePhoneSmsCode(mobilePhone:String,smsCode:String):AVPromise;
+	public static function logInWithMobilePhone(mobilePhone:String,password:String):AVPromise;
+	public static function logOut():AVPromise;
+	public static function requestPasswordReset(email:String):AVPromise;
+	public static function requestEmailVerify(email:String):AVPromise;
+	public static function requestMobilePhoneVerify(mobilePhone:String):AVPromise;
+	public static function requestPasswordResetBySmsCode(mobilePhone:String):AVPromise;
+	public static function resetPasswordBySmsCode(code:String, password:String):AVPromise;
+	public static function verifyMobilePhone(code:String):AVPromise;
+	public static function requestLoginSmsCode(mobilePhone:String):AVPromise;
+	public static function current():AVUser;
+}
+
+@:native("AV.Cloud")
+extern class AVCloud{
+	public static function run(name:String, data:{}):AVPromise;
+	public static function requestSmsCode(mobilePhone:String):AVPromise;
+	public static function verifySmsCode(code:String):AVPromise;
+}
+
+@:native("AV.Installation")
+extern class AVInstallation extends AVObject{
 
 }
 
-class Object{
+@:native("AV.Push")
+extern class AVPush{
+
+}
+
+@:native("AV.Status")
+extern class AVStatus{
+
+}
+
+class HxAVObject extends AVObject{
+	public function new(){
+		var subCls = Type.getClass(this);
+		var clsName = Type.getClassName(subCls);
+		var lastIdx = clsName.lastIndexOf('.');
+		super(clsName.substring(lastIdx+1));
+
+/** try to call Object.defineProperty for every fields    
+			Object.defineProperty(Todo.prototype, "title", {
+		      get: function() {
+		        return this.get("text");
+		      },
+		      set: function(aValue) {
+		        this.set("text", aValue);
+		      }
+		    });
+*/
+		trace(Type.getInstanceFields(subCls));
+	}
+}
+
+/*class Object{
 	private var obj:AVObject = null;
 
 	public function new(?_obj:AVObject){
@@ -241,4 +392,4 @@ class Object{
 		var lastIdx = clsName.lastIndexOf('.');
 		obj = new AVObject(clsName.substring(lastIdx+1));	
 	}
-}
+}*/
