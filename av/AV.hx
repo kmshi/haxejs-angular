@@ -5,6 +5,8 @@ extern class AV{
 	public function initialize(applicationId:String,applicationKey:String,?masterKey:String):Void;
 	public function useAVCloudCN():Void;
 	public function useAVCloudUS():Void;
+	public var _installationId:String;//hacked to be used in AVInstallation
+	public function _getInstallationId():String;//hacked here
 }
 
 @:native("AV.Error")
@@ -343,14 +345,13 @@ extern class AVCloud{
 	public static function verifySmsCode(code:String):AVPromise;
 }
 
-@:native("AV.Installation")
-extern class AVInstallation extends AVObject{
-
-}
 
 @:native("AV.Push")
 extern class AVPush{
-
+	/**
+	{channels:Array<String>,push_time:Date,expiration_time:Date,expiration_interval:Int,where:AVQuery,data:{alert:String}}
+	*/
+	public static function send(data:{data:{alert:String}});
 }
 
 @:native("AV.Status")
@@ -365,7 +366,7 @@ class HxAVObject extends AVObject{
 		var lastIdx = clsName.lastIndexOf('.');
 		super(clsName.substring(lastIdx+1));
 
-/** try to call Object.defineProperty for every fields    
+		/** try to call Object.defineProperty for every fields    
 			Object.defineProperty(Todo.prototype, "title", {
 		      get: function() {
 		        return this.get("text");
@@ -374,8 +375,79 @@ class HxAVObject extends AVObject{
 		        this.set("text", aValue);
 		      }
 		    });
-*/
-		trace(Type.getInstanceFields(subCls));
+		*/
+		//trace(Type.getInstanceFields(subCls));
+	}
+}
+
+class HxAVInstallation extends AVObject{
+	public var deviceType(get,null):String;
+	public var installationId(get,set):String;
+	public var deviceToken(get,set):String;
+	public var badge(get,set):Int;
+	public var timeZone(get,set):String;
+	public var channels(get,set):Array<String>;
+
+	public function new(deviceType:String){
+		//it should use "installations" route?
+		//https://cn.avoscloud.com/1.1/installations
+		super("_Installation");//work?
+		set("deviceType",deviceType);
+	}
+
+	//override to make sure deviceType and others are set correctly
+	//public function validate(attrs, options):Bool{
+	//	return true;
+	//}
+
+	public function get_deviceType():String{
+		return get("deviceType");
+	}
+
+	public function set_installationId(installationId:String):HxAVInstallation{
+		set("installationId",installationId);
+		AV._installationId = installationId;
+		return this;
+	}
+
+	public function get_installationId():String{
+		return get("installationId");
+	}
+
+	public function get_deviceToken():String{
+		return get("deviceToken");
+	}
+
+	public function set_deviceToken(deviceToken:String):HxAVInstallation{
+		set("deviceToken",deviceToken);
+		return this;
+	}
+
+	public function get_badge():Int{
+		return get("badge");
+	}
+
+	public function set_badge(badge:Int):HxAVInstallation{
+		set("badge",badge);
+		return this;
+	}
+
+	public function get_timeZone():String{
+		return get("timeZone");
+	}
+
+	public function set_timeZone(timeZone:String):HxAVInstallation{
+		set("timeZone",timeZone);
+		return this;
+	}
+
+	public function get_channels():Array<String>{
+		return get("channels");
+	}
+
+	public function set_channels(channels:Array<String>):HxAVInstallation{
+		set("channels",channels);
+		return this;
 	}
 }
 
