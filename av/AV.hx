@@ -161,6 +161,9 @@ extern class AVObject extends AVEvents{
 
     public static function destroyAll(objs:Array<AVObject>):AVPromise;
     public static function saveAll(objs:Array<AVObject>):AVPromise;
+
+    public var id:String;
+    public var cid:String;
 }
 
 @:native("AV.Collection")
@@ -373,12 +376,20 @@ extern class AVStatus{
 class HxAVObject extends AVObject{
 	private var className:String;//hacked?
 
-	public function new(){
+	public function new(?obj:AVObject){
+		if (obj!=null){			
+			for (field in Reflect.fields(obj)){
+				Reflect.setField(this,field,Reflect.field(obj,field));
+			}
+			untyped className = obj.className;//hacked
+			return;
+		}
+
 		var subCls = Type.getClass(this);
 		var clsName = Type.getClassName(subCls);
 		var lastIdx = clsName.lastIndexOf('.');
 
-		className = clsName.substring(lastIdx+1);
+		className = clsName.substring(lastIdx+1);//hacked
 		super(className);
 		var temp = new AVObject(className);
 		for (field in Reflect.fields(temp)){
