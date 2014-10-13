@@ -420,6 +420,7 @@ class HxAVInstallation extends AVObject{
 		}
 
 		set("deviceType",deviceType);
+		timeZone = "Asia/Shanghai";
 	}
 
 	//override to make sure deviceType and others are set correctly
