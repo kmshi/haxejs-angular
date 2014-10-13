@@ -5,18 +5,19 @@ package av;
 extern class AV{
 	private static function __init__() : Void untyped {
         #if embed_js
-          haxe.macro.Compiler.includeFile("www/bower_components/avos/av-min.js");
+          ng.macro.InjectionBuilder.embedAlert("Can not embed av-mini.js,please reference by script tag before other scripts: www/bower_components/avos/av-mini.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-mini.js");
         #else
-          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-mini.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av.js");
         #end
     }
 
-	public function initialize(applicationId:String,applicationKey:String,?masterKey:String):Void;
-	public function useAVCloudCN():Void;
-	public function useAVCloudUS():Void;
-	public var _installationId:String;//hacked to be used in AVInstallation
-	public function _getInstallationId():String;//hacked here
+	public static function initialize(applicationId:String,applicationKey:String,?masterKey:String):Void;
+	public static function useAVCloudCN():Void;
+	public static function useAVCloudUS():Void;
+	public static var _installationId:String;//hacked to be used in AVInstallation
+	public static function _getInstallationId():String;//hacked here
 }
 
 @:native("AV.Error")
@@ -244,7 +245,7 @@ extern class AVPromise{
 
 	public function resolve(result:Dynamic):Void;
 	public function reject(err:Dynamic):Void;
-	public function then(resolvedCallback:Dynamic, rejectedCallback:Dynamic):AVPromise;
+	public function then(resolvedCallback:Dynamic, ?rejectedCallback:Dynamic):AVPromise;
 }
 
 @:native("AV.Query")
@@ -361,7 +362,7 @@ extern class AVPush{
 	/**
 	{channels:Array<String>,push_time:Date,expiration_time:Date,expiration_interval:Int,where:AVQuery,data:{alert:String}}
 	*/
-	public static function send(data:{data:{alert:String}});
+	public static function send(data:{data:{alert:String}}):AVPromise;
 }
 
 @:native("AV.Status")
@@ -370,11 +371,19 @@ extern class AVStatus{
 }
 
 class HxAVObject extends AVObject{
+	private var className:String;//hacked?
+
 	public function new(){
 		var subCls = Type.getClass(this);
 		var clsName = Type.getClassName(subCls);
 		var lastIdx = clsName.lastIndexOf('.');
-		super(clsName.substring(lastIdx+1));
+
+		className = clsName.substring(lastIdx+1);
+		super(className);
+		var temp = new AVObject(className);
+		for (field in Reflect.fields(temp)){
+			Reflect.setField(this,field,Reflect.field(temp,field));
+		}
 
 		/** try to call Object.defineProperty for every fields    
 			Object.defineProperty(Todo.prototype, "title", {
@@ -391,6 +400,8 @@ class HxAVObject extends AVObject{
 }
 
 class HxAVInstallation extends AVObject{
+	private var className:String;//hacked?
+
 	public var deviceType(get,null):String;
 	public var installationId(get,set):String;
 	public var deviceToken(get,set):String;
@@ -399,9 +410,15 @@ class HxAVInstallation extends AVObject{
 	public var channels(get,set):Array<String>;
 
 	public function new(deviceType:String){
-		//it should use "installations" route?
+		//it should use "installations" route? it looks like this way works:) 
 		//https://cn.avoscloud.com/1.1/installations
-		super("_Installation");//work?
+		className = "_Installation";
+		super(className);
+		var temp = new AVObject(className);
+		for (field in Reflect.fields(temp)){
+			Reflect.setField(this,field,Reflect.field(temp,field));
+		}
+
 		set("deviceType",deviceType);
 	}
 
@@ -414,10 +431,10 @@ class HxAVInstallation extends AVObject{
 		return get("deviceType");
 	}
 
-	public function set_installationId(installationId:String):HxAVInstallation{
+	public function set_installationId(installationId:String):String{
 		set("installationId",installationId);
 		AV._installationId = installationId;
-		return this;
+		return installationId;
 	}
 
 	public function get_installationId():String{
@@ -428,50 +445,35 @@ class HxAVInstallation extends AVObject{
 		return get("deviceToken");
 	}
 
-	public function set_deviceToken(deviceToken:String):HxAVInstallation{
+	public function set_deviceToken(deviceToken:String):String{
 		set("deviceToken",deviceToken);
-		return this;
+		return deviceToken;
 	}
 
 	public function get_badge():Int{
 		return get("badge");
 	}
 
-	public function set_badge(badge:Int):HxAVInstallation{
+	public function set_badge(badge:Int):Int{
 		set("badge",badge);
-		return this;
+		return badge;
 	}
 
 	public function get_timeZone():String{
 		return get("timeZone");
 	}
 
-	public function set_timeZone(timeZone:String):HxAVInstallation{
+	public function set_timeZone(timeZone:String):String{
 		set("timeZone",timeZone);
-		return this;
+		return timeZone;
 	}
 
 	public function get_channels():Array<String>{
 		return get("channels");
 	}
 
-	public function set_channels(channels:Array<String>):HxAVInstallation{
+	public function set_channels(channels:Array<String>):Array<String>{
 		set("channels",channels);
-		return this;
+		return channels;
 	}
 }
-
-/*class Object{
-	private var obj:AVObject = null;
-
-	public function new(?_obj:AVObject){
-		if (_obj!=null) {
-			obj = _obj;
-			return;
-		}
-		var subCls = Type.getClass(this);
-		var clsName = Type.getClassName(subCls);
-		var lastIdx = clsName.lastIndexOf('.');
-		obj = new AVObject(clsName.substring(lastIdx+1));	
-	}
-}*/
