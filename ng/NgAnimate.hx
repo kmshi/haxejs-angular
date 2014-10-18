@@ -12,8 +12,10 @@ extern class NgAnimate
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/bower_components/angular-animate/angular-animate.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-animate/angular-animate.min.js.map");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-animate/angular-animate.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-animate/angular-animate.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-animate/angular-animate.js");
         #end
 		//add "ngAnimate" to global module dependencies

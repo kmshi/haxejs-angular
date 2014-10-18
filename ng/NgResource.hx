@@ -12,8 +12,10 @@ abstract NgResource({}) from {}
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/bower_components/angular-resource/angular-resource.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-resource/angular-resource.min.js.map");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-resource/angular-resource.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-resource/angular-resource.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-resource/angular-resource.js");
         #end
 		//add "ngResource" to global module dependencies

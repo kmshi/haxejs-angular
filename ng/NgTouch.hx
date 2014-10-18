@@ -13,8 +13,10 @@ extern class NgTouch
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/bower_components/angular-touch/angular-touch.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-touch/angular-touch.min.js.map");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-touch/angular-touch.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-touch/angular-touch.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-touch/angular-touch.js");
         #end
 		//add "ngTouch" to global module dependencies

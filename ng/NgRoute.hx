@@ -11,8 +11,10 @@ extern class NgRoute
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/bower_components/angular-route/angular-route.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-route/angular-route.min.js.map");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-route/angular-route.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-route/angular-route.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-route/angular-route.js");
         #end
 		//add "ngRoute" to global module dependencies

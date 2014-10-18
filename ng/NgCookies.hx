@@ -12,8 +12,10 @@ abstract NgCookies({}) from {}
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/bower_components/angular-cookies/angular-cookies.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-cookies/angular-cookies.min.js.map");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-cookies/angular-cookies.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-cookies/angular-cookies.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-cookies/angular-cookies.js");
         #end
 		//add "ngCookies" to global module dependencies

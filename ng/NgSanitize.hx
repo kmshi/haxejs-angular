@@ -12,8 +12,10 @@ abstract NgSanitize({}) from {}
     private static function __init__() : Void untyped {
         #if embed_js
           haxe.macro.Compiler.includeFile("www/bower_components/angular-sanitize/angular-sanitize.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-sanitize/angular-sanitize.min.js.map");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-sanitize/angular-sanitize.min.js");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-sanitize/angular-sanitize.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-sanitize/angular-sanitize.js");
         #end
 		//add "ngSanitize" to global module dependencies
