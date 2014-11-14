@@ -18,6 +18,7 @@ extern class AV{
 	public static function useAVCloudUS():Void;
 	public static var _installationId:String;//hacked to be used in AVInstallation
 	public static function _getInstallationId():String;//hacked here
+	public static var serverURL:String;//hacked to set proxy server to hide appid and appkey, plus with CORS limit
 }
 
 @:native("AV.Error")
