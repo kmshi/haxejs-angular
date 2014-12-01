@@ -5,12 +5,11 @@ package av;
 extern class AV{
 	private static function __init__() : Void untyped {
         #if embed_js
-          ng.macro.InjectionBuilder.embedAlert("Can not embed av-mini.js,please reference by script tag before other scripts: www/bower_components/avos/av-mini.js");
-          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-mini.js");
-        #else
-          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-mini.js");
-          ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av.js");
+          ng.macro.InjectionBuilder.embedAlert("Can not embed av.js,please reference by script tag before other scripts: www/bower_components/avos/av-mini.js");
         #end
+
+        ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-mini.js");
+        ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av.js");
     }
 
 	public static function initialize(applicationId:String,applicationKey:String,?masterKey:String):Void;
