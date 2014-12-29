@@ -249,4 +249,45 @@ class InjectionBuilder
         }
         return macro null;
     }
+
+    macro public static function moduleDependency(moduleName:Expr,path:Expr,deps:Expr) {
+        var strModuleName = switch( moduleName.expr ) {
+            case EConst(c):
+                switch( c ) {
+                    case CString(str): str;
+                    default: null;
+                }
+            default: null;
+        }
+        if( strModuleName == null ) Context.error("Should be a constant string", moduleName.pos);
+
+        var strPath = switch( path.expr ) {
+            case EConst(c):
+                switch( c ) {
+                    case CString(str): str;
+                    default: null;
+                }
+            default: null;
+        }
+        if( strPath == null ) strPath = '';
+
+        var arrDeps = ['angular'];
+        //TODO:get it from deps Expr
+
+        var json = {paths:{},shim:{}};
+        if (sys.FileSystem.exists("require.json")){
+            json = haxe.Json.parse(sys.io.File.getContent("require.json"));
+            if (json.paths==null) json.paths = {};
+            if (json.shim==null) json.shim = {};
+        }
+        Reflect.setProperty( json.paths , strModuleName , strPath );
+        var shimVal = {};
+        shimVal.deps = arrDeps;
+        if (strModuleName == "angular") shimVal.exports = 'angular';
+        if (strModuleName == "jquery") shimVal.exports = 'jquery';
+        Reflect.setProperty( json.shim , strModuleName , shimVal );
+        sys.io.File.saveContent( "require.json" , haxe.Json.stringify(json));
+
+        return macro null;
+    }
 }
