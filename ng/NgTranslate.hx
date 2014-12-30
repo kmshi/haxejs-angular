@@ -29,6 +29,13 @@ extern class NgTranslate
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-storage-local/angular-translate-storage-local.js");                    
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-handler-log/angular-translate-handler-log.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-translate-handler-log/angular-translate-handler-log.js");
+
+          ng.macro.InjectionBuilder.moduleDependency("angular-translate-handler-log","bower_components/angular-translate-handler-log/angular-translate-handler-log",["angular-translate"]);
+          ng.macro.InjectionBuilder.moduleDependency("angular-translate-storage-local","bower_components/angular-translate-storage-local/angular-translate-storage-local",["angular-translate"]);
+          ng.macro.InjectionBuilder.moduleDependency("angular-translate-storage-cookie","bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie",["angular-translate"]);
+          ng.macro.InjectionBuilder.moduleDependency("angular-translate-loader-static-files","bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files",["angular-translate"]);
+          ng.macro.InjectionBuilder.moduleDependency("angular-translate-loader-url","bower_components/angular-translate-loader-url/angular-translate-loader-url",["angular-translate"]);
+          ng.macro.InjectionBuilder.moduleDependency("angular-translate","bower_components/angular-translate/angular-translate",["angular"]);
         #end
         //add "pascalprecht.translate" to global module dependencies
         if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

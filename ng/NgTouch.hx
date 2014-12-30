@@ -18,6 +18,7 @@ extern class NgTouch
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-touch/angular-touch.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-touch/angular-touch.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-touch/angular-touch.js");
+          ng.macro.InjectionBuilder.moduleDependency("angular-touch","bower_components/angular-touch/angular-touch",["angular"]);
         #end
 		//add "ngTouch" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

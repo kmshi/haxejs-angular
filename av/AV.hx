@@ -10,6 +10,7 @@ extern class AV{
 
         ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av-mini.js");
         ng.macro.InjectionBuilder.copyFile("www/bower_components/avos/av.js");
+        ng.macro.InjectionBuilder.moduleDependency("avos","bower_components/avos/av");
     }
 
 	public static function initialize(applicationId:String,applicationKey:String,?masterKey:String):Void;

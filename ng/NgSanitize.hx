@@ -17,6 +17,7 @@ abstract NgSanitize({}) from {}
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-sanitize/angular-sanitize.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-sanitize/angular-sanitize.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-sanitize/angular-sanitize.js");
+          ng.macro.InjectionBuilder.moduleDependency("angular-sanitize","bower_components/angular-sanitize/angular-sanitize",["angular"]);
         #end
 		//add "ngSanitize" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

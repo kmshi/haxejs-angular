@@ -16,6 +16,7 @@ extern class NgRoute
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-route/angular-route.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-route/angular-route.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-route/angular-route.js");
+          ng.macro.InjectionBuilder.moduleDependency("angular-route","bower_components/angular-route/angular-route",["angular"]);
         #end
 		//add "ngRoute" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

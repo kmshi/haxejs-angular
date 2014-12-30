@@ -14,6 +14,7 @@ extern class NgGestures
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-gestures/gestures.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-gestures/gestures.js");
+          ng.macro.InjectionBuilder.moduleDependency("angular-gestures","bower_components/angular-gestures/gestures",["angular"]);
         #end
 		//add "angular-gestures" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

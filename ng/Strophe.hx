@@ -14,6 +14,7 @@ extern class Strophe{
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/strophe/strophe.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/strophe/strophe.js");
+          ng.macro.InjectionBuilder.moduleDependency("strophe","bower_components/strophe/strophe");
         #end
     }
 

@@ -250,7 +250,7 @@ class InjectionBuilder
         return macro null;
     }
 
-    macro public static function moduleDependency(moduleName:Expr,path:Expr,deps:Expr) {
+    macro public static function moduleDependency(moduleName:Expr,path:Expr,?deps:Expr) {
         var strModuleName = switch( moduleName.expr ) {
             case EConst(c):
                 switch( c ) {
@@ -271,8 +271,7 @@ class InjectionBuilder
         }
         if( strPath == null ) strPath = '';
 
-        var arrDeps = ['angular'];
-        //TODO:get it from deps Expr
+        var arrDeps = haxe.macro.ExprTools.getValue(deps);
 
         var json = {paths:{},shim:{}};
         if (sys.FileSystem.exists("require.json")){
@@ -282,9 +281,9 @@ class InjectionBuilder
         }
         Reflect.setProperty( json.paths , strModuleName , strPath );
         var shimVal = {};
-        shimVal.deps = arrDeps;
-        if (strModuleName == "angular") shimVal.exports = 'angular';
-        if (strModuleName == "jquery") shimVal.exports = 'jquery';
+        if (arrDeps!=null) untyped shimVal.deps = arrDeps;
+        if (strModuleName == "angular") untyped shimVal.exports = 'angular';
+        if (strModuleName == "jquery") untyped shimVal.exports = 'jquery';
         Reflect.setProperty( json.shim , strModuleName , shimVal );
         sys.io.File.saveContent( "require.json" , haxe.Json.stringify(json));
 

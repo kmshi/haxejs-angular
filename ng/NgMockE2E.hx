@@ -13,6 +13,7 @@ class NgMockE2E
           haxe.macro.Compiler.includeFile("www/bower_components/angular-mocks/angular-mocks.js");
         #else
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-mocks/angular-mocks.js");
+          ng.macro.InjectionBuilder.moduleDependency("angular-mocks","bower_components/angular-mocks/angular-mocks",["angular"]);
         #end
     		//add "ngMockE2E" to global module dependencies
     		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

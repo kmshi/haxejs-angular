@@ -409,6 +409,7 @@ extern class JQuery implements ArrayAccess<Element> {
 		  ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/dist/jquery.min.js");
 		  ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/dist/jquery.min.map");
 		  ng.macro.InjectionBuilder.copyFile("www/bower_components/jquery/dist/jquery.js");
+		  ng.macro.InjectionBuilder.moduleDependency("jquery","bower_components/jquery/dist/jquery");
 		#end
 		var q : Dynamic = (untyped js.Browser.window).jQuery;
 		ng.JQuery = q;

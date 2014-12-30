@@ -19,6 +19,9 @@ extern class Angular
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular/angular.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular/angular.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular/angular.js");
+          
+          ng.macro.InjectionBuilder.moduleDependency("angular","bower_components/angular/angular");
+          ng.macro.InjectionBuilder.copyFile("www/bower_components/requirejs/require.js");
         #end
 
         ng.Angular = window.angular;

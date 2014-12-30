@@ -17,6 +17,7 @@ abstract NgResource({}) from {}
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-resource/angular-resource.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-resource/angular-resource.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-resource/angular-resource.js");
+          ng.macro.InjectionBuilder.moduleDependency("angular-resource","bower_components/angular-resource/angular-resource",["angular"]);
         #end
 		//add "ngResource" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];

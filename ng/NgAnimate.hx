@@ -17,6 +17,7 @@ extern class NgAnimate
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-animate/angular-animate.min.js");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-animate/angular-animate.min.js.map");
           ng.macro.InjectionBuilder.copyFile("www/bower_components/angular-animate/angular-animate.js");
+          ng.macro.InjectionBuilder.moduleDependency("angular-animate","bower_components/angular-animate/angular-animate",["angular"]);
         #end
 		//add "ngAnimate" to global module dependencies
 		if (Angular.isUndefined(window.hxdeps))window.hxdeps = [];
